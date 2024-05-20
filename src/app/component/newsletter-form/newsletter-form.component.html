@@ -1,0 +1,30 @@
+<section class="form-section">
+    <div class="text">
+        <h3>Fique por dentro das tendências</h3>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae ipsum perspiciatis ea sunt nostrum eum, nisi
+            iure atque quos. Earum, dolorum consequuntur minima in neque nemo rem dignissimos enim praesentium.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae ipsum perspiciatis ea sunt nostrum eum, nisi
+            iure atque quos. Earum, dolorum consequuntur minima in neque nemo rem dignissimos enim praesentium.
+        </p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae ipsum perspiciatis ea sunt nostrum eum, nisi
+            iure atque quos. Earum, dolorum consequuntur minima in neque nemo rem dignissimos enim praesentium.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae ipsum perspiciatis ea sunt nostrum eum, nisi
+            iure atque quos. Earum, dolorum consequuntur minima in neque nemo rem dignissimos enim praesentium.</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae ipsum perspiciatis ea sunt nostrum eum, nisi
+            iure atque quos. Earum, dolorum consequuntur minima in neque nemo rem dignissimos enim praesentium.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae ipsum perspiciatis ea sunt nostrum eum, nisi
+            iure atque quos. Earum, dolorum consequuntur minima in neque nemo rem dignissimos enim praesentium.</p>
+    </div>
+    <form [formGroup]="newsletterForm">
+        <h3>Fale conosco</h3>
+        <label for="name">Nome</label>
+        <input id="name" formControlName="name" />
+        <label for="email">Email</label>
+        <input id="email" formControlName="email" />
+        <label for="prof">Profissão</label>
+        <textarea id="prof" formControlName="prof"></textarea>
+        <a routerLink="/list">            
+            <btn-primary btn-text="enviar" variant="secondary" ></btn-primary>
+        </a>   
+    </form>
+</section>
