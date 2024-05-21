@@ -1,18 +1,14 @@
 import { Component, inject } from '@angular/core';
-import {DataSource} from '@angular/cdk/collections';
-import {Observable, ReplaySubject} from 'rxjs';
 import { MessagesService } from '../../services/messages.service';
 import { Message } from '../../intefaces/message.interface';
 import { HeaderComponent } from '../../component/header/header.component';
 import { FooterComponent } from '../../component/footer/footer.component';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatTableModule } from '@angular/material/table';
+import { CardComponent } from '../card/card/card.component';
 
 @Component({
   selector: 'app-list',
   standalone: true,
-  imports: [HeaderComponent, FooterComponent, MatCardModule, MatButtonModule, MatTableModule],
+  imports: [HeaderComponent, FooterComponent, CardComponent],
   templateUrl: './list.component.html',
   styleUrl: './list.component.css'
 })
@@ -27,7 +23,4 @@ export class ListComponent {
       this.messagesList = messages;
     })
   }
-
-  displayedColumns: string[] = ['id', 'nome', 'email', 'mensagem'];
-  dataSource = [...this.messagesList];
 }

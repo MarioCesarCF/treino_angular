@@ -5,6 +5,9 @@
     flex-direction: column;
     width: 100%;
 }
+app-card {
+    width: 80%;
+}
 
 .title {
     display: flex;
@@ -13,10 +16,6 @@
     justify-content: center;
     padding: 40px 70px;
     font-family: 'Poppins', sans-serif;
-}
-
-.example-card {
-    color: #fff;
 }
 
 table {
