@@ -11,6 +11,6 @@ export class EmpreendimentoService {
   constructor(private httpClient: HttpClient) { }
 
   obterTodos(){
-    return this.httpClient.get<Empreendimento[]>(`${API_PATH}/empreendimento`);
+    return this.httpClient.get<{results:Empreendimento[]}>(`${API_PATH}/empreendimento`);
   }
 }
