@@ -6,11 +6,12 @@ import { NewsletterFormComponent } from '../newsletter-form/newsletter-form.comp
 import { FooterComponent } from '../footer/footer.component';
 import { RouterLink } from '@angular/router';
 import { ListComponent } from '../../features/list/list.component';
+import { TableComponent } from '../table/table.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, HeaderComponent, FooterComponent, NgOptimizedImage, BtnPrimaryComponent, NewsletterFormComponent, ListComponent],
+  imports: [RouterLink, HeaderComponent, FooterComponent, NgOptimizedImage, BtnPrimaryComponent, NewsletterFormComponent, ListComponent, TableComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

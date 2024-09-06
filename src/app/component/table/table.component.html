@@ -1,8 +1,18 @@
-<app-header></app-header>
-<main class="main-section">
-    <div class="title">
-        <h1>Mensagens</h1>
-    </div>
-    
-</main>
-<footer></footer>
+<div class="card">
+    <p-table [columns]="cols" [value]="empreendimentos" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let col of columns">
+                    {{ col.header }}
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr>
+                <td *ngFor="let col of columns">
+                    {{ rowData[col.field] }}
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
