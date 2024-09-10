@@ -7,4 +7,5 @@ export interface EmpreendimentoDto {
     telefone: number;
     logradouro?: string;
     bairro: string;
+    nome_proprietario: string;
 }

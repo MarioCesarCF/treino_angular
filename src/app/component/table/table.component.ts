@@ -43,7 +43,7 @@ export class TableComponent implements OnInit {
   obterTodos() {
     this.empreendimentoService.obterTodos().subscribe({
       next: (result) => {
-        this.empreendimentos = result.results;
+        this.empreendimentos = result.data;
     }});
   }
 }

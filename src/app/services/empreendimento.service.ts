@@ -12,10 +12,10 @@ export class EmpreendimentoService {
   constructor(private httpClient: HttpClient) { }
 
   obterTodos(){
-    return this.httpClient.get<{results:Empreendimento[]}>(`${API_PATH}/empreendimento`);
+    return this.httpClient.get<{data:Empreendimento[]}>(`${API_PATH}/empreendimento`);
   }
 
   createAsync(createRequest: EmpreendimentoDto) {
-    return this.httpClient.post<{status: number, message: string}>(`${API_PATH}/empreendimento`, {createRequest});
+    return this.httpClient.post<{status: number, message: string}>(`${API_PATH}/empreendimento`, createRequest);
   }
 }

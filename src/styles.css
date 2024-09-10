@@ -1,12 +1,21 @@
-@import "https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap";
-@import "https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@400;700;900&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&family=Poppins:wght@400;600;700&display=swap";
+@import 'primeng/resources/themes/saga-blue/theme.css'; /* ou outro tema de sua escolha */
+@import 'primeng/resources/primeng.min.css';
+@import 'primeicons/primeicons.css';
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Roboto' sans-serif;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
