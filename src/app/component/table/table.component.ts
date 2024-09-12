@@ -6,6 +6,7 @@ import { FetchBackend, HttpBackend } from '@angular/common/http';
 import { EmpreendimentoService } from '../../services/empreendimento.service';
 import { Empreendimento } from '../../intefaces/empreendimento.interface';
 import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
 
 interface Column {
   field: string;
@@ -19,7 +20,7 @@ interface Column {
     provide: HttpBackend,
     useClass: FetchBackend    
   }, EmpreendimentoService],
-  imports: [HeaderComponent, FooterComponent, TableModule, CommonModule],
+  imports: [HeaderComponent, FooterComponent, TableModule, CommonModule, ButtonModule],
   templateUrl: './table.component.html',
   styleUrl: './table.component.css'
 })
@@ -45,5 +46,14 @@ export class TableComponent implements OnInit {
       next: (result) => {
         this.empreendimentos = result.data;
     }});
+  }
+
+  delete(empreendimento: Empreendimento) {
+    this.empreendimentoService.deleteAsync(empreendimento.id).subscribe({
+      next: (result) => {
+        alert('Empreendimento deletado.');
+        window.location.reload();
+      }
+    });
   }
 }

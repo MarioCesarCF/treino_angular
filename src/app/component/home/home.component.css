@@ -37,6 +37,36 @@ section {
     padding: 30px 60px;
 }
 
+h2 {
+    font-size: 2rem;
+    padding: 15px;
+    text-align: center;
+}
+
+.form-group {
+    padding: 1rem;
+}
+
+.form-group>label, .form-group>input {
+    font-size: 1.5rem;
+}
+
+.titleModal {
+    background-color: aqua;
+    font-size: 2rem;
+    padding: 1rem;
+}
+
+form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+form>p-button {
+    padding: 1rem;
+}
+
 @media (min-width: 1080px) {
     .main-section {
         flex-direction: row;

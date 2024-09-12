@@ -18,4 +18,8 @@ export class EmpreendimentoService {
   createAsync(createRequest: EmpreendimentoDto) {
     return this.httpClient.post<{status: number, message: string}>(`${API_PATH}/empreendimento`, createRequest);
   }
+
+  deleteAsync(id: string) {
+    return this.httpClient.delete<{status: number, message: string}>(`${API_PATH}/empreendimento/${id}`);
+  }
 }
