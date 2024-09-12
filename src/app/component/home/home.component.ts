@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, NgModule  } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { NgOptimizedImage } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
@@ -31,7 +32,8 @@ import { EmpreendimentoDto } from '../../dto/empreendimento.dto';
     DialogModule, 
     ButtonModule, 
     InputTextModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CommonModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
@@ -57,7 +59,8 @@ export class HomeComponent {
   }
 
   showDialog() {
-    this.visible = true;
+    console.log(this.visible)
+    this.visible = !this.visible;
   }
 
   save() {
@@ -69,6 +72,7 @@ export class HomeComponent {
       this.empreendimentoService.createAsync(createRequest).subscribe({
         next: (result) => {
           alert(result.message);
+          this.form.reset();
           window.location.reload();
       }});
     } else {

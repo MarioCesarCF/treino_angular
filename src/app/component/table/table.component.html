@@ -12,7 +12,7 @@
       <tr>
         <td>
           <button type="button" pButton pRipple icon="pi pi-eye" title="Ver"></button>
-          <button type="button" pButton pRipple icon="pi pi-times-circle" (click)="delete(rowData)" title="Excluir"></button>
+          <button type="button" pButton pRipple icon="pi pi-times-circle" (click)="atualizar(rowData)" title="Excluir"></button>
         </td>
         <td *ngFor="let col of columns">
           {{ rowData[col.field] }}

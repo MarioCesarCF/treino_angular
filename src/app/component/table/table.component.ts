@@ -56,4 +56,19 @@ export class TableComponent implements OnInit {
       }
     });
   }
+
+  atualizar(empreendimento: Empreendimento) {
+    if(empreendimento.situacao) {
+      empreendimento.situacao = false;
+    }  else {
+      empreendimento.situacao = true;
+    }
+
+    this.empreendimentoService.updateAsync(empreendimento).subscribe({
+      next: (result) => {
+        alert('Empreendimento atualizado com sucesso.');
+        window.location.reload();
+      }
+    });
+  }
 }

@@ -22,4 +22,8 @@ export class EmpreendimentoService {
   deleteAsync(id: string) {
     return this.httpClient.delete<{status: number, message: string}>(`${API_PATH}/empreendimento/${id}`);
   }
+
+  updateAsync(empreendimento: Empreendimento) {
+    return this.httpClient.patch<{status: number, message: string}>(`${API_PATH}/empreendimento/${empreendimento.id}`, empreendimento);
+  }
 }
