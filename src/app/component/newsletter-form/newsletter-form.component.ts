@@ -1,4 +1,4 @@
-import { Component, Output, signal } from '@angular/core';
+import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { BtnPrimaryComponent } from '../btn-primary/btn-primary.component';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NewsletterService } from '../../services/newsletter.service';
@@ -34,9 +34,11 @@ import { TableComponent } from '../table/table.component';
   styleUrl: './newsletter-form.component.css'
 })
 export class NewsletterFormComponent {
+  @Input() visible: boolean = false;
+  @Output() onClose = new EventEmitter<void>();
+  
   form!: FormGroup;
   loading = signal(false);
-  @Output() visible: boolean = false;
 
   constructor (
     private empreendimentoService: EmpreendimentoService,
@@ -54,20 +56,18 @@ export class NewsletterFormComponent {
     });
   }
 
-  save() {
-    this.visible = false; 
-    
+  save() {    
     if (this.form.valid) {
       const createRequest: EmpreendimentoDto = this.form.value;
-      console.log(createRequest )
+      
       this.empreendimentoService.createAsync(createRequest).subscribe({
-        next: (result) => {
-          alert(result.message);
+        next: (result) => {          
           this.form.reset();
           window.location.reload();
+          alert(result.message);
       }});
     } else {
-      console.log('Formulário inválido');
+      alert('Formulário inválido. Preencha todos os dados.');
     }       
   }
 }

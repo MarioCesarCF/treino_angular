@@ -40,7 +40,14 @@ import { EmpreendimentoDto } from '../../dto/empreendimento.dto';
 })
 export class HomeComponent {
   form: FormGroup;
+  
+
   visible: boolean = false;
+
+  nome_fantasia?: string;
+  bairro?: string;
+  ramo_atividade?: string;
+  situacao?: boolean;
 
   constructor (
     private empreendimentoService: EmpreendimentoService,
@@ -55,11 +62,10 @@ export class HomeComponent {
       telefone: ['', Validators.required],
       logradouro: [''],
       bairro: ['', Validators.required]
-    });
+    });    
   }
 
   showDialog() {
-    console.log(this.visible)
     this.visible = !this.visible;
   }
 

@@ -3,7 +3,8 @@
     [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
     [style]="{ width: '70vw', height: '80vh' }" 
     [draggable]="false" 
-    [resizable]="false">
+    [resizable]="false"
+    (onHide)="onClose.emit()">
       <form [formGroup]="form" (ngSubmit)="save()">
         <div class="form-group">
           <label for="nome_fantasia" class="font-semibold w-6rem">Nome Fantasia</label>
@@ -46,7 +47,6 @@
           <input pInputText id="bairro" formControlName="bairro" class="flex-auto" autocomplete="off" />
         </div>
   
-        <p-button label="Cancel" severity="secondary" (onClick)="visible = false" />
         <p-button label="Save" type="submit" />
       </form>
     </p-dialog>

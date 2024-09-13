@@ -7,6 +7,7 @@ import { EmpreendimentoService } from '../../services/empreendimento.service';
 import { Empreendimento } from '../../intefaces/empreendimento.interface';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 interface Column {
   field: string;
@@ -27,14 +28,23 @@ interface Column {
 export class TableComponent implements OnInit {  
   empreendimentos!: Empreendimento[];
   cols!: Column[];
+  filtroForm: FormGroup;
 
-  constructor(private empreendimentoService: EmpreendimentoService){}  
+  constructor(private empreendimentoService: EmpreendimentoService,
+    private fb: FormBuilder){
+    this.filtroForm = this.fb.group({
+      nome: [''],
+      bairro: [''],
+      atividade: [''],
+      situacao: [true]
+    });
+  }  
 
   ngOnInit() {    
     this.obterTodos();
 
     this.cols = [
-      { field: 'razao_social', header: 'Razão Social' },
+      { field: 'nome_fantasia', header: 'Nome Fantasia' },
       { field: 'documento', header: 'Documento' },
       { field: 'ramo_atividade', header: 'Ramo Atividade' },
       { field: 'telefone', header: 'Telefone' }
@@ -42,10 +52,23 @@ export class TableComponent implements OnInit {
   }
 
   obterTodos() {
-    this.empreendimentoService.obterTodos().subscribe({
+    // Obtém os valores do formulário
+    const { nome, bairro, atividade, situacao } = this.filtroForm.value;
+
+    // Chama o serviço com os filtros aplicados
+    this.empreendimentoService.obterTodos(nome, bairro, atividade, situacao).subscribe({
       next: (result) => {
         this.empreendimentos = result.data;
-    }});
+      },
+      error: (err) => {
+        console.error('Erro ao obter empreendimentos:', err);
+      }
+    });
+  }
+
+  // Método para aplicar os filtros
+  aplicarFiltros() {
+    this.obterTodos();
   }
 
   delete(empreendimento: Empreendimento) {

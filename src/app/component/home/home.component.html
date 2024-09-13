@@ -1,8 +1,8 @@
 <app-header></app-header>
 <hr />
 <div class="card flex justify-content-center cta-section">
-  <p-button (onClick)="showDialog()" label="Cadastrar" class="cta-button" />
-  <newsletter-form *ngIf="visible"></newsletter-form>
+  <p-button (onClick)="showDialog()" label="Cadastrar" class="cta-button"></p-button>
+  <newsletter-form [visible]="visible" (onClose)="showDialog()"></newsletter-form>
 </div>
 
 <!-- <div class="card flex justify-content-center">
@@ -69,5 +69,5 @@
 
 </main>
 
-
+<br>
 <footer></footer>
