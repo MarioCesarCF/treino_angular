@@ -36,6 +36,10 @@ export class EmpreendimentoService {
     return this.httpClient.get<{ data: Empreendimento[] }>(`${API_PATH}/empreendimento`, { params });
   }
 
+  getById(id: string) {
+    return this.httpClient.get<{ data: Empreendimento }>(`${API_PATH}/empreendimento/${id}`);
+  }
+
   createAsync(createRequest: EmpreendimentoDto) {
     return this.httpClient.post<{status: number, message: string}>(`${API_PATH}/empreendimento`, createRequest);
   }

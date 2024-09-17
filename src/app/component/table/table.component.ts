@@ -8,6 +8,7 @@ import { Empreendimento } from '../../intefaces/empreendimento.interface';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
 interface Column {
   field: string;
@@ -31,7 +32,9 @@ export class TableComponent implements OnInit {
   filtroForm: FormGroup;
 
   constructor(private empreendimentoService: EmpreendimentoService,
-    private fb: FormBuilder){
+    private fb: FormBuilder,
+    private router: Router
+  ){
     this.filtroForm = this.fb.group({
       nome: [''],
       bairro: [''],
@@ -93,5 +96,9 @@ export class TableComponent implements OnInit {
         window.location.reload();
       }
     });
+  }
+
+  consultar(empreendimento: Empreendimento) {
+    this.router.navigate(['/update-form', empreendimento.id]);
   }
 }

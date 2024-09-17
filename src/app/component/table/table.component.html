@@ -11,7 +11,7 @@
     <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr>
         <td>
-          <button type="button" pButton pRipple icon="pi pi-eye" title="Ver"></button>
+          <button type="button" pButton pRipple icon="pi pi-eye" (click)="consultar(rowData)" title="Ver"></button>
           <button type="button" pButton pRipple icon="pi pi-times-circle" (click)="atualizar(rowData)" title="Excluir"></button>
         </td>
         <td *ngFor="let col of columns">
