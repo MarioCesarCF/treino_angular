@@ -8,10 +8,8 @@ import { RouterLink } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HeaderComponent } from '../header/header.component';
-import { BtnPrimaryComponent } from '../btn-primary/btn-primary.component';
 import { NewsletterFormComponent } from '../newsletter-form/newsletter-form.component';
 import { FooterComponent } from '../footer/footer.component';
-import { ListComponent } from '../../features/list/list.component';
 import { TableComponent } from '../table/table.component';
 import { EmpreendimentoService } from '../../services/empreendimento.service';
 import { EmpreendimentoDto } from '../../dto/empreendimento.dto';
@@ -25,9 +23,7 @@ import { EmpreendimentoDto } from '../../dto/empreendimento.dto';
     HeaderComponent, 
     FooterComponent, 
     NgOptimizedImage, 
-    BtnPrimaryComponent, 
     NewsletterFormComponent, 
-    ListComponent, 
     TableComponent, 
     DialogModule, 
     ButtonModule, 

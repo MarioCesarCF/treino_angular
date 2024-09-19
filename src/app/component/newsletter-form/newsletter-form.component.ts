@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
-import { BtnPrimaryComponent } from '../btn-primary/btn-primary.component';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { EmpreendimentoDto } from '../../dto/empreendimento.dto';
@@ -8,7 +7,6 @@ import { NgOptimizedImage } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
-import { ListComponent } from '../../features/list/list.component';
 import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
 import { TableComponent } from '../table/table.component';
@@ -21,9 +19,7 @@ import { NewsletterService } from '../../services/newsletter.service';
     HeaderComponent, 
     FooterComponent, 
     NgOptimizedImage, 
-    BtnPrimaryComponent, 
     NewsletterFormComponent, 
-    ListComponent, 
     TableComponent, 
     DialogModule, 
     ButtonModule, 

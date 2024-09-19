@@ -9,11 +9,8 @@ import { HeaderComponent } from '../header/header.component';
 import { NgOptimizedImage } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
-import { ListComponent } from '../../features/list/list.component';
-import { BtnPrimaryComponent } from '../btn-primary/btn-primary.component';
 import { NewsletterFormComponent } from '../newsletter-form/newsletter-form.component';
 import { TableComponent } from '../table/table.component';
-import { EmpreendimentoDto } from '../../dto/empreendimento.dto';
 
 @Component({
   selector: 'app-update-form',
@@ -22,9 +19,7 @@ import { EmpreendimentoDto } from '../../dto/empreendimento.dto';
     HeaderComponent, 
     FooterComponent, 
     NgOptimizedImage, 
-    BtnPrimaryComponent, 
     NewsletterFormComponent, 
-    ListComponent, 
     TableComponent, 
     DialogModule, 
     ButtonModule, 
