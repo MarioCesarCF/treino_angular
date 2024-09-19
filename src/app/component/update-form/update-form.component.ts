@@ -13,6 +13,7 @@ import { ListComponent } from '../../features/list/list.component';
 import { BtnPrimaryComponent } from '../btn-primary/btn-primary.component';
 import { NewsletterFormComponent } from '../newsletter-form/newsletter-form.component';
 import { TableComponent } from '../table/table.component';
+import { EmpreendimentoDto } from '../../dto/empreendimento.dto';
 
 @Component({
   selector: 'app-update-form',
@@ -68,8 +69,19 @@ export class UpdateFormComponent implements OnChanges {
   carregarDados(): void {
     this.empreendimentoService.getById(this.empreendimentoId!).subscribe({
       next: (result) => {
-        this.empreendimento = result.data;
-        this.form.patchValue(this.empreendimento);
+        this.empreendimento = result;
+
+        this.form = this.fb.group({
+          nome_fantasia: [this.empreendimento.nome_fantasia],
+          razao_social: [this.empreendimento.razao_social],
+          documento: [this.empreendimento.documento],
+          ramo_atividade: [this.empreendimento.ramo_atividade],
+          nome_proprietario: [this.empreendimento.nome_proprietario],
+          telefone: [this.empreendimento.telefone],
+          logradouro: [this.empreendimento.logradouro],
+          bairro: [this.empreendimento.bairro]
+        });
+        
       },
       error: (err) => {
         console.error('Erro ao obter empreendimentos:', err);
@@ -78,10 +90,25 @@ export class UpdateFormComponent implements OnChanges {
   }
 
   save(): void {
-    console.log(this.form.value);
+    if (this.form.valid) {
+      console.log(this.form.value)
+      let updateRequest: Empreendimento = this.form.value;
+      updateRequest.id = this.empreendimentoId;
+
+      console.log(updateRequest)
+      this.empreendimentoService.updateAsync(updateRequest).subscribe({
+        next: (result) => {          
+          this.form.reset();
+          window.location.reload();
+          alert(result.message);
+      }});
+    } else {
+      alert('Formulário inválido. Preencha todos os dados.');
+    }     
   }
 
   close() {
     this.onClose.emit();
+    this.form.reset();
   }
 }

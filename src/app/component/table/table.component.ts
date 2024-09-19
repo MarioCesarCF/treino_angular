@@ -88,15 +88,6 @@ export class TableComponent implements OnInit {
     this.obterTodos();
   }
 
-  delete(empreendimento: Empreendimento) {
-    this.empreendimentoService.deleteAsync(empreendimento.id).subscribe({
-      next: (result) => {
-        alert('Empreendimento deletado.');
-        window.location.reload();
-      }
-    });
-  }
-
   tornarInativo(empreendimento: Empreendimento) {
     if (empreendimento.situacao) {
       empreendimento.situacao = false;

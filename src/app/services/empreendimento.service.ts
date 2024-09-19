@@ -37,7 +37,7 @@ export class EmpreendimentoService {
   }
 
   getById(id: string) {
-    return this.httpClient.get<{ data: Empreendimento }>(`${API_PATH}/empreendimento/${id}`);
+    return this.httpClient.get<Empreendimento>(`${API_PATH}/empreendimento/${id}`);
   }
 
   createAsync(createRequest: EmpreendimentoDto) {

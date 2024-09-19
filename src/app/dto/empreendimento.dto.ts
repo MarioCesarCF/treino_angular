@@ -1,5 +1,5 @@
 export interface EmpreendimentoDto {
-    id?: string;
+    id: string | null;
     nome_fantasia?: string;
     razao_social: string;
     documento: number;
