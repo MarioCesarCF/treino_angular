@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { BtnPrimaryComponent } from '../btn-primary/btn-primary.component';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NewsletterService } from '../../services/newsletter.service';
 import { RouterLink } from '@angular/router';
 import { EmpreendimentoDto } from '../../dto/empreendimento.dto';
 import { EmpreendimentoService } from '../../services/empreendimento.service';
@@ -13,6 +12,7 @@ import { ListComponent } from '../../features/list/list.component';
 import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
 import { TableComponent } from '../table/table.component';
+import { NewsletterService } from '../../services/newsletter.service';
 
 @Component({
   selector: 'newsletter-form',
@@ -29,7 +29,7 @@ import { TableComponent } from '../table/table.component';
     ButtonModule, 
     InputTextModule,
     ReactiveFormsModule],
-  providers: [NewsletterService],
+  providers: [NewsletterService, EmpreendimentoService],
   templateUrl: './newsletter-form.component.html',
   styleUrl: './newsletter-form.component.css'
 })

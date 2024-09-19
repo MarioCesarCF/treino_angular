@@ -9,6 +9,8 @@ import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { UpdateFormComponent } from '../update-form/update-form.component';
+import { DialogModule } from 'primeng/dialog';
 
 interface Column {
   field: string;
@@ -20,30 +22,42 @@ interface Column {
   standalone: true,
   providers: [{
     provide: HttpBackend,
-    useClass: FetchBackend    
-  }, EmpreendimentoService],
-  imports: [HeaderComponent, FooterComponent, TableModule, CommonModule, ButtonModule],
+    useClass: FetchBackend
+  },
+    EmpreendimentoService
+  ],
+  imports: [
+    HeaderComponent, 
+    FooterComponent, 
+    TableModule, 
+    CommonModule, 
+    ButtonModule, 
+    UpdateFormComponent, 
+    DialogModule
+  ],
   templateUrl: './table.component.html',
   styleUrl: './table.component.css'
 })
-export class TableComponent implements OnInit {  
+export class TableComponent implements OnInit {
   empreendimentos!: Empreendimento[];
   cols!: Column[];
   filtroForm: FormGroup;
+  visible: boolean = false;
+  selectedEmpreendimentoId: string | null = null;
 
   constructor(private empreendimentoService: EmpreendimentoService,
     private fb: FormBuilder,
     private router: Router
-  ){
+  ) {
     this.filtroForm = this.fb.group({
       nome: [''],
       bairro: [''],
       atividade: [''],
       situacao: [true]
     });
-  }  
+  }
 
-  ngOnInit() {    
+  ngOnInit() {
     this.obterTodos();
 
     this.cols = [
@@ -83,16 +97,16 @@ export class TableComponent implements OnInit {
     });
   }
 
-  atualizar(empreendimento: Empreendimento) {
-    if(empreendimento.situacao) {
+  tornarInativo(empreendimento: Empreendimento) {
+    if (empreendimento.situacao) {
       empreendimento.situacao = false;
-    }  else {
+    } else {
       empreendimento.situacao = true;
     }
 
     this.empreendimentoService.updateAsync(empreendimento).subscribe({
       next: (result) => {
-        alert('Empreendimento atualizado com sucesso.');
+        alert('Empreendimento inativado com sucesso.');
         window.location.reload();
       }
     });
@@ -100,5 +114,15 @@ export class TableComponent implements OnInit {
 
   consultar(empreendimento: Empreendimento) {
     this.router.navigate(['/update-form', empreendimento.id]);
+  }
+
+  showDialog(empreendimentoId: string) {
+    this.selectedEmpreendimentoId = empreendimentoId;
+    this.visible = true;
+  }
+
+  closeDialog() {
+    this.visible = false;
+    this.selectedEmpreendimentoId = null;
   }
 }

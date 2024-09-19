@@ -39,8 +39,7 @@ import { EmpreendimentoDto } from '../../dto/empreendimento.dto';
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-  form: FormGroup;
-  
+  form: FormGroup;  
 
   visible: boolean = false;
 
@@ -74,7 +73,7 @@ export class HomeComponent {
     
     if (this.form.valid) {
       const createRequest: EmpreendimentoDto = this.form.value;
-      console.log(createRequest )
+      
       this.empreendimentoService.createAsync(createRequest).subscribe({
         next: (result) => {
           alert(result.message);
