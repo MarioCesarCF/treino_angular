@@ -69,10 +69,8 @@ export class TableComponent implements OnInit {
   }
 
   obterTodos() {
-    // Obtém os valores do formulário
     const { nome, bairro, atividade, situacao } = this.filtroForm.value;
 
-    // Chama o serviço com os filtros aplicados
     this.empreendimentoService.obterTodos(nome, bairro, atividade, situacao).subscribe({
       next: (result) => {
         this.empreendimentos = result.data;
@@ -83,7 +81,6 @@ export class TableComponent implements OnInit {
     });
   }
 
-  // Método para aplicar os filtros
   aplicarFiltros() {
     this.obterTodos();
   }
@@ -91,8 +88,6 @@ export class TableComponent implements OnInit {
   tornarInativo(empreendimento: Empreendimento) {
     if (empreendimento.situacao) {
       empreendimento.situacao = false;
-    } else {
-      empreendimento.situacao = true;
     }
 
     this.empreendimentoService.updateAsync(empreendimento).subscribe({
