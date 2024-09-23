@@ -1,32 +1,30 @@
-import { Component, NgModule  } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { NgOptimizedImage } from '@angular/common';
-import { InputTextModule } from 'primeng/inputtext';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
-import { RouterLink } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
+import { EmpreendimentoDto } from '../../dto/empreendimento.dto';
+import { EmpreendimentoService } from '../../services/empreendimento.service';
+import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
 import { NewsletterFormComponent } from '../newsletter-form/newsletter-form.component';
-import { FooterComponent } from '../footer/footer.component';
 import { TableComponent } from '../table/table.component';
-import { EmpreendimentoService } from '../../services/empreendimento.service';
-import { EmpreendimentoDto } from '../../dto/empreendimento.dto';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   providers: [EmpreendimentoService],
   imports: [
-    RouterLink, 
-    HeaderComponent, 
-    FooterComponent, 
-    NgOptimizedImage, 
-    NewsletterFormComponent, 
-    TableComponent, 
-    DialogModule, 
-    ButtonModule, 
+    RouterLink,
+    HeaderComponent,
+    FooterComponent,
+    NgOptimizedImage,
+    NewsletterFormComponent,
+    TableComponent,
+    DialogModule,
+    ButtonModule,
     InputTextModule,
     ReactiveFormsModule,
     CommonModule
@@ -35,9 +33,10 @@ import { EmpreendimentoDto } from '../../dto/empreendimento.dto';
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-  form: FormGroup;  
+  form: FormGroup;
 
   visible: boolean = false;
+  startVisible: boolean = false;
 
   nome_fantasia?: string;
   bairro?: string;
@@ -57,7 +56,11 @@ export class HomeComponent {
       telefone: ['', Validators.required],
       logradouro: [''],
       bairro: ['', Validators.required]
-    });    
+    });
+  }
+
+  start() {
+    this.startVisible = true;
   }
 
   showDialog() {
@@ -65,11 +68,11 @@ export class HomeComponent {
   }
 
   save() {
-    this.visible = false; 
-    
+    this.visible = false;
+
     if (this.form.valid) {
       const createRequest: EmpreendimentoDto = this.form.value;
-      
+
       this.empreendimentoService.createAsync(createRequest).subscribe({
         next: (result) => {
           alert(result.message);
@@ -78,6 +81,6 @@ export class HomeComponent {
       }});
     } else {
       console.log('Formulário inválido');
-    }       
+    }
   }
 }
