@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
@@ -47,7 +47,8 @@ export class TableComponent implements OnInit {
 
   constructor(private empreendimentoService: EmpreendimentoService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private cd: ChangeDetectorRef
   ) {
     this.filtroForm = this.fb.group({
       nome: [''],
@@ -74,6 +75,7 @@ export class TableComponent implements OnInit {
     this.empreendimentoService.obterTodos(nome, bairro, atividade, situacao).subscribe({
       next: (result) => {
         this.empreendimentos = result.data;
+        this.cd.detectChanges();
       },
       error: (err) => {
         console.error('Erro ao obter empreendimentos:', err);
