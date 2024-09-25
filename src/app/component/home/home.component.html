@@ -1,23 +1,20 @@
 <app-header></app-header>
 <hr />
 
-<div *ngIf="startVisible">
-  <div class="card flex justify-content-center cta-section">
-    <p-button (onClick)="showDialog()" label="Cadastrar" class="cta-button"></p-button>
-    <newsletter-form [visible]="visible" (onClose)="showDialog()"></newsletter-form>
-  </div>
-
-  <main>
-    <section class="main-section">
-      <div class="headline">
-        <h2>Empreendimentos cadastrados</h2>
-        <app-table></app-table>
-      </div>
-    </section>
-
-  </main>
+<div class="card flex justify-content-center cta-section">
+  <p-button (onClick)="showDialog()" label="Cadastrar" class="cta-button"></p-button>
+  <newsletter-form [visible]="visible" (onClose)="showDialog()"></newsletter-form>
 </div>
-<p-button *ngIf="!startVisible" (onClick)="start()" label="Carregar Tabela" class="cta-button"></p-button>
+
+<main>
+  <section class="main-section">
+    <div class="headline">
+      <h2>Empreendimentos cadastrados</h2>
+      <app-table></app-table>
+    </div>
+  </section>
+
+</main>
 
 <br>
 <footer></footer>

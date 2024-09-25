@@ -36,7 +36,6 @@ export class HomeComponent {
   form: FormGroup;
 
   visible: boolean = false;
-  startVisible: boolean = false;
 
   nome_fantasia?: string;
   bairro?: string;
@@ -57,10 +56,6 @@ export class HomeComponent {
       logradouro: [''],
       bairro: ['', Validators.required]
     });
-  }
-
-  start() {
-    this.startVisible = true;
   }
 
   showDialog() {
