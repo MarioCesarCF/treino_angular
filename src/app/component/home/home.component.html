@@ -2,7 +2,7 @@
 <hr />
 
 <div class="card flex justify-content-center cta-section">
-  <p-button (onClick)="showDialog()" label="Cadastrar" class="cta-button"></p-button>
+  <button pButton pRipple label="Cadastrar" class="p-button-success cta-button" (click)="showDialog()"></button>
   <newsletter-form [visible]="visible" (onClose)="showDialog()"></newsletter-form>
 </div>
 

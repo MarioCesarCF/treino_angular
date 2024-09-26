@@ -7,7 +7,7 @@ import { EmpreendimentoService } from '../../services/empreendimento.service';
 import { Empreendimento } from '../../intefaces/empreendimento.interface';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UpdateFormComponent } from '../update-form/update-form.component';
 import { DialogModule } from 'primeng/dialog';
@@ -33,7 +33,8 @@ interface Column {
     CommonModule, 
     ButtonModule, 
     UpdateFormComponent, 
-    DialogModule
+    DialogModule,
+    ReactiveFormsModule
   ],
   templateUrl: './table.component.html',
   styleUrl: './table.component.css'
@@ -44,6 +45,7 @@ export class TableComponent implements OnInit {
   filtroForm: FormGroup;
   visible: boolean = false;
   selectedEmpreendimentoId: string | null = null;
+  verInativos: boolean = false;
 
   constructor(private empreendimentoService: EmpreendimentoService,
     private fb: FormBuilder,
@@ -70,12 +72,17 @@ export class TableComponent implements OnInit {
   }
 
   obterTodos() {
-    const { nome, bairro, atividade, situacao } = this.filtroForm.value;
+    let { nome, bairro, atividade, situacao } = this.filtroForm.value;
+    
+    if(this.verInativos === true) {
+      situacao = false;
+    }
 
     this.empreendimentoService.obterTodos(nome, bairro, atividade, situacao).subscribe({
       next: (result) => {
         this.empreendimentos = result.data;
         this.cd.detectChanges();
+        this.verInativos = false;
       },
       error: (err) => {
         console.error('Erro ao obter empreendimentos:', err);
@@ -83,9 +90,13 @@ export class TableComponent implements OnInit {
     });
   }
 
-  aplicarFiltros() {
-    this.obterTodos();
+  obterInativos() {
+    this.verInativos = true;
   }
+
+  // aplicarFiltros() {
+  //   this.obterTodos();
+  // }
 
   tornarInativo(empreendimento: Empreendimento) {
     if (empreendimento.situacao) {

@@ -17,6 +17,7 @@
 
 button {
     margin: 2px;
+    padding: 0.5rem;
 }
 
 th, td {
@@ -27,4 +28,14 @@ th, td {
 
 .tabela {
     width: 90%;
+}
+
+.formFilter {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 0;
+}
+
+form>div>input {
+    padding: 0.5rem;
 }

@@ -1,4 +1,26 @@
 <div class="card">
+  <form [formGroup]="filtroForm" (ngSubmit)="obterTodos()" class="formFilter">
+    <div class="form-group">
+      <input pInputText id="nome_fantasia" formControlName="nome" class="flex-auto" autocomplete="off"
+        placeholder="Nome Fantasia" />
+    </div>
+
+    <div class="form-group">
+      <input pInputText id="bairro" formControlName="bairro" class="flex-auto" autocomplete="off"
+        placeholder="Bairro" />
+    </div>
+
+    <div class="form-group">
+      <input pInputText id="ramo_atividade" formControlName="atividade" class="flex-auto" autocomplete="off"
+        placeholder="Ramo Atividade" />
+    </div>
+
+    <div>
+      <button pButton pRipple label="Filtrar" type="submit"></button>
+      <button pButton pRipple label="Mostrar Inativos" (click)="obterInativos()"></button>
+    </div>
+  </form>
+
   <p-table [columns]="cols" [value]="empreendimentos" class="tabela">
     <ng-template pTemplate="header" let-columns>
       <tr>
@@ -12,7 +34,7 @@
       <tr>
         <td>
           <button type="button" pButton pRipple icon="pi pi-eye" (click)="showDialog(rowData.id)" title="Ver"></button>
-          <button type="button" pButton pRipple icon="pi pi-times-circle" (click)="tornarInativo(rowData)" title="Inativar"></button>
+          <button type="button" pButton pRipple icon="pi pi-times-circle" class="p-button-danger" (click)="tornarInativo(rowData)" title="Inativar"></button>
         </td>
         <td *ngFor="let col of columns">
           {{ rowData[col.field] }}
@@ -20,6 +42,7 @@
       </tr>
     </ng-template>
   </p-table>
-  
-  <app-update-form [visible]="visible" [empreendimentoId]="selectedEmpreendimentoId" (onClose)="closeDialog()"></app-update-form>
+
+  <app-update-form [visible]="visible" [empreendimentoId]="selectedEmpreendimentoId"
+    (onClose)="closeDialog()"></app-update-form>
 </div>
