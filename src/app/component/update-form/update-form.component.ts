@@ -36,6 +36,7 @@ export class UpdateFormComponent implements OnChanges {
   @Input() visible: boolean = false;
   @Input() empreendimentoId: string | null = null;
   @Output() onClose = new EventEmitter<void>();
+  @Input() situacao!: boolean;
 
   form: FormGroup;
   empreendimento!: Empreendimento;
@@ -52,7 +53,8 @@ export class UpdateFormComponent implements OnChanges {
       nome_proprietario: [''],
       telefone: [''],
       logradouro: [''],
-      bairro: ['']
+      bairro: [''],
+      situacao: [this.situacao]
     });
   }
 
@@ -94,7 +96,7 @@ export class UpdateFormComponent implements OnChanges {
 
     const img = new Image();
     img.src = './assets/brasao-eco.png';
-    doc.addImage(img, 'PNG', 25, 10, 25, 25); // Ajuste a posição e o tamanho conforme necessário
+    doc.addImage(img, 'PNG', 25, 10, 25, 25);
 
     doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
@@ -118,44 +120,43 @@ export class UpdateFormComponent implements OnChanges {
     doc.setFont('helvetica', 'bold');
     const title = 'Dados do Empreendimento';
     const titleWidth = doc.getTextWidth(title);
-    const xPosition = (doc.internal.pageSize.getWidth() - titleWidth) / 2; // Centraliza o título
+    const xPosition = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
     doc.text(title, xPosition, 60);
 
-    // Espaçamento antes do conteúdo
-    doc.setFontSize(12); // Resetando tamanho da fonte para o conteúdo
-    doc.text('', 20, 60); // Duas linhas de espaço
+    doc.setFontSize(12);
+    doc.text('', 20, 60);
 
     const formData = this.form.value;
-    let yPosition = 70;
+    let yPosition = 90;
 
     for (const key in formData) {
         if (formData.hasOwnProperty(key)) {
-            // Formatar chave em negrito e primeira letra maiúscula
             const formattedKey = key.replace('_', ' ').replace(/^\w/, (c) => c.toUpperCase());
             const value = formData[key];
 
-            // Define fonte para a chave em negrito
             doc.setFont('helvetica', 'bold');
             doc.text(`${formattedKey}:`, 20, yPosition);
 
-            // Define fonte para o valor
             doc.setFont('helvetica', 'normal');
-            const maskedValue = this.applyMask(key, value);
+            let  maskedValue = this.applyMask(key, value);
+
+            if (key === 'situacao') {
+              maskedValue = value ? 'Ativo' : 'Inativo'; // Formata como "Ativo" ou "Inativo"
+            }
+
             doc.text(maskedValue, 60, yPosition);
-
-            doc.text('VIGILÂNCIA SANITÁRIA DE ECOPORANGA', 65, 250)
-
-            // Avança a posição vertical
-            yPosition += 10; // Espaço após cada linha
+            
+            yPosition += 10;
         }
     }
 
-    // Rodapé
+    doc.text('VIGILÂNCIA SANITÁRIA DE ECOPORANGA', 65, 250);
+    
     doc.setFontSize(8);
     const footerText = 'Av. Floriano Rubim, s/n, Centro, Ecoporanga/ES. Fone: (27) 99629-4357. E-mail: visaecoporanga@gmail.com';
     const footerWidth = doc.getTextWidth(footerText);
     const xFooterPosition = (doc.internal.pageSize.getWidth() - footerWidth) / 2;
-    doc.text(footerText, xFooterPosition, doc.internal.pageSize.getHeight() - 10); // Posição na parte inferior
+    doc.text(footerText, xFooterPosition, doc.internal.pageSize.getHeight() - 10);
 
     doc.save(`${formData.nome_fantasia}.pdf`);
 }

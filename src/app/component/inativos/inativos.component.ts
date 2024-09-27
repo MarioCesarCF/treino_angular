@@ -1,16 +1,16 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { TableModule } from 'primeng/table';
-import { HeaderComponent } from '../header/header.component';
-import { FooterComponent } from '../footer/footer.component';
-import { FetchBackend, HttpBackend } from '@angular/common/http';
-import { EmpreendimentoService } from '../../services/empreendimento.service';
-import { Empreendimento } from '../../intefaces/empreendimento.interface';
 import { CommonModule } from '@angular/common';
-import { ButtonModule } from 'primeng/button';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { HttpBackend, FetchBackend } from '@angular/common/http';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ReactiveFormsModule, FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UpdateFormComponent } from '../update-form/update-form.component';
+import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { TableModule } from 'primeng/table';
+import { Empreendimento } from '../../intefaces/empreendimento.interface';
+import { EmpreendimentoService } from '../../services/empreendimento.service';
+import { FooterComponent } from '../footer/footer.component';
+import { HeaderComponent } from '../header/header.component';
+import { UpdateFormComponent } from '../update-form/update-form.component';
 
 interface Column {
   field: string;
@@ -24,7 +24,7 @@ interface ExportColumn {
 }
 
 @Component({
-  selector: 'app-table',
+  selector: 'app-inativos',
   standalone: true,
   providers: [{
     provide: HttpBackend,
@@ -40,12 +40,11 @@ interface ExportColumn {
     ButtonModule, 
     UpdateFormComponent, 
     DialogModule,
-    ReactiveFormsModule
-  ],
-  templateUrl: './table.component.html',
-  styleUrl: './table.component.css'
+    ReactiveFormsModule],
+  templateUrl: './inativos.component.html',
+  styleUrl: './inativos.component.css'
 })
-export class TableComponent implements OnInit {
+export class InativosComponent implements OnInit {
   empreendimentos!: Empreendimento[];
   cols!: Column[];
   filtroForm: FormGroup;
@@ -63,7 +62,7 @@ export class TableComponent implements OnInit {
       nome: [''],
       bairro: [''],
       atividade: [''],
-      situacao: [true]
+      situacao: [false]
     });
   }
 
@@ -81,11 +80,7 @@ export class TableComponent implements OnInit {
   }
 
   obterTodos() {
-    let { nome, bairro, atividade, situacao } = this.filtroForm.value;
-    
-    if(this.verInativos === true) {
-      situacao = false;
-    }
+    let { nome, bairro, atividade, situacao } = this.filtroForm.value;    
 
     this.empreendimentoService.obterTodos(nome, bairro, atividade, situacao).subscribe({
       next: (result) => {
@@ -99,18 +94,10 @@ export class TableComponent implements OnInit {
     });
   }
 
-  obterInativos() {
-    this.router.navigate(['/inativos']);
-  }
-
-  tornarInativo(empreendimento: Empreendimento) {
-    if (empreendimento.situacao) {
-      empreendimento.situacao = false;
-    }
-
-    this.empreendimentoService.updateAsync(empreendimento).subscribe({
+  delete(empreendimento: Empreendimento) {
+    this.empreendimentoService.deleteAsync(empreendimento.id).subscribe({
       next: (result) => {
-        alert('Empreendimento inativado com sucesso.');
+        alert('Empreendimento deletado.');
         window.location.reload();
       }
     });
@@ -142,5 +129,9 @@ export class TableComponent implements OnInit {
     const tel: string = telefone.toString();
       
     return tel.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+  }
+
+  obterAtivos() {
+    this.router.navigate(['/home']);
   }
 }

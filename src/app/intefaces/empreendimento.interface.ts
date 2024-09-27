@@ -1,5 +1,5 @@
 export interface Empreendimento {
-    id: string | null;
+    id: string;
     nome_fantasia: string;
     razao_social: string;
     documento: number;

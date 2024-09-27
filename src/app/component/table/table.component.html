@@ -21,7 +21,27 @@
     </div>
   </form>
 
-  <p-table [columns]="cols" [value]="empreendimentos" class="tabela">
+  <p-table 
+    #dt 
+    [columns]="cols" 
+    [value]="empreendimentos" 
+    class="tabela" 
+    styleClass="p-datatable-gridlines"
+    [paginator]="true"
+    [rows]="5"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    >
+    <ng-template pTemplate="caption">
+      <div style="text-align: left">
+        <button 
+          pButton 
+          pRipple 
+          icon="pi pi-external-link"  
+          (click)="dt.exportCSV()" 
+          id="btnExport">
+        </button>
+      </div>
+  </ng-template>
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th>Ações</th>
@@ -37,12 +57,14 @@
           <button type="button" pButton pRipple icon="pi pi-times-circle" class="p-button-danger" (click)="tornarInativo(rowData)" title="Inativar"></button>
         </td>
         <td *ngFor="let col of columns">
-          {{ rowData[col.field] }}
-        </td>
+          <ng-container *ngIf="col.field === 'documento'">{{ formatarDocumento(rowData[col.field]) }}</ng-container>
+          <ng-container *ngIf="col.field === 'telefone'">{{ formatarTelefone(rowData[col.field]) }}</ng-container>
+          <ng-container *ngIf="col.field !== 'documento' && col.field !== 'telefone'">{{ rowData[col.field] }}</ng-container>
+        </td>        
       </tr>
     </ng-template>
   </p-table>
 
   <app-update-form [visible]="visible" [empreendimentoId]="selectedEmpreendimentoId"
-    (onClose)="closeDialog()"></app-update-form>
+    (onClose)="closeDialog()" [situacao]="true"></app-update-form>
 </div>
