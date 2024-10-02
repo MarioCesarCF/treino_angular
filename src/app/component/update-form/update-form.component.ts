@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { EmpreendimentoService } from '../../services/empreendimento.service';
 import { ButtonModule } from 'primeng/button';
 import { Empreendimento } from '../../intefaces/empreendimento.interface';
@@ -25,12 +25,13 @@ import { jsPDF } from 'jspdf';
     DialogModule,
     ButtonModule,
     InputTextModule,
-    ReactiveFormsModule],
+    ReactiveFormsModule
+  ],
   providers: [
     EmpreendimentoService
   ],
   templateUrl: './update-form.component.html',
-  styleUrls: ['./update-form.component.css'] // Corrigi de styleUrl para styleUrls
+  styleUrls: ['./update-form.component.css']
 })
 export class UpdateFormComponent implements OnChanges {
   @Input() visible: boolean = false;
@@ -74,7 +75,7 @@ export class UpdateFormComponent implements OnChanges {
         console.error('Erro ao obter empreendimentos:', err);
       }
     });
-  }
+  }  
 
   save(): void {
     if (this.form.valid) {
@@ -107,11 +108,11 @@ export class UpdateFormComponent implements OnChanges {
     const headerWidth = doc.getTextWidth(headerText);
     const xHeaderPosition = (doc.internal.pageSize.getWidth() - headerWidth) / 2;
     doc.text(headerText, xHeaderPosition, 20);
-    
+
     const headerWidth2 = doc.getTextWidth(headerText2);
     const xHeaderPosition2 = (doc.internal.pageSize.getWidth() - headerWidth2) / 2;
     doc.text(headerText2, xHeaderPosition2, 25);
-    
+
     const headerWidth3 = doc.getTextWidth(headerText3);
     const xHeaderPosition3 = (doc.internal.pageSize.getWidth() - headerWidth3) / 2;
     doc.text(headerText3, xHeaderPosition3, 30);
@@ -130,28 +131,28 @@ export class UpdateFormComponent implements OnChanges {
     let yPosition = 90;
 
     for (const key in formData) {
-        if (formData.hasOwnProperty(key)) {
-            const formattedKey = key.replace('_', ' ').replace(/^\w/, (c) => c.toUpperCase());
-            const value = formData[key];
+      if (formData.hasOwnProperty(key)) {
+        const formattedKey = key.replace('_', ' ').replace(/^\w/, (c) => c.toUpperCase());
+        const value = formData[key];
 
-            doc.setFont('helvetica', 'bold');
-            doc.text(`${formattedKey}:`, 20, yPosition);
+        doc.setFont('helvetica', 'bold');
+        doc.text(`${formattedKey}:`, 20, yPosition);
 
-            doc.setFont('helvetica', 'normal');
-            let  maskedValue = this.applyMask(key, value);
+        doc.setFont('helvetica', 'normal');
+        let maskedValue = this.applyMask(key, value);
 
-            if (key === 'situacao') {
-              maskedValue = value ? 'Ativo' : 'Inativo'; // Formata como "Ativo" ou "Inativo"
-            }
-
-            doc.text(maskedValue, 60, yPosition);
-            
-            yPosition += 10;
+        if (key === 'situacao') {
+          maskedValue = value ? 'Ativo' : 'Inativo'; // Formata como "Ativo" ou "Inativo"
         }
+
+        doc.text(maskedValue, 60, yPosition);
+
+        yPosition += 10;
+      }
     }
 
     doc.text('VIGILÂNCIA SANITÁRIA DE ECOPORANGA', 65, 250);
-    
+
     doc.setFontSize(8);
     const footerText = 'Av. Floriano Rubim, s/n, Centro, Ecoporanga/ES. Fone: (27) 99629-4357. E-mail: visaecoporanga@gmail.com';
     const footerWidth = doc.getTextWidth(footerText);
@@ -159,11 +160,9 @@ export class UpdateFormComponent implements OnChanges {
     doc.text(footerText, xFooterPosition, doc.internal.pageSize.getHeight() - 10);
 
     doc.save(`${formData.nome_fantasia}.pdf`);
-}
-
+  }
 
   private applyMask(key: string, value: any): string {
-    // Garante que value seja uma string
     const stringValue = value ? String(value) : '';
 
     if (key === 'documento') {
@@ -185,7 +184,7 @@ export class UpdateFormComponent implements OnChanges {
   private maskPhone(value: string): string {
     return value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
   }
-
+  
   close() {
     this.onClose.emit();
     this.form.reset();
