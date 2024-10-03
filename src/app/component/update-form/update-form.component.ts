@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { EmpreendimentoService } from '../../services/empreendimento.service';
 import { ButtonModule } from 'primeng/button';
 import { Empreendimento } from '../../intefaces/empreendimento.interface';
@@ -10,7 +10,6 @@ import { NgOptimizedImage } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { NewsletterFormComponent } from '../newsletter-form/newsletter-form.component';
-import { TableComponent } from '../table/table.component';
 import { jsPDF } from 'jspdf';
 
 @Component({
@@ -21,7 +20,6 @@ import { jsPDF } from 'jspdf';
     FooterComponent,
     NgOptimizedImage,
     NewsletterFormComponent,
-    TableComponent,
     DialogModule,
     ButtonModule,
     InputTextModule,
@@ -34,7 +32,7 @@ import { jsPDF } from 'jspdf';
   styleUrls: ['./update-form.component.css']
 })
 export class UpdateFormComponent implements OnChanges {
-  @Input() visible: boolean = false;
+  @Input() visibleUpdate: boolean = false;
   @Input() empreendimentoId: string | null = null;
   @Output() onClose = new EventEmitter<void>();
   @Input() situacao!: boolean;
@@ -44,7 +42,8 @@ export class UpdateFormComponent implements OnChanges {
 
   constructor(
     private empreendimentoService: EmpreendimentoService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {
     this.form = this.fb.group({
       nome_fantasia: [''],
@@ -60,7 +59,7 @@ export class UpdateFormComponent implements OnChanges {
   }
 
   ngOnChanges(): void {
-    if (this.visible && this.empreendimentoId) {
+    if (this.visibleUpdate && this.empreendimentoId) {
       this.carregarDados();
     }
   }
@@ -83,8 +82,9 @@ export class UpdateFormComponent implements OnChanges {
       this.empreendimentoService.updateAsync(updateRequest).subscribe({
         next: (result) => {
           this.form.reset();
-          window.location.reload();
           alert(result.message);
+          this.router.navigate(['/home'], { queryParams: { reload: 'true' } });
+          this.visibleUpdate = false;
         }
       });
     } else {

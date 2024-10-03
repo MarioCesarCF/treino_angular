@@ -48,7 +48,7 @@ export class InativosComponent implements OnInit {
   empreendimentos!: Empreendimento[];
   cols!: Column[];
   filtroForm: FormGroup;
-  visible: boolean = false;
+  visibleUpdate: boolean = false;
   selectedEmpreendimentoId: string | null = null;
   verInativos: boolean = false;
   exportColumns!: ExportColumn[];
@@ -109,11 +109,11 @@ export class InativosComponent implements OnInit {
 
   showDialog(empreendimentoId: string) {
     this.selectedEmpreendimentoId = empreendimentoId;
-    this.visible = true;
+    this.visibleUpdate = true;
   }
 
   closeDialog() {
-    this.visible = false;
+    this.visibleUpdate = false;
     this.selectedEmpreendimentoId = null;
   }
 

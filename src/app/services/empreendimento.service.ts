@@ -3,12 +3,16 @@ import { Injectable } from '@angular/core';
 import { Empreendimento } from '../intefaces/empreendimento.interface';
 import { API_PATH } from '../environment/environment';
 import { EmpreendimentoDto } from '../dto/empreendimento.dto';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmpreendimentoService {
+
+  private empreendimentosSubject = new BehaviorSubject<Empreendimento[]>([]);
+  public empreendimentos$ = this.empreendimentosSubject.asObservable();
 
   constructor(private httpClient: HttpClient) { }
 

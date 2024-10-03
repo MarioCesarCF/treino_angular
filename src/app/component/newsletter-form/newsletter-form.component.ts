@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { EmpreendimentoDto } from '../../dto/empreendimento.dto';
 import { EmpreendimentoService } from '../../services/empreendimento.service';
 import { NgOptimizedImage } from '@angular/common';
@@ -9,7 +9,6 @@ import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
-import { TableComponent } from '../table/table.component';
 import { NewsletterService } from '../../services/newsletter.service';
 
 @Component({
@@ -20,7 +19,6 @@ import { NewsletterService } from '../../services/newsletter.service';
     FooterComponent, 
     NgOptimizedImage, 
     NewsletterFormComponent, 
-    TableComponent, 
     DialogModule, 
     ButtonModule, 
     InputTextModule,
@@ -30,7 +28,7 @@ import { NewsletterService } from '../../services/newsletter.service';
   styleUrl: './newsletter-form.component.css'
 })
 export class NewsletterFormComponent {
-  @Input() visible: boolean = false;
+  @Input() visibleCreate: boolean = false;
   @Output() onClose = new EventEmitter<void>();
   
   form!: FormGroup;
@@ -38,7 +36,8 @@ export class NewsletterFormComponent {
 
   constructor (
     private empreendimentoService: EmpreendimentoService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ){
     this.form = this.fb.group({
       nome_fantasia: [''],
@@ -59,8 +58,9 @@ export class NewsletterFormComponent {
       this.empreendimentoService.createAsync(createRequest).subscribe({
         next: (result) => {          
           this.form.reset();
-          window.location.reload();
           alert(result.message);
+          this.router.navigate(['/home'], { queryParams: { reload: 'true' } });
+          this.visibleCreate = false;
       }});
     } else {
       alert('Formulário inválido. Preencha todos os dados.');
