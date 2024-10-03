@@ -98,7 +98,7 @@ export class InativosComponent implements OnInit {
     this.empreendimentoService.deleteAsync(empreendimento.id).subscribe({
       next: (result) => {
         alert('Empreendimento deletado.');
-        window.location.reload();
+        this.obterTodos();
       }
     });
   }
@@ -115,6 +115,7 @@ export class InativosComponent implements OnInit {
   closeDialog() {
     this.visibleUpdate = false;
     this.selectedEmpreendimentoId = null;
+    this.obterTodos();
   }
 
   formatarDocumento(documento: number): string {
