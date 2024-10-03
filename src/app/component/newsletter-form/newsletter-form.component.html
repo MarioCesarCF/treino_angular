@@ -5,7 +5,7 @@
     [draggable]="false" 
     [resizable]="false"
     (onHide)="onClose.emit()">
-      <form [formGroup]="form" (ngSubmit)="save()">
+      <form [formGroup]="form" (ngSubmit)="save()" class="formCadastro">
         <div class="form-group">
           <label for="nome_fantasia" class="font-semibold w-6rem">Nome Fantasia</label>
           <input pInputText id="nome_fantasia" formControlName="nome_fantasia" class="flex-auto" autocomplete="off" />
@@ -46,8 +46,8 @@
           <label for="bairro" class="font-semibold w-6rem">Bairro *</label>
           <input pInputText id="bairro" formControlName="bairro" class="flex-auto" autocomplete="off" />
         </div>
-  
-        <p-button label="Save" type="submit" />
+
+        <p-button label="Save" type="submit" id="btn-save" />
       </form>
     </p-dialog>
   </div>

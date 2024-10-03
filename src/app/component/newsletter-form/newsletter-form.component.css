@@ -1,12 +1,27 @@
-.form-section {
+.formCadastro {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    padding: 40px 70px;
-    background-color: #4e4e4e;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
     font-family: 'Poppins', sans-serif;
-    gap: 115px;
+}
+
+.form-group>label, .form-group>input {
+    padding: 0.5rem;
+}
+
+#btn-save {
+    padding: 0.5rem;
 }
 
 .text {
@@ -22,6 +37,18 @@
 .text>p {
     color: white;
     padding-top: 20px;
+}
+
+
+textarea {
+    width: 100%;
+    height: 100px;
+    background: none;
+    border: none;
+    border-bottom: 1px solid white;
+    margin-bottom: 5px;
+    color: white;
+    padding: 5px;
 }
 
 form {
@@ -54,21 +81,6 @@ form>label {
     color: white;
 }
 
-textarea {
-    width: 100%;
-    height: 100px;
-    background: none;
-    border: none;
-    border-bottom: 1px solid white;
-    margin-bottom: 5px;
-    color: white;
-    padding: 5px;
-}
-
 @media (min-wdth: 1080px) {
-    .form-section {
-        flex-direction: row;
-        justify-content: flex-start;
-        padding: 40px 120px;
-    }
+
 }
