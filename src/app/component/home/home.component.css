@@ -44,27 +44,9 @@ h2 {
     text-align: center;
 }
 
-.form-group {
-    padding: 1rem;
-}
-
-.form-group>label, .form-group>input {
-    font-size: 1.5rem;
-}
-
 .titleModal {
     background-color: aqua;
     font-size: 2rem;
-    padding: 1rem;
-}
-
-form {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
-
-form>p-button {
     padding: 1rem;
 }
 
@@ -98,6 +80,7 @@ th, td {
 form>div>input {
     padding: 0.5rem;
     margin-top: 1px;
+    margin-right: 0.5rem;
 }
 
 #btnExport {

@@ -3,6 +3,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    width: 100%;
 }
 
 .headline {
@@ -43,6 +44,7 @@ th, td {
 form>div>input {
     padding: 0.5rem;
     margin-top: 1px;
+    margin-right: 0.5rem;
 }
 
 #btnExport {

@@ -11,6 +11,7 @@ import { EmpreendimentoService } from '../../services/empreendimento.service';
 import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
 import { UpdateFormComponent } from '../update-form/update-form.component';
+import { InputTextModule } from 'primeng/inputtext';
 
 interface Column {
   field: string;
@@ -40,7 +41,9 @@ interface ExportColumn {
     ButtonModule, 
     UpdateFormComponent, 
     DialogModule,
-    ReactiveFormsModule],
+    ReactiveFormsModule,
+    InputTextModule
+  ],
   templateUrl: './inativos.component.html',
   styleUrl: './inativos.component.css'
 })
