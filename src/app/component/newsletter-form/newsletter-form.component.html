@@ -12,28 +12,34 @@
         </div>
   
         <div class="form-group">
-          <label for="razao_social" class="font-semibold w-6rem">Razão Social *</label>
+          <label for="razao_social" class="font-semibold w-6rem">Razão Social</label>
           <input pInputText id="razao_social" formControlName="razao_social" class="flex-auto" autocomplete="off" />
         </div>
   
         <div class="form-group">
-          <label for="documento" class="font-semibold w-6rem">Documento *</label>
+          <label for="documento" class="font-semibold w-6rem">Documento</label>
           <input pInputText id="documento" formControlName="documento" class="flex-auto" autocomplete="off" />
         </div>
   
         <div class="form-group">
-          <label for="ramo_atividade" class="font-semibold w-6rem">Ramo Atividade *</label>
+          <label for="ramo_atividade" class="font-semibold w-6rem">Ramo Atividade</label>
           <input pInputText id="ramo_atividade" formControlName="ramo_atividade" class="flex-auto" autocomplete="off" />
         </div>
   
         <div class="form-group">
-          <label for="nome_proprietario" class="font-semibold w-6rem">Nome Proprietário *</label>
+          <label for="nome_proprietario" class="font-semibold w-6rem">Nome Proprietário</label>
           <input pInputText id="nome_proprietario" formControlName="nome_proprietario" class="flex-auto"
+            autocomplete="off" />
+        </div>
+
+        <div class="form-group">
+          <label for="responsavel_tecnico" class="font-semibold w-6rem">Responsável Técnico</label>
+          <input pInputText id="responsavel_tecnico" formControlName="responsavel_tecnico" class="flex-auto"
             autocomplete="off" />
         </div>
   
         <div class="form-group">
-          <label for="telefone" class="font-semibold w-6rem">Telefone *</label>
+          <label for="telefone" class="font-semibold w-6rem">Telefone</label>
           <input pInputText id="telefone" formControlName="telefone" class="flex-auto" autocomplete="off" />
         </div>
   
@@ -43,11 +49,11 @@
         </div>
   
         <div class="form-group">
-          <label for="bairro" class="font-semibold w-6rem">Bairro *</label>
+          <label for="bairro" class="font-semibold w-6rem">Bairro</label>
           <input pInputText id="bairro" formControlName="bairro" class="flex-auto" autocomplete="off" />
         </div>
 
-        <p-button label="Save" type="submit" id="btn-save" />
+        <button pButton pRipple label="Save" type="submit" id="btnSave"></button>
       </form>
     </p-dialog>
   </div>

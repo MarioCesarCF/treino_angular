@@ -1,8 +1,7 @@
 <app-header></app-header>
-<hr />
 
 <div class="card flex justify-content-center cta-section">
-  <button pButton pRipple label="Cadastrar" class="p-button-success cta-button" (click)="showDialog()"></button>
+  <button pButton pRipple label="Cadastrar" class="p-button-success cta-button" (click)="showDialog()" id="btnCadastrar"></button>
   <newsletter-form [visibleCreate]="visibleCreate" (onClose)="closeDialog()"></newsletter-form>
 </div>
 

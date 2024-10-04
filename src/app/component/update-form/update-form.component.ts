@@ -51,6 +51,7 @@ export class UpdateFormComponent implements OnChanges {
       documento: [''],
       ramo_atividade: [''],
       nome_proprietario: [''],
+      responsavel_tecnico: [''],
       telefone: [''],
       logradouro: [''],
       bairro: [''],

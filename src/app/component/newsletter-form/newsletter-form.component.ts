@@ -45,6 +45,7 @@ export class NewsletterFormComponent {
       documento: ['', Validators.required],
       ramo_atividade: ['', Validators.required],
       nome_proprietario: ['', Validators.required],
+      responsavel_tecnico: [''],
       telefone: ['', Validators.required],
       logradouro: [''],
       bairro: ['', Validators.required]

@@ -5,6 +5,7 @@ export interface Empreendimento {
     documento: number;
     ramo_atividade: string;
     nome_proprietario: string;
+    responsavel_tecnico: string;
     telefone: number;
     bairro: string;
     logradouro: string;

@@ -1,94 +1,112 @@
+/* Container principal */
 .main-section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 100%;
-}
-
-.headline {
-    gap: 20px;
-}
-
-.headline>span {
-    font-size: 20px;
-    font-weight: 700;
-    font-family: 'Roboto', sans-serif;
-}
-
-.headline>h1 {
-    font-size: 60px;
-    font-weight: 900;
-    font-family: 'Poppins', sans-serif;
-    line-height: 60px;
-}
-
-.cta-section {
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    padding: 10px;
-}
-
-.cta-button {
-    padding: 10px;
-}
-
-section {
-    padding: 30px 60px;
-}
-
-h2 {
-    font-size: 2rem;
-    padding: 15px;
-    text-align: center;
-}
-
-.titleModal {
-    background-color: aqua;
-    font-size: 2rem;
     padding: 1rem;
 }
 
-.title {
+.headline {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 40px 70px;
-    font-family: 'Poppins', sans-serif;
+    width: 100%;
 }
 
-button {
-    margin: 0 2px;
-    padding: 0.5rem;
+/* Card que engloba o conteúdo */
+.card {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    border-radius: 8px;
 }
 
-th, td {
-    font-size: 1.2rem;
-    padding: 0.5rem;
-    color: black;
-}
-
-
+/* Formulário */
 .formFilter {
     display: flex;
-    justify-content: space-between;
-    margin: 1rem 0;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
 }
 
-form>div>input {
-    padding: 0.5rem;
-    margin-top: 1px;
-    margin-right: 0.5rem;
+.form-group {
+    width: 100%;
 }
 
-#btnExport {
-    padding: 0.5rem;
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
 }
 
-@media (min-width: 1080px) {
-    .main-section {
+/* Botões no formulário */
+.formFilter button {
+    width: 100%;
+    padding: 0.75rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+@media (min-width: 768px) {
+    .formFilter {
         flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
     }
+
+    .form-group {
+        flex: 1 1 30%;
+    }
+
+    .formFilter button {
+        width: auto;
+        margin-top: 0;
+        margin-left: 1rem;
+    }
+}
+
+/* Tabela */
+.tabela {
+    width: 100%;
+    margin-top: 1rem;
+    overflow-x: auto;
+}
+
+.tabela table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabela th,
+.tabela td {
+    padding: 0.75rem;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+@media (min-width: 768px) {
+    .tabela {
+        overflow-x: visible;
+    }
+}
+
+/* Estilos adicionais para botões na tabela */
+.tabela button {
+    margin-right: 0.5rem;
+    font-size: 0.9rem;
+    padding: 0.5rem;
+}
+
+/* Botão de exportar CSV */
+#btnExport {
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+}
+
+#btnCadastrar {
+    padding: 0.5rem;
 }
