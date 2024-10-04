@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { EmpreendimentoService } from '../../services/empreendimento.service';
@@ -146,7 +146,7 @@ export class UpdateFormComponent implements OnChanges {
           maskedValue = value ? 'Ativo' : 'Inativo'; // Formata como "Ativo" ou "Inativo"
         }
 
-        doc.text(maskedValue, 60, yPosition);
+        doc.text(maskedValue, 80, yPosition);
 
         yPosition += 10;
       }
