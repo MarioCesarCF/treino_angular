@@ -80,6 +80,10 @@ export class UpdateFormComponent implements OnChanges {
   save(): void {
     if (this.form.valid) {
       let updateRequest: Empreendimento = { ...this.form.value, id: this.empreendimentoId };
+
+      updateRequest.documento = this.maskDoc(updateRequest.documento);
+      updateRequest.telefone = this.maskPhone(updateRequest.telefone);
+
       this.empreendimentoService.updateAsync(updateRequest).subscribe({
         next: (result) => {
           this.form.reset();
@@ -167,18 +171,20 @@ export class UpdateFormComponent implements OnChanges {
     const stringValue = value ? String(value) : '';
 
     if (key === 'documento') {
-      return this.maskCNPJ(stringValue);
+      return this.maskDoc(stringValue);
     } else if (key === 'telefone') {
       return this.maskPhone(stringValue);
     }
     return stringValue;
   }
 
-  private maskCNPJ(value: string): string {
+  private maskDoc(value: string): string {
     if (value.length == 14) {
       return value.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
-    } else {
+    } else if (value.length == 11 ) {
       return value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    } else {
+      return value;
     }
   }
 
