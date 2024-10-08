@@ -1,59 +1,69 @@
 <div class="card flex justify-content-center">
-    <p-dialog header="Cadastrar Empreendimento" [(visible)]="visibleCreate" [modal]="true" 
+  <p-dialog [(visible)]="visibleCreate" [modal]="true" 
     [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
-    [style]="{ width: '70vw', height: '80vh' }" 
+    [style]="{ width: '70vw', height: '80vh', padding: '1rem' }" 
     [draggable]="false" 
     [resizable]="false"
     (onHide)="onClose.emit()">
-      <form [formGroup]="form" (ngSubmit)="save()" class="formCadastro">
+    
+    <div class="dialog-header">
+      <h2 class="text-center">Cadastrar Empreendimento</h2>
+    </div>
+
+    <ng-template pTemplate="content">
+      <form [formGroup]="form" class="formCadastro custom-grid">
         <div class="form-group">
-          <label for="nome_fantasia" class="font-semibold w-6rem">Nome Fantasia</label>
-          <input pInputText id="nome_fantasia" formControlName="nome_fantasia" class="flex-auto" autocomplete="off" />
-        </div>
-  
-        <div class="form-group">
-          <label for="razao_social" class="font-semibold w-6rem">Razão Social</label>
-          <input pInputText id="razao_social" formControlName="razao_social" class="flex-auto" autocomplete="off" />
-        </div>
-  
-        <div class="form-group">
-          <label for="documento" class="font-semibold w-6rem">Documento</label>
-          <input pInputText id="documento" formControlName="documento" class="flex-auto" autocomplete="off" />
-        </div>
-  
-        <div class="form-group">
-          <label for="ramo_atividade" class="font-semibold w-6rem">Ramo Atividade</label>
-          <input pInputText id="ramo_atividade" formControlName="ramo_atividade" class="flex-auto" autocomplete="off" />
-        </div>
-  
-        <div class="form-group">
-          <label for="nome_proprietario" class="font-semibold w-6rem">Nome Proprietário</label>
-          <input pInputText id="nome_proprietario" formControlName="nome_proprietario" class="flex-auto"
-            autocomplete="off" />
+          <label for="nome_fantasia" class="font-semibold">Nome Fantasia</label>
+          <input pInputText id="nome_fantasia" formControlName="nome_fantasia" class="w-full" autocomplete="off" />
         </div>
 
         <div class="form-group">
-          <label for="responsavel_tecnico" class="font-semibold w-6rem">Responsável Técnico</label>
-          <input pInputText id="responsavel_tecnico" formControlName="responsavel_tecnico" class="flex-auto"
-            autocomplete="off" />
-        </div>
-  
-        <div class="form-group">
-          <label for="telefone" class="font-semibold w-6rem">Telefone</label>
-          <input pInputText id="telefone" formControlName="telefone" class="flex-auto" autocomplete="off" />
-        </div>
-  
-        <div class="form-group">
-          <label for="logradouro" class="font-semibold w-6rem">Logradouro</label>
-          <input pInputText id="logradouro" formControlName="logradouro" class="flex-auto" autocomplete="off" />
-        </div>
-  
-        <div class="form-group">
-          <label for="bairro" class="font-semibold w-6rem">Bairro</label>
-          <input pInputText id="bairro" formControlName="bairro" class="flex-auto" autocomplete="off" />
+          <label for="razao_social" class="font-semibold">Razão Social</label>
+          <input pInputText id="razao_social" formControlName="razao_social" class="w-full" autocomplete="off" />
         </div>
 
-        <button pButton pRipple label="Save" type="submit" id="btnSave"></button>
+        <div class="form-group">
+          <label for="documento" class="font-semibold">Documento</label>
+          <input pInputText id="documento" formControlName="documento" class="w-full" autocomplete="off" />
+        </div>
+
+        <div class="form-group">
+          <label for="ramo_atividade" class="font-semibold">Ramo Atividade</label>
+          <input pInputText id="ramo_atividade" formControlName="ramo_atividade" class="w-full" autocomplete="off" />
+        </div>
+
+        <div class="form-group">
+          <label for="nome_proprietario" class="font-semibold">Nome Proprietário</label>
+          <input pInputText id="nome_proprietario" formControlName="nome_proprietario" class="w-full" autocomplete="off" />
+        </div>
+
+        <div class="form-group">
+          <label for="responsavel_tecnico" class="font-semibold">Responsável Técnico</label>
+          <input pInputText id="responsavel_tecnico" formControlName="responsavel_tecnico" class="w-full" autocomplete="off" />
+        </div>
+
+        <div class="form-group">
+          <label for="telefone" class="font-semibold">Telefone</label>
+          <input pInputText id="telefone" formControlName="telefone" class="w-full" autocomplete="off" />
+        </div>
+
+        <div class="form-group">
+          <label for="logradouro" class="font-semibold">Logradouro</label>
+          <input pInputText id="logradouro" formControlName="logradouro" class="w-full" autocomplete="off" />
+        </div>
+
+        <div class="form-group">
+          <label for="bairro" class="font-semibold">Bairro</label>
+          <input pInputText id="bairro" formControlName="bairro" class="w-full" autocomplete="off" />
+        </div>
       </form>
-    </p-dialog>
-  </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+      <div class="text-right">
+        <button pButton pRipple label="Salvar" type="submit" id="btnSave" class="p-button-success" (click)="save()"></button>
+      </div>
+    </ng-template>
+
+  </p-dialog>
+</div>

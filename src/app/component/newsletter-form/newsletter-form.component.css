@@ -16,7 +16,8 @@
     font-family: 'Poppins', sans-serif;
 }
 
-.form-group>label, .form-group>input {
+.form-group>label,
+.form-group>input {
     padding: 0.5rem;
 }
 
@@ -84,6 +85,40 @@ form>label {
 #btnSave {
     margin: 5px;
     padding: 0.5rem;
+}
+
+.dialog-header h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: rgb(20, 19, 19);
+}
+
+.custom-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+  }
+  
+  .custom-grid .form-group {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0.5rem;
+  }
+  
+  .custom-grid label {
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  
+  .custom-grid input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+.text-right {
+    text-align: right;
+    margin-bottom: 1rem;
+    margin-right: 1rem;
 }
 
 @media (max-width: 768px) {

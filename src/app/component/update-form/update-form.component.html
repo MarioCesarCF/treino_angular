@@ -1,11 +1,17 @@
 <div class="card flex justify-content-center">
-  <p-dialog header="Atualizar Empreendimento" [(visible)]="visibleUpdate" [modal]="true" 
+  <p-dialog [(visible)]="visibleUpdate" [modal]="true" 
   [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
-  [style]="{ width: '70vw', height: '80vh' }" 
+  [style]="{ width: '70vw', height: '80vh', padding: '1rem' }" 
   [draggable]="false" 
   [resizable]="false"
   (onHide)="close()">
-    <form [formGroup]="form" (ngSubmit)="save()">
+
+  <div class="dialog-header">
+    <h2 class="text-center">Atualizar Empreendimento</h2>
+  </div>
+
+  <ng-template pTemplate="content">
+    <form [formGroup]="form" class="formCadastro custom-grid">
       <div class="form-group">
         <label for="nome_fantasia" class="font-semibold w-6rem">Nome Fantasia</label>
         <input pInputText id="nome_fantasia" formControlName="nome_fantasia" class="flex-auto" />
@@ -51,10 +57,16 @@
       <div class="form-group">
         <label for="bairro" class="font-semibold w-6rem">Bairro</label>
         <input pInputText id="bairro" formControlName="bairro" class="flex-auto" />
-      </div>
-
-      <button pButton pRipple label="Save" type="submit" id="btnSave"></button>
-      <button pButton pRipple label="Gerar PDF" (click)="generatePDF()" class="p-button-secondary" id="btnPdf"></button>
+      </div>      
     </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <div class="text-right">
+      <button pButton pRipple label="Salvar" type="submit" (click)="save()" class="p-button-success" id="btnSave"></button>
+      <button pButton pRipple label="Gerar PDF" (click)="generatePDF()" class="p-button-secondary" id="btnPdf"></button>
+    </div>
+  </ng-template>
+    
   </p-dialog>
 </div>
