@@ -98,6 +98,8 @@ export class UpdateFormComponent implements OnChanges {
   }
 
   generatePDF(): void {
+    const data_atualizacao = this.formatDate(this.empreendimento.updatedAt);
+
     const doc = new jsPDF();
 
     const img = new Image();
@@ -147,7 +149,7 @@ export class UpdateFormComponent implements OnChanges {
         let maskedValue = this.applyMask(key, value);
 
         if (key === 'situacao') {
-          maskedValue = value ? 'Ativo' : 'Inativo'; // Formata como "Ativo" ou "Inativo"
+          maskedValue = value ? 'Ativo' : 'Inativo';
         }
 
         doc.text(maskedValue, 80, yPosition);
@@ -156,7 +158,11 @@ export class UpdateFormComponent implements OnChanges {
       }
     }
 
-    doc.text('VIGILÂNCIA SANITÁRIA DE ECOPORANGA', 65, 250);
+    doc.setFontSize(8);
+    doc.text(`Última atualização do empreendimento: ${data_atualizacao}`, 20, 190);
+    doc.setFontSize(12);
+    doc.text('Autoridade Sanitária', 80, 240);
+    doc.text('VIGILÂNCIA SANITÁRIA DE ECOPORANGA', 55, 250);
 
     doc.setFontSize(8);
     const footerText = 'Av. Floriano Rubim, s/n, Centro, Ecoporanga/ES. Fone: (27) 99629-4357. E-mail: visaecoporanga@gmail.com';
@@ -195,6 +201,16 @@ export class UpdateFormComponent implements OnChanges {
   close() {
     this.onClose.emit();
     this.form.reset();
+  }
+
+  formatDate(dateString: Date): string {
+    const date = new Date(dateString);
+    
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Mês é zero-indexado
+    const year = date.getFullYear();
+  
+    return `${day}/${month}/${year}`;
   }
 }
 

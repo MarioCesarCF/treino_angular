@@ -10,4 +10,5 @@ export interface Empreendimento {
     bairro: string;
     logradouro: string;
     situacao: boolean;
+    updatedAt: Date;
 }
