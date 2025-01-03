@@ -41,6 +41,7 @@ export class UpdateFormComponent implements OnChanges {
   @Input() empreendimentoId: string | null = null;
   @Output() onClose = new EventEmitter<void>();
   @Input() situacao!: boolean;
+  @Input() display: boolean = false;
 
   form: FormGroup;
   empreendimento!: Empreendimento;
@@ -85,6 +86,9 @@ export class UpdateFormComponent implements OnChanges {
   onDialogClose() {
     this.visibleUpdate = false;
     this.visibleCreate = false;
+    this.display = false;
+    this.form.reset(); 
+    console.log(this.visibleCreate + " " + this.visibleUpdate)
   }
 
   save(): void {
@@ -99,8 +103,9 @@ export class UpdateFormComponent implements OnChanges {
           next: (result) => {
             this.form.reset();
             alert(result.message);
-            this.router.navigate(['/home'], { queryParams: { reload: 'true' } });
+            console.log("teste 2")
             this.visibleUpdate = false;
+            //this.router.navigate(['/home'], { queryParams: { reload: 'true' } });
           }
         });
       } else {
@@ -113,8 +118,8 @@ export class UpdateFormComponent implements OnChanges {
           next: (result) => {
             this.form.reset();
             alert(result.message);
-            this.router.navigate(['/home'], { queryParams: { reload: 'true' } });
             this.visibleCreate = false;
+            this.router.navigate(['/home'], { queryParams: { reload: 'true' } });            
           }
         });
       }

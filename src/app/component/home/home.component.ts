@@ -57,6 +57,7 @@ export class HomeComponent implements OnInit {
 
   visibleUpdate: boolean = false;
   visibleCreate: boolean = false;
+  display: boolean = false;
 
   nome_fantasia?: string;
   bairro?: string;
@@ -155,6 +156,7 @@ export class HomeComponent implements OnInit {
   showDialogUpdate(empreendimentoId: string) {
     this.selectedEmpreendimentoId = empreendimentoId;
     this.visibleUpdate = true;
+    this.display = true;
   }
 
   // closeDialogUpdate() {
@@ -179,13 +181,16 @@ export class HomeComponent implements OnInit {
 
   showDialog() {
     this.visibleCreate = true;
+    this.display = true;
   }
 
   closeDialog() {
     this.visibleUpdate = false;
     this.selectedEmpreendimentoId = null;
     this.visibleCreate = false;
+    this.display = false;
     this.obterTodos();
+    console.log("teste home")
   }
 
   save() {
@@ -196,7 +201,8 @@ export class HomeComponent implements OnInit {
         next: (result) => {
           alert(result.message);
           this.form.reset();     
-          this.visibleCreate = false;               
+          this.visibleCreate = false;   
+          this.closeDialog();            
       }});
     } else {
       console.log('Formulário inválido');

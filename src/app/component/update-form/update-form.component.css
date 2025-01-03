@@ -9,18 +9,18 @@
 
 .form-group {
     display: flex;
-    flex-direction: row;
     align-items: center;
     justify-content: center;
     padding: 0.5rem;
     font-family: 'Poppins', sans-serif;
 }
 
-.form-group>label, .form-group>input {
-    padding: 0.5rem;
+.label-input {
+    display: flex;
+    flex-direction: column;
 }
 
-#btn-save {
+.form-group>label, .form-group>input {
     padding: 0.5rem;
 }
 
@@ -99,19 +99,19 @@ form>label {
   
   .custom-grid .form-group {
     display: flex;
-    flex-direction: row;
-    margin-bottom: 0.5rem;
+    flex-direction: column;
   }
   
   .custom-grid label {
     font-weight: 600;
-    margin-bottom: 8px;
+    margin-bottom: 0.5rem;
   }
   
   .custom-grid input {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    width: 20rem;
   }
 
 .text-right {
@@ -131,8 +131,8 @@ form>label {
         font-size: 10px;               
     }
 
-    input {
-        width: 10rem;
+    .custom-grid input {
+        width: 15rem;
         height: 2rem; 
     }
 }
