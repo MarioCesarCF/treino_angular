@@ -87,8 +87,8 @@ export class UpdateFormComponent implements OnChanges {
     this.visibleUpdate = false;
     this.visibleCreate = false;
     this.display = false;
-    this.form.reset(); 
-    console.log(this.visibleCreate + " " + this.visibleUpdate)
+
+    this.router.navigate(['/home'], { queryParams: { reload: 'true' } });
   }
 
   save(): void {
@@ -227,13 +227,6 @@ export class UpdateFormComponent implements OnChanges {
 
   private maskPhone(value: string): string {
     return value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
-  }
-
-  close() {
-    this.visibleCreate = false;
-    this.visibleUpdate = false;
-    this.onClose.emit();
-    this.form.reset();
   }
 
   formatDate(dateString: Date): string {
