@@ -6,11 +6,13 @@ import { ButtonModule } from 'primeng/button';
 import { Empreendimento } from '../../intefaces/empreendimento.interface';
 import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
-import { NgOptimizedImage } from '@angular/common';
+import { NgOptimizedImage, CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { NewsletterFormComponent } from '../newsletter-form/newsletter-form.component';
 import { jsPDF } from 'jspdf';
+import { NewsletterService } from '../../services/newsletter.service';
+import { EmpreendimentoDto } from '../../dto/empreendimento.dto';
 
 @Component({
   selector: 'app-update-form',
@@ -23,15 +25,18 @@ import { jsPDF } from 'jspdf';
     DialogModule,
     ButtonModule,
     InputTextModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CommonModule
   ],
   providers: [
+    NewsletterService,
     EmpreendimentoService
   ],
   templateUrl: './update-form.component.html',
   styleUrls: ['./update-form.component.css']
 })
 export class UpdateFormComponent implements OnChanges {
+  @Input() visibleCreate: boolean = false;
   @Input() visibleUpdate: boolean = false;
   @Input() empreendimentoId: string | null = null;
   @Output() onClose = new EventEmitter<void>();
@@ -75,25 +80,46 @@ export class UpdateFormComponent implements OnChanges {
         console.error('Erro ao obter empreendimentos:', err);
       }
     });
-  }  
+  }
+
+  onDialogClose() {
+    this.visibleUpdate = false;
+    this.visibleCreate = false;
+  }
 
   save(): void {
     if (this.form.valid) {
-      let updateRequest: Empreendimento = { ...this.form.value, id: this.empreendimentoId };
+      if (this.empreendimentoId) {
+        const updateRequest: EmpreendimentoDto = { ...this.form.value, id: this.empreendimentoId };
 
-      updateRequest.documento = this.maskDoc(updateRequest.documento);
-      updateRequest.telefone = this.maskPhone(updateRequest.telefone);
+        updateRequest.documento = this.maskDoc(updateRequest.documento);
+        updateRequest.telefone = this.maskPhone(updateRequest.telefone);
 
-      this.empreendimentoService.updateAsync(updateRequest).subscribe({
-        next: (result) => {
-          this.form.reset();
-          alert(result.message);
-          this.router.navigate(['/home'], { queryParams: { reload: 'true' } });
-          this.visibleUpdate = false;
-        }
-      });
+        this.empreendimentoService.updateAsync(updateRequest).subscribe({
+          next: (result) => {
+            this.form.reset();
+            alert(result.message);
+            this.router.navigate(['/home'], { queryParams: { reload: 'true' } });
+            this.visibleUpdate = false;
+          }
+        });
+      } else {
+        const createRequest: EmpreendimentoDto = this.form.value;
+
+        createRequest.documento = this.maskDoc(createRequest.documento);
+        createRequest.telefone = this.maskPhone(createRequest.telefone);
+
+        this.empreendimentoService.createAsync(createRequest).subscribe({
+          next: (result) => {
+            this.form.reset();
+            alert(result.message);
+            this.router.navigate(['/home'], { queryParams: { reload: 'true' } });
+            this.visibleCreate = false;
+          }
+        });
+      }
     } else {
-      alert('Formulário inválido. Preencha todos os dados.');
+      alert('Formulário inválido. Preencha todos os dados corretamente.');
     }
   }
 
@@ -187,7 +213,7 @@ export class UpdateFormComponent implements OnChanges {
   private maskDoc(value: string): string {
     if (value.length == 14) {
       return value.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
-    } else if (value.length == 11 ) {
+    } else if (value.length == 11) {
       return value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
     } else {
       return value;
@@ -197,19 +223,21 @@ export class UpdateFormComponent implements OnChanges {
   private maskPhone(value: string): string {
     return value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
   }
-  
+
   close() {
+    this.visibleCreate = false;
+    this.visibleUpdate = false;
     this.onClose.emit();
     this.form.reset();
   }
 
   formatDate(dateString: Date): string {
     const date = new Date(dateString);
-    
+
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Mês é zero-indexado
     const year = date.getFullYear();
-  
+
     return `${day}/${month}/${year}`;
   }
 }

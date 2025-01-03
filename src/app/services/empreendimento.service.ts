@@ -51,7 +51,7 @@ export class EmpreendimentoService {
     return this.httpClient.delete<{status: number, message: string}>(`${API_PATH}/empreendimento/${id}`);
   }
 
-  updateAsync(empreendimento: Empreendimento) {
+  updateAsync(empreendimento: EmpreendimentoDto) {
     return this.httpClient.patch<{status: number, message: string}>(`${API_PATH}/empreendimento/${empreendimento.id}`, empreendimento);
   }
 }

@@ -2,7 +2,8 @@
 
 <div class="card flex justify-content-center cta-section">
   <button pButton pRipple label="Cadastrar" class="p-button-success cta-button" (click)="showDialog()" id="btnCadastrar"></button>
-  <newsletter-form [visibleCreate]="visibleCreate" (onClose)="closeDialog()"></newsletter-form>
+  <app-update-form [visibleCreate]="visibleCreate" (onClose)="closeDialog()" [situacao]="true"></app-update-form>
+  <!--<newsletter-form [visibleCreate]="visibleCreate" (onClose)="obterTodos()"></newsletter-form>-->
 </div>
 
 <main>
@@ -76,8 +77,7 @@
           </ng-template>
         </p-table>
       
-        <app-update-form [visibleUpdate]="visibleUpdate" [empreendimentoId]="selectedEmpreendimentoId"
-          (onClose)="closeDialogUpdate()" [situacao]="true"></app-update-form>
+        <app-update-form [visibleUpdate]="visibleUpdate" [empreendimentoId]="selectedEmpreendimentoId" (onClose)="closeDialog()" [situacao]="true"></app-update-form>
       </div>
     </div>
   </section>

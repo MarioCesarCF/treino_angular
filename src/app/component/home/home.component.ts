@@ -109,6 +109,10 @@ export class HomeComponent implements OnInit {
   }
 
   obterTodos() {
+    this.visibleUpdate = false;
+    this.selectedEmpreendimentoId = null;
+    this.visibleCreate = false;
+
     let { nome, bairro, atividade, situacao } = this.filtroForm.value;
     
     if(this.verInativos === true) {
@@ -153,11 +157,11 @@ export class HomeComponent implements OnInit {
     this.visibleUpdate = true;
   }
 
-  closeDialogUpdate() {
-    this.visibleUpdate = false;
-    this.selectedEmpreendimentoId = null;
-    this.obterTodos();
-  }
+  // closeDialogUpdate() {
+  //   this.visibleUpdate = false;
+  //   this.selectedEmpreendimentoId = null;
+  //   this.obterTodos();
+  // }
 
   formatarDocumento(documento: number): string {
     const docStr: string = documento.toString();
@@ -178,6 +182,8 @@ export class HomeComponent implements OnInit {
   }
 
   closeDialog() {
+    this.visibleUpdate = false;
+    this.selectedEmpreendimentoId = null;
     this.visibleCreate = false;
     this.obterTodos();
   }

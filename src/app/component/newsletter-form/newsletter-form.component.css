@@ -10,7 +10,6 @@
 .form-group {
     display: flex;
     flex-direction: row;
-    align-items: center;
     justify-content: center;
     padding: 0.5rem;
     font-family: 'Poppins', sans-serif;
@@ -121,8 +120,19 @@ form>label {
     margin-right: 1rem;
 }
 
+@media (max-width: 1440px) {
+    .formCadastro {
+        display: block;
+    }    
+}
+
 @media (max-width: 768px) {
-    .form-group {
-        flex-direction: column;
+    .font-semibold {
+        font-size: 10px;               
+    }
+
+    input {
+        width: 10rem;
+        height: 2rem; 
     }
 }

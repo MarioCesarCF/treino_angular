@@ -1,13 +1,18 @@
 <div class="card flex justify-content-center">
-  <p-dialog [(visible)]="visibleUpdate" [modal]="true" 
+  <p-dialog [(visible)]="visibleCreate || visibleUpdate" [modal]="true" 
   [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
   [style]="{ width: '70vw', height: '80vh', padding: '1rem' }" 
   [draggable]="false" 
   [resizable]="false"
-  (onHide)="close()">
+  (onHide)="close()"
+  (close)="onDialogClose()">
 
   <div class="dialog-header">
-    <h2 class="text-center">Atualizar Empreendimento</h2>
+    @if (visibleCreate) {
+      <h2 class="text-center">Cadastrar Empreendimento</h2>
+    } @else {
+      <h2 class="text-center">Atualizar Empreendimento</h2>
+    }    
   </div>
 
   <ng-template pTemplate="content">
@@ -63,8 +68,11 @@
 
   <ng-template pTemplate="footer">
     <div class="text-right">
-      <button pButton pRipple label="Salvar" type="submit" (click)="save()" class="p-button-success" id="btnSave"></button>
-      <button pButton pRipple label="Gerar PDF" (click)="generatePDF()" class="p-button-secondary" id="btnPdf"></button>
+      @if (visibleUpdate) {
+        <button pButton pRipple label="Gerar PDF" (click)="generatePDF()" class="p-button-secondary" id="btnPdf"></button>
+      }
+      <button pButton pRipple label="Fechar" (click)="onDialogClose()" class="p-button-danger" id="btnClose"></button>
+      <button pButton pRipple label="Salvar" type="submit" (click)="save()" class="p-button-success" id="btnSave"></button>     
     </div>
   </ng-template>
     

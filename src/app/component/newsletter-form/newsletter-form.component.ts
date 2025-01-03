@@ -31,8 +31,8 @@ export class NewsletterFormComponent {
   @Input() visibleCreate: boolean = false;
   @Output() onClose = new EventEmitter<void>();
   
-  form!: FormGroup;
-  loading = signal(false);
+  form: FormGroup;
+  //loading = signal(false);
 
   constructor (
     private empreendimentoService: EmpreendimentoService,
@@ -52,7 +52,7 @@ export class NewsletterFormComponent {
     });
   }
 
-  save() {    
+  save(): void {    
     if (this.form.valid) {
       const createRequest: EmpreendimentoDto = this.form.value;
 

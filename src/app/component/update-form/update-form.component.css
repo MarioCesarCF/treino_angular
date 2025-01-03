@@ -81,7 +81,7 @@ form>label {
     color: white;
 }
 
-#btnSave, #btnPdf {
+#btnSave, #btnPdf, #btnClose {
     margin: 5px;
     padding: 0.5rem;
 }
@@ -120,8 +120,19 @@ form>label {
     margin-right: 1rem;
 }
 
+@media (max-width: 1440px) {
+    .formCadastro {
+        display: block;
+    }    
+}
+
 @media (max-width: 768px) {
-    .form-group {
-        flex-direction: column;
+    .font-semibold {
+        font-size: 10px;               
+    }
+
+    input {
+        width: 10rem;
+        height: 2rem; 
     }
 }
