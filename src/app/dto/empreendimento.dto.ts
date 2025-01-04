@@ -8,4 +8,5 @@ export interface EmpreendimentoDto {
     logradouro?: string;
     bairro: string;
     nome_proprietario: string;
+    situacao?: boolean;
 }

@@ -58,7 +58,7 @@ export class HomeComponent implements OnInit {
 
   visibleUpdate: boolean = false;
   visibleCreate: boolean = false;
-  display: boolean = false;
+  dialogAberto: boolean = false;
 
   nome_fantasia?: string;
   bairro?: string;
@@ -121,7 +121,7 @@ export class HomeComponent implements OnInit {
         this.form.patchValue(this.empreendimento);
       },
       error: (err) => {
-        console.error('Erro ao obter empreendimentos:', err);
+        alert('Erro ao obter dados do empreendimento: ' + err);
       }
     });
   }
@@ -144,7 +144,7 @@ export class HomeComponent implements OnInit {
         this.verInativos = false;
       },
       error: (err) => {
-        console.error('Erro ao obter empreendimentos:', err);
+        alert('Erro ao obter empreendimentos: ' + err);
       }
     });
   }
@@ -175,27 +175,23 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  // consultar(empreendimento: Empreendimento) {
-  //   this.router.navigate(['/update-form', empreendimento.id]);
-  // }
-
   showDialogUpdate(empreendimentoId: string) {
     this.selectedEmpreendimentoId = empreendimentoId;
     this.visibleUpdate = true;
-    this.display = true;
+    this.dialogAberto = true;
     this.carregarDados(this.selectedEmpreendimentoId);
   }
 
   showDialog() {
     this.visibleCreate = true;
-    this.display = true;
+    this.dialogAberto = true;
   }
 
   closeDialog() {
     this.visibleUpdate = false;
     this.selectedEmpreendimentoId = "";
     this.visibleCreate = false;
-    this.display = false;
+    this.dialogAberto = false;
     this.obterTodos();
     this.form.reset();
   }

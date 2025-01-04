@@ -7,6 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
+import { EmpreendimentoDto } from '../../dto/empreendimento.dto';
 import { Empreendimento } from '../../intefaces/empreendimento.interface';
 import { EmpreendimentoService } from '../../services/empreendimento.service';
 import { FooterComponent } from '../footer/footer.component';
@@ -92,7 +93,7 @@ export class InativosComponent implements OnInit {
         this.verInativos = false;
       },
       error: (err) => {
-        console.error('Erro ao obter empreendimentos:', err);
+        alert('Erro ao obter empreendimentos:' + err);
       }
     });
   }
@@ -115,10 +116,6 @@ export class InativosComponent implements OnInit {
     });
   }
 
-  consultar(empreendimento: Empreendimento) {
-    this.router.navigate(['/update-form', empreendimento.id]);
-  }
-
   showDialog(empreendimentoId: string) {
     this.selectedEmpreendimentoId = empreendimentoId;
     this.visibleUpdate = true;
@@ -134,8 +131,8 @@ export class InativosComponent implements OnInit {
     const docStr: string = documento.toString();
 
     return docStr.length === 14 ?
-    docStr.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5') :
-    docStr.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+      docStr.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5') :
+      docStr.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
   }
 
   formatarTelefone(telefone: number): string {
@@ -146,5 +143,17 @@ export class InativosComponent implements OnInit {
 
   obterAtivos() {
     this.router.navigate(['/home']);
+  }
+
+  tornarAtivo(empreendimento: EmpreendimentoDto) {
+    const updateRequest: EmpreendimentoDto = { ...empreendimento };
+    updateRequest.situacao = true;
+
+    this.empreendimentoService.updateAsync(updateRequest).subscribe({
+      next: (result) => {
+        alert("Situação do empreendimento atualizada para Ativo.");
+        this.obterTodos();
+      }
+    });
   }
 }

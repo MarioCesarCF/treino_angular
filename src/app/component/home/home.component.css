@@ -53,7 +53,7 @@
 
 .tabela th,
 .tabela td {
-  padding: 0.75rem;
+  padding: 0.3rem;
   text-align: left;
   border: 1px solid #ddd;
 }
@@ -61,7 +61,7 @@
 .tabela button {
   margin-right: 0.5rem;
   font-size: 0.9rem;
-  padding: 0.5rem;
+  padding: 0.3rem;
 }
 
 #btnExport {
@@ -188,6 +188,10 @@ form>label {
 @media (max-width: 1440px) {
   .formCadastro {
     display: block;
+  }
+
+  .tabela button {
+    margin: 0.1rem;
   }
 }
 

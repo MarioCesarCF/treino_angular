@@ -23,19 +23,19 @@
         <div class="form-group justify-content-between">
           <div>
             <button pButton pRipple label="Filtrar" type="submit" class="p-button-primary"
-              style="margin-left: 0;"></button>
-            <button pButton pRipple label="Limpar" class="p-button-primary" (click)="limparFiltro()"></button>
+              style="margin-left: 0;" title="Filtrar"></button>
+            <button pButton pRipple label="Limpar" class="p-button-primary" (click)="limparFiltro()" title="Limpar filtro"></button>
             <button pButton pRipple label="Mostrar Ativos" class="p-button-secondary"
-              (click)="obterAtivos()"></button>
+              (click)="obterAtivos()" title="Mostrar ativos"></button>
           </div>
         </div>
       </form>
 
       <p-table #dt [columns]="cols" [value]="empreendimentos" class="tabela" styleClass="p-datatable-gridlines"
-        [paginator]="true" [rows]="5" [rowsPerPageOptions]="[10, 20, 30]">
+        [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 30]">
         <ng-template pTemplate="caption">
           <div style="text-align: left">
-            <button pButton pRipple icon="pi pi-external-link" (click)="dt.exportCSV()" id="btnExport">
+            <button pButton pRipple icon="pi pi-external-link" (click)="dt.exportCSV()" id="btnExport" title="Exportar dados da tabela">
             </button>
           </div>
         </ng-template>
@@ -50,8 +50,8 @@
         <ng-template pTemplate="body" let-rowData let-columns="columns">
           <tr>
             <td>
-              <button type="button" pButton pRipple icon="pi pi-eye" (click)="showDialog(rowData.id)"
-                title="Ver"></button>
+              <button type="button" pButton pRipple icon="pi pi-undo" (click)="tornarAtivo(rowData)"
+                title="Voltar para ativo"></button>
               <button type="button" pButton pRipple icon="pi pi-trash" class="p-button-danger" (click)="delete(rowData)"
                 title="Deletar"></button>
             </td>

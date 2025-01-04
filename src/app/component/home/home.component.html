@@ -36,7 +36,7 @@
         </form>
 
         <p-table #dt [columns]="cols" [value]="empreendimentos" class="tabela" styleClass="p-datatable-gridlines"
-          [paginator]="true" [rows]="5" [rowsPerPageOptions]="[10, 20, 30]">
+          [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 30]">
           <ng-template pTemplate="caption">
             <div style="text-align: left">
               <button pButton pRipple icon="pi pi-external-link" (click)="dt.exportCSV()" id="btnExport">
@@ -45,7 +45,7 @@
           </ng-template>
           <ng-template pTemplate="header" let-columns>
             <tr>
-              <th>Ações</th>
+              <th style="width:11%">Ações</th>
               <th *ngFor="let col of columns">
                 {{ col.header }}
               </th>
@@ -75,7 +75,7 @@
 
 </main>
 
-<p-dialog [(visible)]="display" [modal]="true" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+<p-dialog [(visible)]="dialogAberto" [modal]="true" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
   [style]="{ width: '70vw', height: '80vh', padding: '1rem' }" [draggable]="false" [resizable]="false"
   (onClose)="closeDialog()">
 
@@ -166,7 +166,7 @@
   <ng-template pTemplate="footer">
     <div class="text-right">
       @if (visibleUpdate) {
-      <button pButton pRipple label="Gerar PDF" (click)="generatePDF()" class="p-button-secondary" id="btnPdf"></button>
+        <button pButton pRipple label="Gerar PDF" (click)="generatePDF()" class="p-button-secondary" id="btnPdf"></button>
       }
       <button pButton pRipple label="Fechar" (click)="closeDialog()" class="p-button-danger" id="btnClose"></button>
       <button pButton pRipple label="Salvar" type="submit" (click)="save()" class="p-button-success"
