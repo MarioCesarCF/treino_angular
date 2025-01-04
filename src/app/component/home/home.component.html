@@ -1,10 +1,5 @@
 <app-header></app-header>
 
-<div class="card flex justify-content-center cta-section">
-  <button pButton pRipple label="Cadastrar" class="p-button-success cta-button" (click)="showDialog()" id="btnCadastrar"></button>
-  <app-update-form [visibleCreate]="visibleCreate" (onClose)="closeDialog()" [situacao]="true"></app-update-form>
-</div>
-
 <main>
   <section class="main-section">
     <div class="headline">
@@ -15,44 +10,39 @@
             <input pInputText id="nome_fantasia" formControlName="nome" class="flex-auto" autocomplete="off"
               placeholder="Nome Fantasia" />
           </div>
-      
+
           <div class="form-group">
             <input pInputText id="bairro" formControlName="bairro" class="flex-auto" autocomplete="off"
               placeholder="Bairro" />
           </div>
-      
+
           <div class="form-group">
             <input pInputText id="ramo_atividade" formControlName="atividade" class="flex-auto" autocomplete="off"
               placeholder="Ramo Atividade" />
           </div>
-      
-          <div>
-            <button pButton pRipple label="Filtrar" type="submit" style=" margin-left: 0;"></button>
-            <button pButton pRipple label="Mostrar Inativos" (click)="obterInativos()"></button>
+
+          <div class="form-group justify-content-between">
+            <div>
+              <button pButton pRipple label="Filtrar" type="submit" class="p-button-primary"
+                style="margin-left: 0;"></button>
+              <button pButton pRipple label="Limpar" class="p-button-primary" (click)="limparFiltro()"></button>
+            </div>
+            <div>
+              <button pButton pRipple label="Mostrar Inativos" class="p-button-secondary"
+                (click)="obterInativos()"></button>
+              <button pButton pRipple label="Cadastrar" class="p-button-success" (click)="showDialog()"></button>
+            </div>
           </div>
         </form>
-      
-        <p-table 
-          #dt 
-          [columns]="cols" 
-          [value]="empreendimentos" 
-          class="tabela" 
-          styleClass="p-datatable-gridlines"
-          [paginator]="true"
-          [rows]="5"
-          [rowsPerPageOptions]="[10, 20, 30]"
-          >
+
+        <p-table #dt [columns]="cols" [value]="empreendimentos" class="tabela" styleClass="p-datatable-gridlines"
+          [paginator]="true" [rows]="5" [rowsPerPageOptions]="[10, 20, 30]">
           <ng-template pTemplate="caption">
             <div style="text-align: left">
-              <button 
-                pButton 
-                pRipple 
-                icon="pi pi-external-link"  
-                (click)="dt.exportCSV()" 
-                id="btnExport">
+              <button pButton pRipple icon="pi pi-external-link" (click)="dt.exportCSV()" id="btnExport">
               </button>
             </div>
-        </ng-template>
+          </ng-template>
           <ng-template pTemplate="header" let-columns>
             <tr>
               <th>Ações</th>
@@ -64,26 +54,127 @@
           <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr>
               <td>
-                <button type="button" pButton pRipple icon="pi pi-eye" (click)="showDialogUpdate(rowData.id)" title="Ver"></button>
-                <button type="button" pButton pRipple icon="pi pi-times-circle" class="p-button-danger" (click)="tornarInativo(rowData)" title="Inativar"></button>
+                <button type="button" pButton pRipple icon="pi pi-eye" (click)="showDialogUpdate(rowData.id)"
+                  title="Ver"></button>
+                <button type="button" pButton pRipple icon="pi pi-times-circle" class="p-button-danger"
+                  (click)="tornarInativo(rowData)" title="Inativar"></button>
               </td>
               <td *ngFor="let col of columns">
-                <ng-container *ngIf="col.field === 'documento'">{{ formatarDocumento(rowData[col.field]) }}</ng-container>
+                <ng-container *ngIf="col.field === 'documento'">{{ formatarDocumento(rowData[col.field])
+                  }}</ng-container>
                 <ng-container *ngIf="col.field === 'telefone'">{{ formatarTelefone(rowData[col.field]) }}</ng-container>
-                <ng-container *ngIf="col.field !== 'documento' && col.field !== 'telefone'">{{ rowData[col.field] }}</ng-container>
-              </td>        
+                <ng-container *ngIf="col.field !== 'documento' && col.field !== 'telefone'">{{ rowData[col.field]
+                  }}</ng-container>
+              </td>
             </tr>
           </ng-template>
         </p-table>
-      
-        <app-update-form [visibleUpdate]="visibleUpdate" [display]="display" [empreendimentoId]="selectedEmpreendimentoId" (onClose)="closeDialog()" [situacao]="true"></app-update-form>
       </div>
     </div>
   </section>
 
 </main>
 
+<p-dialog [(visible)]="display" [modal]="true" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+  [style]="{ width: '70vw', height: '80vh', padding: '1rem' }" [draggable]="false" [resizable]="false"
+  (onClose)="closeDialog()">
+
+  <div class="dialog-header">
+    @if (visibleCreate) {
+    <h2 class="text-center">Cadastrar Empreendimento</h2>
+    } @else {
+    <h2 class="text-center">Atualizar Empreendimento</h2>
+    }
+  </div>
+
+  <ng-template pTemplate="content">
+    <form [formGroup]="form" class="formCadastro custom-grid">
+      <div class="form-group">
+        <div class="label-input">
+          <label for="nome_fantasia" class="font-semibold w-6rem">Nome Fantasia *</label>
+          <input pInputText id="nome_fantasia" formControlName="nome_fantasia" class="flex-auto" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="label-input">
+          <label for="razao_social" class="font-semibold w-6rem">Razão Social *</label>
+          <input pInputText id="razao_social" formControlName="razao_social" class="flex-auto" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="label-input">
+          <label for="documento" class="font-semibold w-6rem">Documento *</label>
+          <input pInputText id="documento" formControlName="documento" class="flex-auto" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="label-input">
+          <label for="ramo_atividade" class="font-semibold w-6rem">Ramo Atividade *</label>
+          <input pInputText id="ramo_atividade" formControlName="ramo_atividade" class="flex-auto" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="label-input">
+          <label for="nome_proprietario" class="font-semibold w-6rem">Nome Proprietário *</label>
+          <input pInputText id="nome_proprietario" formControlName="nome_proprietario" class="flex-auto"
+            autocomplete="off" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="label-input">
+          <label for="responsavel_tecnico" class="font-semibold w-6rem">Responsável Técnico</label>
+          <input pInputText id="responsavel_tecnico" formControlName="responsavel_tecnico" class="flex-auto"
+            autocomplete="off" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="label-input">
+          <label for="telefone" class="font-semibold w-6rem">Telefone *</label>
+          <input pInputText id="telefone" formControlName="telefone" class="flex-auto" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="label-input">
+          <label for="bairro" class="font-semibold w-6rem">Bairro *</label>
+          <input pInputText id="bairro" formControlName="bairro" class="flex-auto" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="label-input">
+          <label for="logradouro" class="font-semibold w-6rem">Logradouro *</label>
+          <input pInputText id="logradouro" formControlName="logradouro" class="flex-auto" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="label-input">
+          <label for="numero" class="font-semibold w-6rem">Número</label>
+          <input pInputText id="numero" formControlName="numero" class="flex-auto" />
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <div class="text-right">
+      @if (visibleUpdate) {
+      <button pButton pRipple label="Gerar PDF" (click)="generatePDF()" class="p-button-secondary" id="btnPdf"></button>
+      }
+      <button pButton pRipple label="Fechar" (click)="closeDialog()" class="p-button-danger" id="btnClose"></button>
+      <button pButton pRipple label="Salvar" type="submit" (click)="save()" class="p-button-success"
+        id="btnSave"></button>
+    </div>
+  </ng-template>
+
+</p-dialog>
+
 <br>
 <footer></footer>
-
-

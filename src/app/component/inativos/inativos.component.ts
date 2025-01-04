@@ -1,17 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { HttpBackend, FetchBackend } from '@angular/common/http';
+import { FetchBackend, HttpBackend } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ReactiveFormsModule, FormGroup, FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { Empreendimento } from '../../intefaces/empreendimento.interface';
 import { EmpreendimentoService } from '../../services/empreendimento.service';
 import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
 import { UpdateFormComponent } from '../update-form/update-form.component';
-import { InputTextModule } from 'primeng/inputtext';
 
 interface Column {
   field: string;
@@ -34,12 +34,12 @@ interface ExportColumn {
     EmpreendimentoService
   ],
   imports: [
-    HeaderComponent, 
-    FooterComponent, 
-    TableModule, 
-    CommonModule, 
-    ButtonModule, 
-    UpdateFormComponent, 
+    HeaderComponent,
+    FooterComponent,
+    TableModule,
+    CommonModule,
+    ButtonModule,
+    UpdateFormComponent,
     DialogModule,
     ReactiveFormsModule,
     InputTextModule
@@ -83,7 +83,7 @@ export class InativosComponent implements OnInit {
   }
 
   obterTodos() {
-    let { nome, bairro, atividade, situacao } = this.filtroForm.value;    
+    let { nome, bairro, atividade, situacao } = this.filtroForm.value;
 
     this.empreendimentoService.obterTodos(nome, bairro, atividade, situacao).subscribe({
       next: (result) => {
@@ -94,6 +94,15 @@ export class InativosComponent implements OnInit {
       error: (err) => {
         console.error('Erro ao obter empreendimentos:', err);
       }
+    });
+  }
+
+  limparFiltro() {
+    this.filtroForm = this.fb.group({
+      nome: [''],
+      bairro: [''],
+      atividade: [''],
+      situacao: [false]
     });
   }
 
@@ -124,14 +133,14 @@ export class InativosComponent implements OnInit {
   formatarDocumento(documento: number): string {
     const docStr: string = documento.toString();
 
-    return docStr.length === 14 ? 
-    docStr.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5') : 
+    return docStr.length === 14 ?
+    docStr.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5') :
     docStr.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
   }
-  
+
   formatarTelefone(telefone: number): string {
     const tel: string = telefone.toString();
-      
+
     return tel.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
   }
 
