@@ -59,19 +59,19 @@ export class HomeComponent implements OnInit {
   visibleUpdate: boolean = false;
   visibleCreate: boolean = false;
   dialogAberto: boolean = false;
+  selectedEmpreendimentoId: string = "";
 
   nome_fantasia?: string;
   bairro?: string;
   ramo_atividade?: string;
-  situacao?: boolean;
+  situacao: boolean = true;
 
   empreendimentos!: Empreendimento[];
-  cols!: Column[];
-  filtroForm: FormGroup;
-  selectedEmpreendimentoId: string = "";
-  verInativos: boolean = false;
-  exportColumns!: ExportColumn[];
   empreendimento!: Empreendimento;
+
+  cols!: Column[];
+  filtroForm: FormGroup;  
+  exportColumns!: ExportColumn[];
 
   constructor(
     private empreendimentoService: EmpreendimentoService,
@@ -97,7 +97,7 @@ export class HomeComponent implements OnInit {
       nome: [''],
       bairro: [''],
       atividade: [''],
-      situacao: [true]
+      situacao: [this.situacao]
     });
   }
 
@@ -133,15 +133,16 @@ export class HomeComponent implements OnInit {
 
     let { nome, bairro, atividade, situacao } = this.filtroForm.value;
 
-    if (this.verInativos === true) {
-      situacao = false;
+    if (this.situacao === false) {
+      situacao = false;      
+    } else {
+      situacao = true;
     }
 
     this.empreendimentoService.obterTodos(nome, bairro, atividade, situacao).subscribe({
       next: (result) => {
         this.empreendimentos = result.data;
         this.cd.detectChanges();
-        this.verInativos = false;
       },
       error: (err) => {
         alert('Erro ao obter empreendimentos: ' + err);
@@ -154,12 +155,18 @@ export class HomeComponent implements OnInit {
       nome: [''],
       bairro: [''],
       atividade: [''],
-      situacao: [true]
+      situacao: [this.situacao]
     });
   }
 
   obterInativos() {
-    this.router.navigate(['/inativos']);
+    this.situacao = !this.situacao;
+    this.obterTodos();
+  }
+
+  obterAtivos() {
+    this.situacao = !this.situacao;    
+    this.obterTodos();
   }
 
   tornarInativo(empreendimento: Empreendimento) {
@@ -169,7 +176,7 @@ export class HomeComponent implements OnInit {
 
     this.empreendimentoService.updateAsync(empreendimento).subscribe({
       next: (result) => {
-        alert('Empreendimento inativado com sucesso.');
+        alert(`Empreendimento ${empreendimento.nome_fantasia} inativado com sucesso.`);
         this.obterTodos();
       }
     });
@@ -329,7 +336,13 @@ export class HomeComponent implements OnInit {
   }
 
   private maskPhone(value: string): string {
-    return value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+    if (value.length == 10) {
+      return value.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+    } else if (value.length == 11) {
+      return value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+    } else {
+      return value;
+    }    
   }
 
   formatDate(dateString: Date): string {
@@ -353,6 +366,29 @@ export class HomeComponent implements OnInit {
   formatarTelefone(telefone: number): string {
     const tel: string = telefone.toString();
 
-    return tel.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+    return tel.length === 11 ?
+      tel.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3') :
+      tel.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+  }
+
+  tornarAtivo(empreendimento: EmpreendimentoDto) {
+    const updateRequest: EmpreendimentoDto = { ...empreendimento };
+    updateRequest.situacao = true;
+
+    this.empreendimentoService.updateAsync(updateRequest).subscribe({
+      next: (result) => {
+        alert(`Situação do empreendimento ${empreendimento.nome_fantasia} atualizada para ativo.`);
+        this.obterTodos();
+      }
+    });
+  }
+
+  deletar(empreendimento: Empreendimento) {
+    this.empreendimentoService.deleteAsync(empreendimento.id).subscribe({
+      next: (result) => {
+        alert(`Empreendimento ${empreendimento.nome_fantasia} deletado com sucesso.`);
+        this.obterTodos();
+      }
+    });
   }
 }

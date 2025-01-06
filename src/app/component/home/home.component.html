@@ -28,9 +28,14 @@
               <button pButton pRipple label="Limpar" class="p-button-primary" (click)="limparFiltro()"></button>
             </div>
             <div>
-              <button pButton pRipple label="Mostrar Inativos" class="p-button-secondary"
+              @if (situacao) {
+                <button pButton pRipple label="Mostrar Inativos" class="p-button-secondary"
                 (click)="obterInativos()"></button>
-              <button pButton pRipple label="Cadastrar" class="p-button-success" (click)="showDialog()"></button>
+                <button pButton pRipple label="Novo Empreendimento" class="p-button-success" (click)="showDialog()"></button>
+              } @else {
+                <button pButton pRipple label="Mostrar Ativos" class="p-button-secondary"
+                (click)="obterAtivos()"></button>
+              }                            
             </div>
           </div>
         </form>
@@ -54,10 +59,17 @@
           <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr>
               <td>
-                <button type="button" pButton pRipple icon="pi pi-eye" (click)="showDialogUpdate(rowData.id)"
-                  title="Ver"></button>
-                <button type="button" pButton pRipple icon="pi pi-times-circle" class="p-button-danger"
-                  (click)="tornarInativo(rowData)" title="Inativar"></button>
+                @if (situacao) {
+                  <button type="button" pButton pRipple icon="pi pi-eye" (click)="showDialogUpdate(rowData.id)"
+                    title="Ver"></button>
+                  <button type="button" pButton pRipple icon="pi pi-times-circle" class="p-button-danger"
+                    (click)="tornarInativo(rowData)" title="Inativar"></button>
+                } @else {
+                  <button type="button" pButton pRipple icon="pi pi-undo" (click)="tornarAtivo(rowData)"
+                    title="Voltar para ativo"></button>
+                  <button type="button" pButton pRipple icon="pi pi-trash" class="p-button-danger" (click)="deletar(rowData)"
+                    title="Deletar"></button>
+                }  
               </td>
               <td *ngFor="let col of columns">
                 <ng-container *ngIf="col.field === 'documento'">{{ formatarDocumento(rowData[col.field])
