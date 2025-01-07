@@ -15,6 +15,7 @@ import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
 import { NewsletterFormComponent } from '../newsletter-form/newsletter-form.component';
 import { UpdateFormComponent } from '../update-form/update-form.component';
+import { HttpClient } from '@angular/common/http';
 
 interface Column {
   field: string;
@@ -73,11 +74,14 @@ export class HomeComponent implements OnInit {
   filtroForm: FormGroup;  
   exportColumns!: ExportColumn[];
 
+  apiUrl: string = "https://publica.cnpj.ws/cnpj";
+
   constructor(
     private empreendimentoService: EmpreendimentoService,
     private fb: FormBuilder,
     private router: Router,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private http: HttpClient
   ) {
     this.form = this.fb.group({
       nome_fantasia: ['', Validators.required],
@@ -145,7 +149,7 @@ export class HomeComponent implements OnInit {
         this.cd.detectChanges();
       },
       error: (err) => {
-        alert('Erro ao obter empreendimentos: ' + err);
+        alert('Erro ao obter empreendimentos: ' + err.error.message);
       }
     });
   }
@@ -314,6 +318,84 @@ export class HomeComponent implements OnInit {
     doc.save(`${formData.nome_fantasia}.pdf`);
   }
 
+  licencaPDF(): void {
+    let num = this.getNumberCnpj(this.form.value.documento);
+
+    let empresa = this.getCNPJ(num);
+
+    console.log(empresa)
+    // const doc = new jsPDF();
+
+    // const img = new Image();
+    // img.src = './assets/brasao-eco.png';
+    // doc.addImage(img, 'PNG', 25, 10, 25, 25);
+
+    // doc.setFontSize(12);
+    // doc.setFont('helvetica', 'bold');
+    // const headerText = 'PREFEITURA MUNICIPAL DE ECOPORANGA';
+    // const headerText2 = 'SECRETARIA MUNICIPAL DE SAÚDE';
+    // const headerText3 = 'VIGILÂNCIA SANITÁRIA';
+
+    // const headerWidth = doc.getTextWidth(headerText);
+    // const xHeaderPosition = (doc.internal.pageSize.getWidth() - headerWidth) / 2;
+    // doc.text(headerText, xHeaderPosition, 20);
+
+    // const headerWidth2 = doc.getTextWidth(headerText2);
+    // const xHeaderPosition2 = (doc.internal.pageSize.getWidth() - headerWidth2) / 2;
+    // doc.text(headerText2, xHeaderPosition2, 25);
+
+    // const headerWidth3 = doc.getTextWidth(headerText3);
+    // const xHeaderPosition3 = (doc.internal.pageSize.getWidth() - headerWidth3) / 2;
+    // doc.text(headerText3, xHeaderPosition3, 30);
+
+    // doc.setFontSize(20);
+    // const title = 'LICENÇA SANITÁRIA';
+    // const titleWidth = doc.getTextWidth(title);
+    // const xPosition = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
+    // doc.text(title, xPosition, 60);
+
+    // doc.setFontSize(12);
+    // doc.text('', 20, 60);
+
+    // const formData = this.form.value;
+    // let yPosition = 90;
+
+    // this.getNumberCnpj(this.form.value.documento);
+    
+    // for (const key in formData) {
+    //   if (formData.hasOwnProperty(key)) {
+    //     const formattedKey = key.replace('_', ' ').replace(/^\w/, (c) => c.toUpperCase());
+    //     const value = formData[key];
+
+    //     doc.setFont('helvetica', 'bold');
+    //     doc.text(`${formattedKey}:`, 20, yPosition);
+
+    //     doc.setFont('helvetica', 'normal');
+    //     let maskedValue = this.applyMask(key, value);
+
+    //     if (key === 'situacao') {
+    //       maskedValue = value ? 'Ativo' : 'Inativo';
+    //     }
+
+    //     doc.text(maskedValue, 80, yPosition);
+
+    //     yPosition += 10;
+    //   }
+    // }
+
+    // doc.setFontSize(12);
+    // doc.text('Autoridade Sanitária', 80, 240);
+    // doc.text('VIGILÂNCIA SANITÁRIA DE ECOPORANGA', 55, 250);
+
+    // doc.setFontSize(8);
+    // const footerText = 'Av. Floriano Rubim, s/n, Centro, Ecoporanga/ES. Fone: (27) 99629-4357. E-mail: visaecoporanga@gmail.com';
+    // const footerWidth = doc.getTextWidth(footerText);
+    // const xFooterPosition = (doc.internal.pageSize.getWidth() - footerWidth) / 2;
+    // doc.text(footerText, xFooterPosition, doc.internal.pageSize.getHeight() - 10);
+
+    // doc.save(`${formData.nome_fantasia}.pdf`);
+  }
+
   private applyMask(key: string, value: any): string {
     const stringValue = value ? String(value) : '';
 
@@ -390,5 +472,27 @@ export class HomeComponent implements OnInit {
         this.obterTodos();
       }
     });
+  }
+
+  getNumberCnpj(cnpj: string): number {
+    const cnpjNumerico = cnpj.replace(/[^\d]/g, '');
+    const cnpjNumber = Number(cnpjNumerico);
+
+    if (isNaN(cnpjNumber)) {
+      throw new Error('CNPJ inválido');
+    }
+
+    return cnpjNumber;
+  }
+
+  async getCNPJ(cnpj: number): Promise<any> {  
+    try {
+      const empresa = await this.http.get<any>(`${this.apiUrl}/${cnpj}`).toPromise();
+      console.log(empresa);
+      //Ideia, criar uma interface da empresa com os dados que vou precisar. CNAEs
+      return empresa;
+    } catch (e) {
+      console.log(e);
+    }
   }
 }

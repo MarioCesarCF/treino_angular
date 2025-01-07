@@ -71,6 +71,7 @@
 
 #btnSave,
 #btnPdf,
+#btnLicencaPdf,
 #btnClose,
 #btnCadastrar,
 #btnLimpar,
@@ -181,8 +182,12 @@ form>label {
 
 .text-right {
   text-align: right;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   margin-right: 1rem;
+}
+
+form:last-child {
+  margin-bottom: 2rem;
 }
 
 @media (max-width: 1440px) {
