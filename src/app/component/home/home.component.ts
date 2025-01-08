@@ -16,6 +16,7 @@ import { HeaderComponent } from '../header/header.component';
 import { NewsletterFormComponent } from '../newsletter-form/newsletter-form.component';
 import { UpdateFormComponent } from '../update-form/update-form.component';
 import { HttpClient } from '@angular/common/http';
+import { DadosEmpresa } from '../../intefaces/dadosEmpresa.interface';
 
 interface Column {
   field: string;
@@ -75,6 +76,7 @@ export class HomeComponent implements OnInit {
   exportColumns!: ExportColumn[];
 
   apiUrl: string = "https://publica.cnpj.ws/cnpj";
+  dadosEmpresa: DadosEmpresa = {};
 
   constructor(
     private empreendimentoService: EmpreendimentoService,
@@ -318,82 +320,120 @@ export class HomeComponent implements OnInit {
     doc.save(`${formData.nome_fantasia}.pdf`);
   }
 
-  licencaPDF(): void {
+  async licencaPDF(): Promise<void> {
     let num = this.getNumberCnpj(this.form.value.documento);
 
-    let empresa = this.getCNPJ(num);
+    await this.getCNPJ(num);
 
-    console.log(empresa)
-    // const doc = new jsPDF();
+    //Variaveis para teste que o usuario vai informar o valor
+    const numero = "100";
+    const processo = "5000/24";
+    const data = "01/01/2025";
+    const vigencia = "31/12/2025";
+    const tipo = "Renovação";
 
-    // const img = new Image();
-    // img.src = './assets/brasao-eco.png';
-    // doc.addImage(img, 'PNG', 25, 10, 25, 25);
+    const doc = new jsPDF();
 
-    // doc.setFontSize(12);
-    // doc.setFont('helvetica', 'bold');
-    // const headerText = 'PREFEITURA MUNICIPAL DE ECOPORANGA';
-    // const headerText2 = 'SECRETARIA MUNICIPAL DE SAÚDE';
-    // const headerText3 = 'VIGILÂNCIA SANITÁRIA';
+    const img = new Image();
+    img.src = './assets/brasao-eco.png';
+    doc.addImage(img, 'PNG', 25, 10, 25, 25);
 
-    // const headerWidth = doc.getTextWidth(headerText);
-    // const xHeaderPosition = (doc.internal.pageSize.getWidth() - headerWidth) / 2;
-    // doc.text(headerText, xHeaderPosition, 20);
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    const headerText = 'PREFEITURA MUNICIPAL DE ECOPORANGA';
+    const headerText2 = 'SECRETARIA MUNICIPAL DE SAÚDE';
+    const headerText3 = 'VIGILÂNCIA SANITÁRIA';
 
-    // const headerWidth2 = doc.getTextWidth(headerText2);
-    // const xHeaderPosition2 = (doc.internal.pageSize.getWidth() - headerWidth2) / 2;
-    // doc.text(headerText2, xHeaderPosition2, 25);
+    const headerWidth = doc.getTextWidth(headerText);
+    const xHeaderPosition = (doc.internal.pageSize.getWidth() - headerWidth) / 2;
+    doc.text(headerText, xHeaderPosition, 20);
 
-    // const headerWidth3 = doc.getTextWidth(headerText3);
-    // const xHeaderPosition3 = (doc.internal.pageSize.getWidth() - headerWidth3) / 2;
-    // doc.text(headerText3, xHeaderPosition3, 30);
+    const headerWidth2 = doc.getTextWidth(headerText2);
+    const xHeaderPosition2 = (doc.internal.pageSize.getWidth() - headerWidth2) / 2;
+    doc.text(headerText2, xHeaderPosition2, 25);
 
-    // doc.setFontSize(20);
-    // const title = 'LICENÇA SANITÁRIA';
-    // const titleWidth = doc.getTextWidth(title);
-    // const xPosition = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
-    // doc.text(title, xPosition, 60);
+    const headerWidth3 = doc.getTextWidth(headerText3);
+    const xHeaderPosition3 = (doc.internal.pageSize.getWidth() - headerWidth3) / 2;
+    doc.text(headerText3, xHeaderPosition3, 30);
 
-    // doc.setFontSize(12);
-    // doc.text('', 20, 60);
+    doc.setFontSize(20);
+    const title = 'LICENÇA SANITÁRIA';
+    let titleWidth = doc.getTextWidth(title);
+    let xPosition = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
+    doc.text(title, xPosition, 45);
 
-    // const formData = this.form.value;
-    // let yPosition = 90;
+    doc.setFontSize(16);
+    const numeroLicenca = `Número: ${numero}`;
+    titleWidth = doc.getTextWidth(numeroLicenca);
+    xPosition = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
+    doc.text(numeroLicenca, xPosition, 55);
 
-    // this.getNumberCnpj(this.form.value.documento);
+    doc.setFontSize(10);
+    doc.text(`Número do Processo: ${processo}`, 20, 65);
+    doc.text(`Data do Processo: ${data}`, 120, 65);
+    doc.text(`Vigência da Licença: ${vigencia}`, 20, 75);
+    doc.text(`Tipo: ${tipo}`, 120, 75);
     
-    // for (const key in formData) {
-    //   if (formData.hasOwnProperty(key)) {
-    //     const formattedKey = key.replace('_', ' ').replace(/^\w/, (c) => c.toUpperCase());
-    //     const value = formData[key];
+    const formData = this.form.value;  
+    const atividadesEmpresa = this.dadosEmpresa;
+    let atividades = atividadesEmpresa.atividades_secundarias;
+    let yPosition = 160;
 
-    //     doc.setFont('helvetica', 'bold');
-    //     doc.text(`${formattedKey}:`, 20, yPosition);
+    doc.text(`Razão Social: ${formData.razao_social}`, 20, 85);
+    doc.text(`Nome Fantasia: ${formData.nome_fantasia}`, 20, 90);
+    doc.text(`CNPJ / CPF: ${formData.documento}`, 20, 95);
+    doc.text(`Logradouro: ${formData.logradouro}`, 20, 100);
+    doc.text(`Número: ${formData.numero}`, 120, 100);
+    doc.text(`Bairro: ${formData.bairro}`, 20, 105);
+    doc.text(`Cidade: Ecoporanga`, 120, 105);
+    doc.text(`UF: Espírito Santo`, 20, 110);
+    doc.text(`CEP: 29.850-000`, 120, 110);
 
-    //     doc.setFont('helvetica', 'normal');
-    //     let maskedValue = this.applyMask(key, value);
+    doc.text(`Responsável Técnico: ${formData.responsavel_tecnico}`, 20, 120);
+    doc.text(`CPF: 000.000.000-00`, 120, 120);
 
-    //     if (key === 'situacao') {
-    //       maskedValue = value ? 'Ativo' : 'Inativo';
-    //     }
+    doc.text(`Ramo de Atividade: ${formData.ramo_atividade}`, 20, 130);
+    doc.text(`Atividade Econômica Principal`, 20, 135);
+    doc.text(`CNAE: `, 20, 140);
+    doc.text(`${atividadesEmpresa.atividade_principal?.cnae}`, 20, 145);
+    doc.text(`Descrição: `, 40, 140);
+    doc.text(` ${atividadesEmpresa.atividade_principal?.descricao}`, 40, 145);
+    doc.text(`Atividades Econômicas Secundárias (máximo de 10)`, 20, 150);
+    doc.text(`CNAE: `, 20, 155);
+    doc.text(`Descrição:`, 40, 155);
 
-    //     doc.text(maskedValue, 80, yPosition);
+    atividades?.forEach((item: any) => {      
+      doc.text(`${item.cnae}`, 20, (yPosition));      
+      doc.text(`${item.descricao}`, 40, (yPosition));
 
-    //     yPosition += 10;
-    //   }
-    // }
+      yPosition += 5;
+    });
 
-    // doc.setFontSize(12);
-    // doc.text('Autoridade Sanitária', 80, 240);
-    // doc.text('VIGILÂNCIA SANITÁRIA DE ECOPORANGA', 55, 250);
+    //FALTA CORRIGIR: NUMERO ESTÁ APARECENDO COMO NULL E TAMANHO DA DESCRIÇÃO DO CNAE
 
-    // doc.setFontSize(8);
-    // const footerText = 'Av. Floriano Rubim, s/n, Centro, Ecoporanga/ES. Fone: (27) 99629-4357. E-mail: visaecoporanga@gmail.com';
-    // const footerWidth = doc.getTextWidth(footerText);
-    // const xFooterPosition = (doc.internal.pageSize.getWidth() - footerWidth) / 2;
-    // doc.text(footerText, xFooterPosition, doc.internal.pageSize.getHeight() - 10);
+    doc.setFontSize(8);
+    doc.text("________________________________", 20, 235);
+    doc.text("Local", 20, 235);
+    doc.text("__________/__________/__________", 120, 235);
+    doc.text("Data", 120, 235);
 
-    // doc.save(`${formData.nome_fantasia}.pdf`);
+    doc.setFontSize(12);
+    const autoridadeSanitaria = 'Autoridade Sanitária';
+    titleWidth = doc.getTextWidth(autoridadeSanitaria);
+    xPosition = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
+    doc.text(autoridadeSanitaria, xPosition, 260);
+    const vigilanciaSanitaria = 'VIGILÂNCIA SANITÁRIA DE ECOPORANGA';
+    titleWidth = doc.getTextWidth(vigilanciaSanitaria);
+    xPosition = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
+    doc.text(vigilanciaSanitaria, xPosition, 265);
+
+    doc.setFontSize(8);
+    const footerText = 'Av. Floriano Rubim, s/n, Centro, Ecoporanga/ES. Fone: (27) 99629-4357. E-mail: visaecoporanga@gmail.com';
+    const footerWidth = doc.getTextWidth(footerText);
+    const xFooterPosition = (doc.internal.pageSize.getWidth() - footerWidth) / 2;
+    doc.text(footerText, xFooterPosition, doc.internal.pageSize.getHeight() - 10);
+
+    doc.save(`${formData.nome_fantasia}.pdf`);
   }
 
   private applyMask(key: string, value: any): string {
@@ -487,10 +527,30 @@ export class HomeComponent implements OnInit {
 
   async getCNPJ(cnpj: number): Promise<any> {  
     try {
-      const empresa = await this.http.get<any>(`${this.apiUrl}/${cnpj}`).toPromise();
-      console.log(empresa);
-      //Ideia, criar uma interface da empresa com os dados que vou precisar. CNAEs
-      return empresa;
+      this.dadosEmpresa = {};
+
+      const empresaBuscada = await this.http.get<any>(`${this.apiUrl}/${cnpj}`).toPromise();
+
+      this.dadosEmpresa = {
+        atividade_principal: { 
+          cnae: empresaBuscada.estabelecimento.atividade_principal.subclasse, 
+          descricao: empresaBuscada.estabelecimento.atividade_principal.descricao 
+        },
+        atividades_secundarias: []
+      };
+
+      if(empresaBuscada.estabelecimento.atividades_secundarias.length > 0) {
+        let atividades = empresaBuscada.estabelecimento.atividades_secundarias;
+
+        atividades.forEach((item: any) => {
+          this.dadosEmpresa.atividades_secundarias?.push({ 
+            cnae: item.subclasse, 
+            descricao: item.descricao 
+          });  
+        });
+      };
+
+      return empresaBuscada;
     } catch (e) {
       console.log(e);
     }
