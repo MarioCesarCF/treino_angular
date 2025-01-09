@@ -61,6 +61,7 @@ export class HomeComponent implements OnInit {
   visibleUpdate: boolean = false;
   visibleCreate: boolean = false;
   dialogAberto: boolean = false;
+  dialogImprimirLicenca: boolean = false;
   selectedEmpreendimentoId: string = "";
 
   nome_fantasia?: string;
@@ -200,11 +201,16 @@ export class HomeComponent implements OnInit {
     this.dialogAberto = true;
   }
 
+  showDialogImprimirLicenca() {
+    this.dialogImprimirLicenca = true;
+  }
+
   closeDialog() {
     this.visibleUpdate = false;
     this.selectedEmpreendimentoId = "";
     this.visibleCreate = false;
     this.dialogAberto = false;
+    this.dialogImprimirLicenca = false;
     this.obterTodos();
     this.form.reset();
   }
@@ -368,6 +374,7 @@ export class HomeComponent implements OnInit {
     xPosition = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
     doc.text(numeroLicenca, xPosition, 55);
 
+    doc.setFont('helvetica', 'normal');
     doc.setFontSize(10);
     doc.text(`Número do Processo: ${processo}`, 20, 65);
     doc.text(`Data do Processo: ${data}`, 120, 65);
@@ -377,61 +384,71 @@ export class HomeComponent implements OnInit {
     const formData = this.form.value;  
     const atividadesEmpresa = this.dadosEmpresa;
     let atividades = atividadesEmpresa.atividades_secundarias;
-    let yPosition = 160;
+    let yPosition = 165;
 
     doc.text(`Razão Social: ${formData.razao_social}`, 20, 85);
     doc.text(`Nome Fantasia: ${formData.nome_fantasia}`, 20, 90);
     doc.text(`CNPJ / CPF: ${formData.documento}`, 20, 95);
     doc.text(`Logradouro: ${formData.logradouro}`, 20, 100);
-    doc.text(`Número: ${formData.numero}`, 120, 100);
+    doc.text(`Número: ${formData.numero ? formData.numero : ''}`, 120, 100);
     doc.text(`Bairro: ${formData.bairro}`, 20, 105);
     doc.text(`Cidade: Ecoporanga`, 120, 105);
     doc.text(`UF: Espírito Santo`, 20, 110);
     doc.text(`CEP: 29.850-000`, 120, 110);
 
-    doc.text(`Responsável Técnico: ${formData.responsavel_tecnico}`, 20, 120);
-    doc.text(`CPF: 000.000.000-00`, 120, 120);
+    doc.text(`Responsável Técnico: ${formData.responsavel_tecnico}`, 20, 120, { maxWidth: 100 });
+    doc.text(`CPF: Não informado`, 120, 120);
 
     doc.text(`Ramo de Atividade: ${formData.ramo_atividade}`, 20, 130);
+    doc.setFont('helvetica', 'bold');
     doc.text(`Atividade Econômica Principal`, 20, 135);
+    doc.setFont('helvetica', 'normal');
     doc.text(`CNAE: `, 20, 140);
     doc.text(`${atividadesEmpresa.atividade_principal?.cnae}`, 20, 145);
     doc.text(`Descrição: `, 40, 140);
-    doc.text(` ${atividadesEmpresa.atividade_principal?.descricao}`, 40, 145);
-    doc.text(`Atividades Econômicas Secundárias (máximo de 10)`, 20, 150);
-    doc.text(`CNAE: `, 20, 155);
-    doc.text(`Descrição:`, 40, 155);
+    doc.text(`${atividadesEmpresa.atividade_principal?.descricao}`, 40, 145, { maxWidth: 150 });
+    doc.setFont('helvetica', 'bold');
+    doc.text(`Atividades Econômicas Secundárias (máximo de 5)`, 20, 155);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`CNAE: `, 20, 160);
+    doc.text(`Descrição:`, 40, 160);
 
-    atividades?.forEach((item: any) => {      
+    let count = 0;
+    atividades?.forEach((item: any) => {  
+      if(count > 5) {
+        return;
+      }
+
       doc.text(`${item.cnae}`, 20, (yPosition));      
-      doc.text(`${item.descricao}`, 40, (yPosition));
+      doc.text(`${item.descricao}`, 40, (yPosition), { maxWidth: 150 });
 
-      yPosition += 5;
+      yPosition += 10;
+      count++;
     });
 
-    //FALTA CORRIGIR: NUMERO ESTÁ APARECENDO COMO NULL E TAMANHO DA DESCRIÇÃO DO CNAE
+    //FALTA CORRIGIR: TAMANHO DA DESCRIÇÃO DO CNAE
 
     doc.setFontSize(8);
-    doc.text("________________________________", 20, 235);
-    doc.text("Local", 20, 235);
-    doc.text("__________/__________/__________", 120, 235);
-    doc.text("Data", 120, 235);
+    doc.text("________________________________", 20, 255);
+    doc.text("Local", 20, 260);
+    doc.text("__________/__________/__________", 120, 255);
+    doc.text("Data", 120, 260);
 
     doc.setFontSize(12);
     const autoridadeSanitaria = 'Autoridade Sanitária';
     titleWidth = doc.getTextWidth(autoridadeSanitaria);
     xPosition = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
-    doc.text(autoridadeSanitaria, xPosition, 260);
+    doc.text(autoridadeSanitaria, xPosition, 275);
     const vigilanciaSanitaria = 'VIGILÂNCIA SANITÁRIA DE ECOPORANGA';
     titleWidth = doc.getTextWidth(vigilanciaSanitaria);
     xPosition = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
-    doc.text(vigilanciaSanitaria, xPosition, 265);
+    doc.text(vigilanciaSanitaria, xPosition, 280);
 
     doc.setFontSize(8);
     const footerText = 'Av. Floriano Rubim, s/n, Centro, Ecoporanga/ES. Fone: (27) 99629-4357. E-mail: visaecoporanga@gmail.com';
     const footerWidth = doc.getTextWidth(footerText);
     const xFooterPosition = (doc.internal.pageSize.getWidth() - footerWidth) / 2;
-    doc.text(footerText, xFooterPosition, doc.internal.pageSize.getHeight() - 10);
+    doc.text(footerText, xFooterPosition, doc.internal.pageSize.getHeight() - 5);
 
     doc.save(`${formData.nome_fantasia}.pdf`);
   }

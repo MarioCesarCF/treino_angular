@@ -71,11 +71,11 @@
 
 #btnSave,
 #btnPdf,
-#btnLicencaPdf,
 #btnClose,
 #btnCadastrar,
 #btnLimpar,
-#btnMostrarInativos {
+#btnMostrarInativos,
+#btnImprimirLicenca {
   margin: 5px;
   padding: 0.5rem;
 }
@@ -188,6 +188,19 @@ form>label {
 
 form:last-child {
   margin-bottom: 2rem;
+}
+
+.dialog-header>p {
+  padding: 2rem 5rem;
+}
+
+.formImprimirLicenca {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  flex-wrap: wrap;
 }
 
 @media (max-width: 1440px) {

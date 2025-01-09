@@ -28,11 +28,13 @@
               <button pButton pRipple label="Limpar" class="p-button-primary" (click)="limparFiltro()"></button>
             </div>
             <div>
-              @if (situacao) {
-              <button pButton pRipple label="Mostrar Inativos" class="p-button-secondary"
-                (click)="obterInativos()"></button>
-              <button pButton pRipple label="Novo Empreendimento" class="p-button-success"
+              @if (situacao) {              
+              <button pButton pRipple label="Imprimir Licença Sanitária" class="p-button-secondary"
+                (click)="showDialogImprimirLicenca()"></button>
+              <button pButton pRipple label="Cadastrar Empreendimento" class="p-button-success"
                 (click)="showDialog()"></button>
+              <button pButton pRipple label="Mostrar Inativos" class="p-button-danger"
+                (click)="obterInativos()"></button>
               } @else {
               <button pButton pRipple label="Mostrar Ativos" class="p-button-secondary"
                 (click)="obterAtivos()"></button>
@@ -179,12 +181,6 @@
   <ng-template pTemplate="footer">
     <div class="text-right">
       @if (visibleUpdate) {
-      <button pButton pRipple label="Imprimir Licença Sanitária" (click)="licencaPDF()" class="p-button-secondary"
-        id="btnLicencaPdf"></button>
-      }
-    </div>
-    <div class="text-right">
-      @if (visibleUpdate) {
       <button pButton pRipple label="Gerar PDF" (click)="generatePDF()" class="p-button-secondary" id="btnPdf"></button>
       }
       <button pButton pRipple label="Fechar" (click)="closeDialog()" class="p-button-danger" id="btnClose"></button>
@@ -192,7 +188,71 @@
         id="btnSave"></button>
     </div>
   </ng-template>
+</p-dialog>
 
+<p-dialog [(visible)]="dialogImprimirLicenca" [modal]="true" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+  [style]="{ width: '50vw', height: '70vh', padding: '1rem' }" [draggable]="false" [resizable]="false"
+  (onClose)="closeDialog()">
+
+  <div class="dialog-header">
+    <h2 class="text-center">Imprimir Licença Sanitária</h2>
+    <p>Informe o estabelecimento, número da licença, número do processo, data do processo, vigência da licença e tipo da licença (Inicial, Renovação ou Provisória)</p>
+  </div>
+
+  <ng-template pTemplate="content">
+    <form [formGroup]="form" class="formImprimirLicenca custom-grid">
+      <div class="form-group">
+        <div class="label-input">
+          <label for="nome_fantasia" class="font-semibold w-6rem">Estabelecimento *</label>
+          <input pInputText id="nome_fantasia" formControlName="nome_fantasia" class="flex-auto" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="label-input">
+          <label for="razao_social" class="font-semibold w-6rem">Número da Licença *</label>
+          <input pInputText id="razao_social" formControlName="razao_social" class="flex-auto" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="label-input">
+          <label for="documento" class="font-semibold w-6rem">Número do Processo *</label>
+          <input pInputText id="documento" formControlName="documento" class="flex-auto" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="label-input">
+          <label for="ramo_atividade" class="font-semibold w-6rem">Data do Processo *</label>
+          <input pInputText id="ramo_atividade" formControlName="ramo_atividade" class="flex-auto" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="label-input">
+          <label for="nome_proprietario" class="font-semibold w-6rem">Vigência da Licença *</label>
+          <input pInputText id="nome_proprietario" formControlName="nome_proprietario" class="flex-auto"
+            autocomplete="off" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="label-input">
+          <label for="responsavel_tecnico" class="font-semibold w-6rem">Tipo de Licença *</label>
+          <input pInputText id="responsavel_tecnico" formControlName="responsavel_tecnico" class="flex-auto"
+            autocomplete="off" />
+        </div>
+      </div>     
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <div class="text-right">
+      <button pButton pRipple label="Imprimir Licença Sanitária" class="p-button-success"
+        (click)="licencaPDF()" id="btnImprimirLicenca"></button>
+    </div>
+  </ng-template>
 </p-dialog>
 
 <br>
