@@ -15,7 +15,7 @@ export class EmpreendimentoService {
 
   constructor(private httpClient: HttpClient) { }
 
-  obterTodos(
+  getAll(
     nome_fantasia?: string,
     bairro?: string,
     ramo_atividade?: string,

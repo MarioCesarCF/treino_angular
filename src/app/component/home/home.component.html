@@ -11,17 +11,17 @@
               <input pInputText id="nome_fantasia" formControlName="nome" class="flex-auto" autocomplete="off"
                 placeholder="Nome Fantasia" />
             </div>
-  
+
             <div class="form-group">
               <input pInputText id="bairro" formControlName="bairro" class="flex-auto" autocomplete="off"
                 placeholder="Bairro" />
             </div>
-  
+
             <div class="form-group">
               <input pInputText id="ramo_atividade" formControlName="atividade" class="flex-auto" autocomplete="off"
                 placeholder="Ramo Atividade" />
             </div>
-          </div>          
+          </div>
 
           <div class="form-group" id="btnsFiltro">
             <div class="topBtn">
@@ -29,7 +29,7 @@
               <button pButton pRipple label="Limpar" class="p-button-primary" (click)="limparFiltro()"></button>
             </div>
             <div class="bottomBtn">
-              @if (situacao) {              
+              @if (situacao) {
               <button pButton pRipple label="Imprimir Licença Sanitária" class="p-button-secondary"
                 (click)="showDialogImprimirLicenca()"></button>
               <button pButton pRipple label="Cadastrar Empreendimento" class="p-button-success"
@@ -95,9 +95,9 @@
   [style]="{ width: '70vw', height: '80vh', padding: '1rem' }" (onClose)="closeDialog()">
   <div class="dialog-header">
     @if (visibleUpdate) {
-      <h2 class="text-center">Atualizar Empreendimento</h2>    
+    <h2 class="text-center">Atualizar Empreendimento</h2>
     } @else {
-      <h2 class="text-center">Cadastrar Empreendimento</h2>
+    <h2 class="text-center">Cadastrar Empreendimento</h2>
     }
   </div>
 
@@ -195,7 +195,8 @@
 
   <div class="dialog-header">
     <h2 class="text-center">Imprimir Licença Sanitária</h2>
-    <p>Informe o estabelecimento, número da licença, número do processo, data do processo, vigência da licença e tipo da licença.</p>
+    <p>Informe o estabelecimento, número da licença, número do processo, data do processo, vigência da licença e tipo da
+      licença.</p>
   </div>
 
   <ng-template pTemplate="content">
@@ -205,13 +206,18 @@
           <label for="estabelecimento" class="font-semibold w-6rem">Estabelecimento *</label>
           <input pInputText id="estabelecimento" formControlName="estabelecimento" class="flex-auto" />
           <!-- <p-autocomplete formControlName="empreendimentoSelecionado" [suggestions]="empreendimentosFiltrados" (completeMethod)="filtraEmpreendimento($event)" field="nome_fantasia" /> -->
-          <!-- <p-autocomplete [(ngModel)]="empreendimentoSelecionado" [suggestions]="empreendimentosFiltrados" (completeMethod)="filtraEmpreendimento($event)" optionLabel="Nome do Estabelecimento">
-            <ng-template let-estabelecimento #item>
-                <div class="flex items-center gap-2">
-                    <div>{{ estabelecimento.nome_fantasia }}</div>
-                </div>
+          <p-autocomplete 
+            [(ngModel)]="empreendimentoSelecionado" 
+            [suggestions]="empreendimentosFiltrados"
+            (completeMethod)="filtraEmpreendimento($event)" 
+            [field]="'nome_fantasia'" 
+            [dropdown]="true">
+            <ng-template let-empreendimento pTemplate="item">
+              <div class="flex items-center gap-2">
+                <div>{{ empreendimento.nome_fantasia }}</div>
+              </div>
             </ng-template>
-          </p-autocomplete> -->
+          </p-autocomplete>
         </div>
       </div>
 
@@ -241,24 +247,27 @@
           <label for="vigenciaLicenca" class="font-semibold w-6rem">Vigência da Licença *</label>
           <input pInputText id="vigenciaLicenca" formControlName="vigenciaLicenca" class="flex-auto"
             autocomplete="off" />
-            <!-- <p-datepicker formControlName="vigencia" dateFormat="dd-mm-yy" /> -->
+          <!-- <p-datepicker formControlName="vigencia" dateFormat="dd-mm-yy" /> -->
         </div>
       </div>
 
       <div class="form-group">
         <div class="label-input">
           <label for="tipoLicenca" class="font-semibold w-6rem">Tipo de Licença *</label>
-          <!-- <p-select [options]="tiposLicenca" [(ngModel)]="selectedCity" optionLabel="label" class="w-full md:w-56 dropdownInput" /> -->
-          <p-dropdown [(ngModel)]="tipoLicencaSelecionado" [options]="tiposLicenca" formControlName="tipoLicenca" optionLabel="label" placeholder="Selecione o tipo"></p-dropdown>
+          <select class="dropdownInput" id="tiposLicenca" formControlName="tipoLicenca">
+            <option value="Inicial">Inicial</option>
+            <option value="Renovação">Renovação</option>
+            <option value="Provisória">Provisória</option>
+          </select>
         </div>
-      </div>     
+      </div>
     </form>
   </ng-template>
 
   <ng-template pTemplate="footer">
     <div class="text-right">
-      <button pButton pRipple label="Imprimir Licença Sanitária" class="p-button-success"
-        (click)="licencaPDF()" id="btnImprimirLicenca"></button>
+      <button pButton pRipple label="Imprimir Licença Sanitária" class="p-button-success" (click)="licencaPDF()"
+        id="btnImprimirLicenca"></button>
     </div>
   </ng-template>
 </p-dialog>

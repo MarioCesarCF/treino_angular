@@ -63,7 +63,7 @@ interface TiposLicenca {
     DropdownModule
   ],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
   form: FormGroup;
@@ -94,9 +94,16 @@ export class HomeComponent implements OnInit {
   tiposLicenca: TiposLicenca[] | undefined;
   tipoLicencaSelecionado: TiposLicenca | undefined;
 
-  empreendimentoSelecionado!: Empreendimento;
+  empreendimentoSelecionado: Empreendimento | null = null;
+  empreendimentosFiltrados: Empreendimento[] = [];
+  todosEmpreendimentos: Empreendimento[] = [];
 
-  empreendimentosFiltrados: Empreendimento[] | undefined;
+  hoje: Date = new Date();
+  dia = String(this.hoje.getDate()).padStart(2, '0');
+  mes = String(this.hoje.getMonth() + 1).padStart(2, '0');
+  ano = this.hoje.getFullYear();
+
+  dataHoje = `${this.dia}/${this.mes}/${this.ano}`;
 
   constructor(
     private empreendimentoService: EmpreendimentoService,
@@ -179,7 +186,7 @@ export class HomeComponent implements OnInit {
       situacao = true;
     }
 
-    this.empreendimentoService.obterTodos(nome, bairro, atividade, situacao).subscribe({
+    this.empreendimentoService.getAll(nome, bairro, atividade, situacao).subscribe({
       next: (result) => {
         this.empreendimentos = result.data;
         this.cd.detectChanges();
@@ -243,9 +250,10 @@ export class HomeComponent implements OnInit {
     this.selectedEmpreendimentoId = "";
     this.visibleCreate = false;
     this.dialogAberto = false;
-    this.dialogImprimirLicenca = false;
+    this.dialogImprimirLicenca = false;    
     this.obterTodos();
     this.form.reset();
+    this.licencaForm.reset();
   }
 
   save(): void {
@@ -364,7 +372,7 @@ export class HomeComponent implements OnInit {
 
     await this.getCNPJ(num);
 
-    //Variaveis para teste que o usuario vai informar o valor
+    console.log(this.licencaForm.value)
     const numero = "100";
     const processo = "5000/24";
     const data = "01/01/2025";
@@ -459,13 +467,7 @@ export class HomeComponent implements OnInit {
       count++;
     });
 
-    //FALTA CORRIGIR: TAMANHO DA DESCRIÇÃO DO CNAE
-
-    doc.setFontSize(8);
-    doc.text("________________________________", 20, 255);
-    doc.text("Local", 20, 260);
-    doc.text("__________/__________/__________", 120, 255);
-    doc.text("Data", 120, 260);
+    doc.text(`Ecoporanga-ES, ${this.dataHoje}`, 20, 255);
 
     doc.setFontSize(12);
     const autoridadeSanitaria = 'Autoridade Sanitária';
@@ -606,15 +608,36 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  filtraEmpreendimento(event: Event) {
-    let filtered: Empreendimento[] = [];
+  // filtraEmpreendimento(event: Event) {
+  //   let filtered: Empreendimento[] = [];
 
-    this.empreendimentoService.obterTodos().subscribe({
-      next: (result) => {
-        filtered = result.data;
-      }
-    });
+  //   this.empreendimentoService.obterTodos().subscribe({
+  //     next: (result) => {
+  //       filtered = result.data;
+  //     }
+  //   });
 
-    this.empreendimentosFiltrados = filtered;
+  //   this.empreendimentosFiltrados = filtered;
+  // }
+  filtraEmpreendimento(event: any) {
+    const query = event.query.toLowerCase();
+
+    // Busca os empreendimentos do backend apenas uma vez
+    if (this.todosEmpreendimentos.length === 0) {
+      this.empreendimentoService.getAll().subscribe({
+        next: (result) => {
+          this.todosEmpreendimentos = result.data;
+          this.filtrarLocalmente(query);
+        }
+      });
+    } else {
+      this.filtrarLocalmente(query);
+    }
+  }
+
+  private filtrarLocalmente(query: string) {
+    this.empreendimentosFiltrados = this.todosEmpreendimentos.filter(empreendimento =>
+      empreendimento.nome_fantasia.toLowerCase().includes(query)
+    );
   }
 }
