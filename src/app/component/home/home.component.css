@@ -202,7 +202,7 @@ form>label {
   margin-bottom: 0.5rem;
 }
 
-.custom-grid input {
+.custom-grid input, .custom-grid .p-dropdown {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -238,6 +238,13 @@ form:last-child {
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.p-dropdown {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 20rem;
 }
 
 @media (max-width: 1440px) {

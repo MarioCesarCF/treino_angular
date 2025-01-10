@@ -32,6 +32,10 @@ interface ExportColumn {
   dataKey: string;
 }
 
+interface TiposLicenca {
+  label: string
+}
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -63,6 +67,8 @@ interface ExportColumn {
 })
 export class HomeComponent implements OnInit {
   form: FormGroup;
+  filtroForm: FormGroup; 
+  licencaForm: FormGroup;
 
   visibleUpdate: boolean = false;
   visibleCreate: boolean = false;
@@ -78,15 +84,15 @@ export class HomeComponent implements OnInit {
   empreendimentos!: Empreendimento[];
   empreendimento!: Empreendimento;
 
-  cols!: Column[];
-  filtroForm: FormGroup;  
+  cols!: Column[];   
   exportColumns!: ExportColumn[];
 
   apiUrl: string = "https://publica.cnpj.ws/cnpj";
   dadosEmpresa: DadosEmpresa = {};
 
   value!: string;
-  tiposLicenca: string[] = ["Inicial", "Renovação", "Provisória"];
+  tiposLicenca: TiposLicenca[] | undefined;
+  tipoLicencaSelecionado: TiposLicenca | undefined;
 
   empreendimentoSelecionado!: Empreendimento;
 
@@ -98,6 +104,12 @@ export class HomeComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private http: HttpClient
   ) {
+    this.tiposLicenca = [
+      {label: "Inicial"}, 
+      {label: "Renovação"}, 
+      {label: "Provisória"}
+    ];
+
     this.form = this.fb.group({
       nome_fantasia: ['', Validators.required],
       razao_social: ['', Validators.required],
@@ -118,6 +130,15 @@ export class HomeComponent implements OnInit {
       atividade: [''],
       situacao: [this.situacao]
     });
+
+    this.licencaForm = this.fb.group({
+      estabelecimento: [''],
+      numeroLicenca: [''],
+      numeroProcesso: [''],
+      dataProcesso: [''],
+      vigenciaLicenca: [''],
+      tipoLicenca: [this.tiposLicenca]
+    })
   }
 
   ngOnInit() {

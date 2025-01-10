@@ -199,11 +199,11 @@
   </div>
 
   <ng-template pTemplate="content">
-    <form [formGroup]="form" class="formImprimirLicenca custom-grid">
+    <form [formGroup]="licencaForm" class="formImprimirLicenca custom-grid">
       <div class="form-group">
         <div class="label-input">
-          <label for="nome_fantasia" class="font-semibold w-6rem">Estabelecimento *</label>
-          <input pInputText id="nome_fantasia" formControlName="nome_fantasia" class="flex-auto" />
+          <label for="estabelecimento" class="font-semibold w-6rem">Estabelecimento *</label>
+          <input pInputText id="estabelecimento" formControlName="estabelecimento" class="flex-auto" />
           <!-- <p-autocomplete formControlName="empreendimentoSelecionado" [suggestions]="empreendimentosFiltrados" (completeMethod)="filtraEmpreendimento($event)" field="nome_fantasia" /> -->
           <!-- <p-autocomplete [(ngModel)]="empreendimentoSelecionado" [suggestions]="empreendimentosFiltrados" (completeMethod)="filtraEmpreendimento($event)" optionLabel="Nome do Estabelecimento">
             <ng-template let-estabelecimento #item>
@@ -217,29 +217,29 @@
 
       <div class="form-group">
         <div class="label-input">
-          <label for="razao_social" class="font-semibold w-6rem">Número da Licença *</label>
-          <input pInputText id="razao_social" formControlName="razao_social" class="flex-auto" />
+          <label for="numeroLicenca" class="font-semibold w-6rem">Número da Licença *</label>
+          <input pInputText id="numeroLicenca" formControlName="numeroLicenca" class="flex-auto" />
         </div>
       </div>
 
       <div class="form-group">
         <div class="label-input">
-          <label for="documento" class="font-semibold w-6rem">Número do Processo *</label>
-          <input pInputText id="documento" formControlName="documento" class="flex-auto" />
+          <label for="numeroProcesso" class="font-semibold w-6rem">Número do Processo *</label>
+          <input pInputText id="numeroProcesso" formControlName="numeroProcesso" class="flex-auto" />
         </div>
       </div>
 
       <div class="form-group">
         <div class="label-input">
-          <label for="ramo_atividade" class="font-semibold w-6rem">Data do Processo *</label>
-          <input pInputText id="ramo_atividade" formControlName="ramo_atividade" class="flex-auto" />
+          <label for="dataProcesso" class="font-semibold w-6rem">Data do Processo *</label>
+          <input pInputText id="dataProcesso" formControlName="dataProcesso" class="flex-auto" />
         </div>
       </div>
 
       <div class="form-group">
         <div class="label-input">
-          <label for="nome_proprietario" class="font-semibold w-6rem">Vigência da Licença *</label>
-          <input pInputText id="nome_proprietario" formControlName="nome_proprietario" class="flex-auto"
+          <label for="vigenciaLicenca" class="font-semibold w-6rem">Vigência da Licença *</label>
+          <input pInputText id="vigenciaLicenca" formControlName="vigenciaLicenca" class="flex-auto"
             autocomplete="off" />
             <!-- <p-datepicker formControlName="vigencia" dateFormat="dd-mm-yy" /> -->
         </div>
@@ -247,8 +247,9 @@
 
       <div class="form-group">
         <div class="label-input">
-          <label for="responsavel_tecnico" class="font-semibold w-6rem">Tipo de Licença *</label>
-          <p-dropdown [(ngModel)]="value" [options]="tiposLicenca"></p-dropdown>
+          <label for="tipoLicenca" class="font-semibold w-6rem">Tipo de Licença *</label>
+          <!-- <p-select [options]="tiposLicenca" [(ngModel)]="selectedCity" optionLabel="label" class="w-full md:w-56 dropdownInput" /> -->
+          <p-dropdown [(ngModel)]="tipoLicencaSelecionado" [options]="tiposLicenca" formControlName="tipoLicenca" optionLabel="label" placeholder="Selecione o tipo"></p-dropdown>
         </div>
       </div>     
     </form>
