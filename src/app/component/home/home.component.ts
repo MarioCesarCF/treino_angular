@@ -2,7 +2,7 @@ import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { FetchBackend, HttpBackend } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { jsPDF } from 'jspdf';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -17,6 +17,9 @@ import { NewsletterFormComponent } from '../newsletter-form/newsletter-form.comp
 import { UpdateFormComponent } from '../update-form/update-form.component';
 import { HttpClient } from '@angular/common/http';
 import { DadosEmpresa } from '../../intefaces/dadosEmpresa.interface';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { FormsModule } from '@angular/forms';
+import { DropdownModule } from 'primeng/dropdown';
 
 interface Column {
   field: string;
@@ -50,7 +53,10 @@ interface ExportColumn {
     InputTextModule,
     ReactiveFormsModule,
     CommonModule,
-    UpdateFormComponent
+    UpdateFormComponent,
+    AutoCompleteModule,
+    FormsModule,
+    DropdownModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
@@ -79,10 +85,16 @@ export class HomeComponent implements OnInit {
   apiUrl: string = "https://publica.cnpj.ws/cnpj";
   dadosEmpresa: DadosEmpresa = {};
 
+  value!: string;
+  tiposLicenca: string[] = ["Inicial", "Renovação", "Provisória"];
+
+  empreendimentoSelecionado!: Empreendimento;
+
+  empreendimentosFiltrados: Empreendimento[] | undefined;
+
   constructor(
     private empreendimentoService: EmpreendimentoService,
     private fb: FormBuilder,
-    private router: Router,
     private cd: ChangeDetectorRef,
     private http: HttpClient
   ) {
@@ -196,7 +208,7 @@ export class HomeComponent implements OnInit {
     this.carregarDados(this.selectedEmpreendimentoId);
   }
 
-  showDialog() {    
+  showDialogCadastro() {    
     this.visibleCreate = true;
     this.dialogAberto = true;
   }
@@ -571,5 +583,17 @@ export class HomeComponent implements OnInit {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  filtraEmpreendimento(event: Event) {
+    let filtered: Empreendimento[] = [];
+
+    this.empreendimentoService.obterTodos().subscribe({
+      next: (result) => {
+        filtered = result.data;
+      }
+    });
+
+    this.empreendimentosFiltrados = filtered;
   }
 }

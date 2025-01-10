@@ -33,7 +33,7 @@
               <button pButton pRipple label="Imprimir Licença Sanitária" class="p-button-secondary"
                 (click)="showDialogImprimirLicenca()"></button>
               <button pButton pRipple label="Cadastrar Empreendimento" class="p-button-success"
-                (click)="showDialog()"></button>
+                (click)="showDialogCadastro()"></button>
               <button pButton pRipple label="Mostrar Inativos" class="p-button-danger"
                 (click)="obterInativos()"></button>
               } @else {
@@ -195,7 +195,7 @@
 
   <div class="dialog-header">
     <h2 class="text-center">Imprimir Licença Sanitária</h2>
-    <p>Informe o estabelecimento, número da licença, número do processo, data do processo, vigência da licença e tipo da licença (Inicial, Renovação ou Provisória)</p>
+    <p>Informe o estabelecimento, número da licença, número do processo, data do processo, vigência da licença e tipo da licença.</p>
   </div>
 
   <ng-template pTemplate="content">
@@ -204,6 +204,14 @@
         <div class="label-input">
           <label for="nome_fantasia" class="font-semibold w-6rem">Estabelecimento *</label>
           <input pInputText id="nome_fantasia" formControlName="nome_fantasia" class="flex-auto" />
+          <!-- <p-autocomplete formControlName="empreendimentoSelecionado" [suggestions]="empreendimentosFiltrados" (completeMethod)="filtraEmpreendimento($event)" field="nome_fantasia" /> -->
+          <!-- <p-autocomplete [(ngModel)]="empreendimentoSelecionado" [suggestions]="empreendimentosFiltrados" (completeMethod)="filtraEmpreendimento($event)" optionLabel="Nome do Estabelecimento">
+            <ng-template let-estabelecimento #item>
+                <div class="flex items-center gap-2">
+                    <div>{{ estabelecimento.nome_fantasia }}</div>
+                </div>
+            </ng-template>
+          </p-autocomplete> -->
         </div>
       </div>
 
@@ -233,14 +241,14 @@
           <label for="nome_proprietario" class="font-semibold w-6rem">Vigência da Licença *</label>
           <input pInputText id="nome_proprietario" formControlName="nome_proprietario" class="flex-auto"
             autocomplete="off" />
+            <!-- <p-datepicker formControlName="vigencia" dateFormat="dd-mm-yy" /> -->
         </div>
       </div>
 
       <div class="form-group">
         <div class="label-input">
           <label for="responsavel_tecnico" class="font-semibold w-6rem">Tipo de Licença *</label>
-          <input pInputText id="responsavel_tecnico" formControlName="responsavel_tecnico" class="flex-auto"
-            autocomplete="off" />
+          <p-dropdown [(ngModel)]="value" [options]="tiposLicenca"></p-dropdown>
         </div>
       </div>     
     </form>
