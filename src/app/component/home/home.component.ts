@@ -196,7 +196,7 @@ export class HomeComponent implements OnInit {
     this.carregarDados(this.selectedEmpreendimentoId);
   }
 
-  showDialog() {
+  showDialog() {    
     this.visibleCreate = true;
     this.dialogAberto = true;
   }
