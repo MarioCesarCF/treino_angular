@@ -203,21 +203,10 @@
     <form [formGroup]="licencaForm" class="formImprimirLicenca custom-grid">
       <div class="form-group">
         <div class="label-input">
-          <label for="estabelecimento" class="font-semibold w-6rem">Estabelecimento *</label>
-          <input pInputText id="estabelecimento" formControlName="estabelecimento" class="flex-auto" />
-          <!-- <p-autocomplete formControlName="empreendimentoSelecionado" [suggestions]="empreendimentosFiltrados" (completeMethod)="filtraEmpreendimento($event)" field="nome_fantasia" /> -->
-          <!-- <p-autocomplete 
-            [(ngModel)]="empreendimentoSelecionado" 
-            [suggestions]="empreendimentosFiltrados"
-            (completeMethod)="filtraEmpreendimento($event)" 
-            [field]="'nome_fantasia'" 
-            [dropdown]="true">
-            <ng-template let-empreendimento pTemplate="item">
-              <div class="flex items-center gap-2">
-                <div>{{ empreendimento.nome_fantasia }}</div>
-              </div>
-            </ng-template>
-          </p-autocomplete> -->
+          <label for="empreendimento" class="font-semibold w-6rem">Estabelecimento *</label>
+          <p-autoComplete formControlName="empreendimento" [suggestions]="empreendimentosFiltrados"
+            (completeMethod)="filtraEmpreendimento($event)" [field]="'nome_fantasia'" [dropdown]="true" class="autocompleInput">
+          </p-autoComplete>
         </div>
       </div>
 

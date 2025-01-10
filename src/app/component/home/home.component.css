@@ -181,10 +181,19 @@ form>label {
   color: white;
 }
 
+.dialog-header {
+  margin-bottom: 2rem;
+}
+
 .dialog-header h2 {
   text-align: center;
   margin-bottom: 1rem;
   color: rgb(20, 19, 19);
+}
+
+.dialog-header>p {
+  padding: 0 5rem;
+  margin-bottom: 1rem;
 }
 
 .custom-grid {
@@ -219,11 +228,6 @@ form:last-child {
   margin-bottom: 2rem;
 }
 
-.dialog-header>p {
-  padding: 0 5rem;
-  margin-bottom: 1rem;
-}
-
 .formImprimirLicenca {
   display: flex;
   flex-direction: row;
@@ -247,6 +251,29 @@ form:last-child {
   width: 20rem;
   color: #4b5563;
   font-size: 1rem;
+}
+
+/* .autocompleInput {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 20rem;
+} */
+
+::ng-deep .p-autocomplete .p-inputtext {
+  border-radius: 4px 0 0 4px;
+  border: 1px solid #ccc;
+  padding: 8px;
+  width: 17rem;
+}
+
+::ng-deep .p-autocomplete-panel {
+  border-radius: 4px 4px 0 0;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+::ng-deep .p-autocomplete-item {
+  padding: 10px;
 }
 
 @media (max-width: 1440px) {

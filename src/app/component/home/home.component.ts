@@ -13,8 +13,6 @@ import { Empreendimento } from '../../intefaces/empreendimento.interface';
 import { EmpreendimentoService } from '../../services/empreendimento.service';
 import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
-import { NewsletterFormComponent } from '../newsletter-form/newsletter-form.component';
-import { UpdateFormComponent } from '../update-form/update-form.component';
 import { HttpClient } from '@angular/common/http';
 import { DadosEmpresa } from '../../intefaces/dadosEmpresa.interface';
 import { AutoCompleteModule } from 'primeng/autocomplete';
@@ -50,14 +48,12 @@ interface TiposLicenca {
     HeaderComponent,
     FooterComponent,
     NgOptimizedImage,
-    NewsletterFormComponent,
     TableModule,
     DialogModule,
     ButtonModule,
     InputTextModule,
     ReactiveFormsModule,
     CommonModule,
-    UpdateFormComponent,
     AutoCompleteModule,
     FormsModule,
     DropdownModule
@@ -139,12 +135,12 @@ export class HomeComponent implements OnInit {
     });
 
     this.licencaForm = this.fb.group({
-      estabelecimento: [''],
-      numeroLicenca: [''],
-      numeroProcesso: [''],
-      dataProcesso: [''],
-      vigenciaLicenca: [''],
-      tipoLicenca: [this.tiposLicenca]
+      empreendimento: ['', Validators.required],
+      numeroLicenca: ['', Validators.required],
+      numeroProcesso: ['', Validators.required],
+      dataProcesso: ['', Validators.required],
+      vigenciaLicenca: ['', Validators.required],
+      tipoLicenca: [this.tiposLicenca, Validators.required]
     })
   }
 
@@ -368,16 +364,15 @@ export class HomeComponent implements OnInit {
   }
 
   async licencaPDF(): Promise<void> {
-    let num = this.getNumberCnpj(this.form.value.documento);
+    let num = this.getNumberCnpj(this.licencaForm.value.empreendimento.documento);
 
     await this.getCNPJ(num);
 
-    console.log(this.licencaForm.value)
-    const numero = "100";
-    const processo = "5000/24";
-    const data = "01/01/2025";
-    const vigencia = "31/12/2025";
-    const tipo = "Renovação";
+    const numero = this.licencaForm.value.numeroLicenca;
+    const processo = this.licencaForm.value.numeroProcesso;
+    const data = this.licencaForm.value.dataProcesso;
+    const vigencia = this.licencaForm.value.vigenciaLicenca;
+    const tipo = this.licencaForm.value.tipoLicenca;
 
     const doc = new jsPDF();
 
@@ -422,7 +417,8 @@ export class HomeComponent implements OnInit {
     doc.text(`Vigência da Licença: ${vigencia}`, 20, 75);
     doc.text(`Tipo: ${tipo}`, 120, 75);
     
-    const formData = this.form.value;  
+    const formData = this.licencaForm.value.empreendimento;
+    console.log(formData)
     const atividadesEmpresa = this.dadosEmpresa;
     let atividades = atividadesEmpresa.atividades_secundarias;
     let yPosition = 165;
@@ -430,6 +426,7 @@ export class HomeComponent implements OnInit {
     doc.text(`Razão Social: ${formData.razao_social}`, 20, 85);
     doc.text(`Nome Fantasia: ${formData.nome_fantasia}`, 20, 90);
     doc.text(`CNPJ / CPF: ${formData.documento}`, 20, 95);
+    doc.text(`Ramo de Atividade: ${formData.ramo_atividade}`, 120, 95);
     doc.text(`Logradouro: ${formData.logradouro}`, 20, 100);
     doc.text(`Número: ${formData.numero ? formData.numero : ''}`, 120, 100);
     doc.text(`Bairro: ${formData.bairro}`, 20, 105);
@@ -439,8 +436,7 @@ export class HomeComponent implements OnInit {
 
     doc.text(`Responsável Técnico: ${formData.responsavel_tecnico}`, 20, 120, { maxWidth: 100 });
     doc.text(`CPF: Não informado`, 120, 120);
-
-    doc.text(`Ramo de Atividade: ${formData.ramo_atividade}`, 20, 130);
+    
     doc.setFont('helvetica', 'bold');
     doc.text(`Atividade Econômica Principal`, 20, 135);
     doc.setFont('helvetica', 'normal');
@@ -608,23 +604,14 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  // filtraEmpreendimento(event: Event) {
-  //   let filtered: Empreendimento[] = [];
-
-  //   this.empreendimentoService.obterTodos().subscribe({
-  //     next: (result) => {
-  //       filtered = result.data;
-  //     }
-  //   });
-
-  //   this.empreendimentosFiltrados = filtered;
-  // }
   filtraEmpreendimento(event: any) {
     const query = event.query.toLowerCase();
+    const situacao = true;
 
-    // Busca os empreendimentos do backend apenas uma vez
+// TODO: ALTERAR FORMA DE PASSAR PARÂMETROS DE FILTRO, USAR OBJETO
+
     if (this.todosEmpreendimentos.length === 0) {
-      this.empreendimentoService.getAll().subscribe({
+      this.empreendimentoService.getAll('', '', '', situacao).subscribe({
         next: (result) => {
           this.todosEmpreendimentos = result.data;
           this.filtrarLocalmente(query);
