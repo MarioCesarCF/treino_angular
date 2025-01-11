@@ -195,7 +195,7 @@
 
   <div class="dialog-header">
     <h2 class="text-center">Imprimir Licença Sanitária</h2>
-    <p>Informe o estabelecimento, número da licença, número do processo, data do processo, vigência da licença e tipo da
+    <p>Informe o estabelecimento, número da licença, número do processo, data do processo, vigência da licença e tipo de
       licença.</p>
   </div>
 
@@ -228,15 +228,15 @@
         <div class="label-input">
           <label for="dataProcesso" class="font-semibold w-6rem">Data do Processo *</label>
           <input pInputText id="dataProcesso" formControlName="dataProcesso" class="flex-auto" />
+          <!-- <p-calendar appendTo="body" formControlName="dataProcesso" dateFormat="dd/mm/yy" class="dataProcessoInput" /> -->
         </div>
       </div>
 
       <div class="form-group">
         <div class="label-input">
           <label for="vigenciaLicenca" class="font-semibold w-6rem">Vigência da Licença *</label>
-          <input pInputText id="vigenciaLicenca" formControlName="vigenciaLicenca" class="flex-auto"
-            autocomplete="off" />
-          <!-- <p-datepicker formControlName="vigencia" dateFormat="dd-mm-yy" /> -->
+          <input pInputText id="vigenciaLicenca" formControlName="vigenciaLicenca" class="flex-auto" />
+          <!-- <p-calendar appendTo="body" formControlName="vigenciaLicenca" dateFormat="dd/mm/yy" class="vigenciaInput" /> -->
         </div>
       </div>
 

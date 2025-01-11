@@ -1,23 +1,21 @@
-import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { FetchBackend, HttpBackend } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { FetchBackend, HttpBackend, HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { jsPDF } from 'jspdf';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
 import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { EmpreendimentoDto } from '../../dto/empreendimento.dto';
+import { DadosEmpresa } from '../../intefaces/dadosEmpresa.interface';
 import { Empreendimento } from '../../intefaces/empreendimento.interface';
 import { EmpreendimentoService } from '../../services/empreendimento.service';
 import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
-import { HttpClient } from '@angular/common/http';
-import { DadosEmpresa } from '../../intefaces/dadosEmpresa.interface';
-import { AutoCompleteModule } from 'primeng/autocomplete';
-import { FormsModule } from '@angular/forms';
-import { DropdownModule } from 'primeng/dropdown';
 
 interface Column {
   field: string;
@@ -44,10 +42,8 @@ interface TiposLicenca {
     EmpreendimentoService
   ],
   imports: [
-    RouterLink,
     HeaderComponent,
     FooterComponent,
-    NgOptimizedImage,
     TableModule,
     DialogModule,
     ButtonModule,
@@ -56,14 +52,15 @@ interface TiposLicenca {
     CommonModule,
     AutoCompleteModule,
     FormsModule,
-    DropdownModule
+    DropdownModule,
+    CalendarModule
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
   form: FormGroup;
-  filtroForm: FormGroup; 
+  filtroForm: FormGroup;
   licencaForm: FormGroup;
 
   visibleUpdate: boolean = false;
@@ -80,7 +77,7 @@ export class HomeComponent implements OnInit {
   empreendimentos!: Empreendimento[];
   empreendimento!: Empreendimento;
 
-  cols!: Column[];   
+  cols!: Column[];
   exportColumns!: ExportColumn[];
 
   apiUrl: string = "https://publica.cnpj.ws/cnpj";
@@ -108,8 +105,8 @@ export class HomeComponent implements OnInit {
     private http: HttpClient
   ) {
     this.tiposLicenca = [
-      {label: "Inicial"}, 
-      {label: "Renovação"}, 
+      {label: "Inicial"},
+      {label: "Renovação"},
       {label: "Provisória"}
     ];
 
@@ -177,7 +174,7 @@ export class HomeComponent implements OnInit {
     let { nome, bairro, atividade, situacao } = this.filtroForm.value;
 
     if (this.situacao === false) {
-      situacao = false;      
+      situacao = false;
     } else {
       situacao = true;
     }
@@ -208,7 +205,7 @@ export class HomeComponent implements OnInit {
   }
 
   obterAtivos() {
-    this.situacao = !this.situacao;    
+    this.situacao = !this.situacao;
     this.obterTodos();
   }
 
@@ -232,7 +229,7 @@ export class HomeComponent implements OnInit {
     this.carregarDados(this.selectedEmpreendimentoId);
   }
 
-  showDialogCadastro() {    
+  showDialogCadastro() {
     this.visibleCreate = true;
     this.dialogAberto = true;
   }
@@ -246,7 +243,7 @@ export class HomeComponent implements OnInit {
     this.selectedEmpreendimentoId = "";
     this.visibleCreate = false;
     this.dialogAberto = false;
-    this.dialogImprimirLicenca = false;    
+    this.dialogImprimirLicenca = false;
     this.obterTodos();
     this.form.reset();
     this.licencaForm.reset();
@@ -349,7 +346,7 @@ export class HomeComponent implements OnInit {
     }
 
     doc.setFontSize(8);
-    doc.text(`Última atualização do empreendimento: ${data_atualizacao}`, 20, 190);
+    doc.text(`Última atualização do empreendimento: ${data_atualizacao}`, 20, 200);
     doc.setFontSize(12);
     doc.text('Autoridade Sanitária', 80, 240);
     doc.text('VIGILÂNCIA SANITÁRIA DE ECOPORANGA', 55, 250);
@@ -360,7 +357,7 @@ export class HomeComponent implements OnInit {
     const xFooterPosition = (doc.internal.pageSize.getWidth() - footerWidth) / 2;
     doc.text(footerText, xFooterPosition, doc.internal.pageSize.getHeight() - 10);
 
-    doc.save(`${formData.nome_fantasia}.pdf`);
+    doc.save(`cadastro_${formData.nome_fantasia}.pdf`);
   }
 
   async licencaPDF(): Promise<void> {
@@ -414,55 +411,54 @@ export class HomeComponent implements OnInit {
     doc.setFontSize(10);
     doc.text(`Número do Processo: ${processo}`, 20, 65);
     doc.text(`Data do Processo: ${data}`, 120, 65);
-    doc.text(`Vigência da Licença: ${vigencia}`, 20, 75);
-    doc.text(`Tipo: ${tipo}`, 120, 75);
-    
+    doc.text(`Vigência da Licença: ${vigencia}`, 20, 70);
+    doc.text(`Tipo: ${tipo}`, 120, 70);
+
     const formData = this.licencaForm.value.empreendimento;
-    console.log(formData)
     const atividadesEmpresa = this.dadosEmpresa;
-    let atividades = atividadesEmpresa.atividades_secundarias;
-    let yPosition = 165;
+    const atividades = atividadesEmpresa.atividades_secundarias;
 
-    doc.text(`Razão Social: ${formData.razao_social}`, 20, 85);
-    doc.text(`Nome Fantasia: ${formData.nome_fantasia}`, 20, 90);
-    doc.text(`CNPJ / CPF: ${formData.documento}`, 20, 95);
-    doc.text(`Ramo de Atividade: ${formData.ramo_atividade}`, 120, 95);
-    doc.text(`Logradouro: ${formData.logradouro}`, 20, 100);
-    doc.text(`Número: ${formData.numero ? formData.numero : ''}`, 120, 100);
-    doc.text(`Bairro: ${formData.bairro}`, 20, 105);
-    doc.text(`Cidade: Ecoporanga`, 120, 105);
-    doc.text(`UF: Espírito Santo`, 20, 110);
-    doc.text(`CEP: 29.850-000`, 120, 110);
+    doc.text(`Razão Social: ${formData.razao_social}`, 20, 80);
+    doc.text(`Nome Fantasia: ${formData.nome_fantasia}`, 20, 85);
+    doc.text(`CNPJ / CPF: ${formData.documento}`, 20, 90);
+    doc.text(`Ramo de Atividade: ${formData.ramo_atividade}`, 120, 90);
+    doc.text(`Logradouro: ${formData.logradouro}`, 20, 95);
+    doc.text(`Número: ${formData.numero ? formData.numero : ''}`, 120, 95);
+    doc.text(`Bairro: ${formData.bairro}`, 20, 100);
+    doc.text(`Cidade: Ecoporanga`, 120, 100);
+    doc.text(`UF: Espírito Santo`, 20, 105);
+    doc.text(`CEP: 29.850-000`, 120, 105);
 
-    doc.text(`Responsável Técnico: ${formData.responsavel_tecnico}`, 20, 120, { maxWidth: 100 });
-    doc.text(`CPF: Não informado`, 120, 120);
-    
+    doc.text(`Responsável Técnico: ${formData.responsavel_tecnico}`, 20, 115, { maxWidth: 100 });
+    doc.text(`CPF: Não informado`, 120, 115);
+
     doc.setFont('helvetica', 'bold');
-    doc.text(`Atividade Econômica Principal`, 20, 135);
+    doc.text(`Atividade Econômica Principal`, 20, 130);
     doc.setFont('helvetica', 'normal');
-    doc.text(`CNAE: `, 20, 140);
-    doc.text(`${atividadesEmpresa.atividade_principal?.cnae}`, 20, 145);
-    doc.text(`Descrição: `, 40, 140);
-    doc.text(`${atividadesEmpresa.atividade_principal?.descricao}`, 40, 145, { maxWidth: 150 });
+    doc.text(`CNAE: `, 20, 135);
+    doc.text(`${atividadesEmpresa.atividade_principal?.cnae}`, 20, 140);
+    doc.text(`Descrição: `, 40, 135);
+    doc.text(`${atividadesEmpresa.atividade_principal?.descricao}`, 40, 140, { maxWidth: 150 });
     doc.setFont('helvetica', 'bold');
-    doc.text(`Atividades Econômicas Secundárias (máximo de 5)`, 20, 155);
+    doc.text(`Atividades Econômicas Secundárias (máximo de 5)`, 20, 150);
     doc.setFont('helvetica', 'normal');
-    doc.text(`CNAE: `, 20, 160);
-    doc.text(`Descrição:`, 40, 160);
+    doc.text(`CNAE: `, 20, 155);
+    doc.text(`Descrição:`, 40, 155);
 
+    let yPosition = 160;
     let count = 0;
-    atividades?.forEach((item: any) => {  
-      if(count > 5) {
-        return;
-      }
-
-      doc.text(`${item.cnae}`, 20, (yPosition));      
-      doc.text(`${item.descricao}`, 40, (yPosition), { maxWidth: 150 });
-
-      yPosition += 10;
+    atividades?.forEach((item: any) => {
       count++;
+      if(count <= 10) {
+        doc.text(`${item.cnae}`, 20, (yPosition));
+        doc.text(`${item.descricao}`, 40, (yPosition), { maxWidth: 150 });
+
+        yPosition += 6;
+      }
     });
 
+    doc.setFontSize(8);
+    doc.text(`É de responsabilidade dos proprietários/responsáveis legais: conhecer a legislação sanitária vigente e cumpri-la integralmente, inclusive futuras atualizações; observar as boas práticas referentes às atividades/serviços prestados; garantir a veracidade das informações aqui apresentadas; e atender as obrigações e exigências legais para o exercício das atividades/serviços. Conforme Lei Municipal nº 1.459/2010.`, 20, 240, { maxWidth: 160, align: "justify" });
     doc.text(`Ecoporanga-ES, ${this.dataHoje}`, 20, 255);
 
     doc.setFontSize(12);
@@ -481,7 +477,7 @@ export class HomeComponent implements OnInit {
     const xFooterPosition = (doc.internal.pageSize.getWidth() - footerWidth) / 2;
     doc.text(footerText, xFooterPosition, doc.internal.pageSize.getHeight() - 5);
 
-    doc.save(`${formData.nome_fantasia}.pdf`);
+    doc.save(`licenca_sanitaria_${formData.nome_fantasia}.pdf`);
   }
 
   private applyMask(key: string, value: any): string {
@@ -512,7 +508,7 @@ export class HomeComponent implements OnInit {
       return value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
     } else {
       return value;
-    }    
+    }
   }
 
   formatDate(dateString: Date): string {
@@ -573,16 +569,16 @@ export class HomeComponent implements OnInit {
     return cnpjNumber;
   }
 
-  async getCNPJ(cnpj: number): Promise<any> {  
+  async getCNPJ(cnpj: number): Promise<any> {
     try {
       this.dadosEmpresa = {};
 
       const empresaBuscada = await this.http.get<any>(`${this.apiUrl}/${cnpj}`).toPromise();
 
       this.dadosEmpresa = {
-        atividade_principal: { 
-          cnae: empresaBuscada.estabelecimento.atividade_principal.subclasse, 
-          descricao: empresaBuscada.estabelecimento.atividade_principal.descricao 
+        atividade_principal: {
+          cnae: empresaBuscada.estabelecimento.atividade_principal.subclasse,
+          descricao: empresaBuscada.estabelecimento.atividade_principal.descricao
         },
         atividades_secundarias: []
       };
@@ -591,10 +587,10 @@ export class HomeComponent implements OnInit {
         let atividades = empresaBuscada.estabelecimento.atividades_secundarias;
 
         atividades.forEach((item: any) => {
-          this.dadosEmpresa.atividades_secundarias?.push({ 
-            cnae: item.subclasse, 
-            descricao: item.descricao 
-          });  
+          this.dadosEmpresa.atividades_secundarias?.push({
+            cnae: item.subclasse,
+            descricao: item.descricao
+          });
         });
       };
 

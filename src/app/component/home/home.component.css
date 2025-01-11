@@ -109,7 +109,7 @@
 }
 
 .bottomBtn>button {
-  width: 16rem; 
+  width: 16rem;
 }
 
 .topBtn {
@@ -252,13 +252,6 @@ form:last-child {
   color: #4b5563;
   font-size: 1rem;
 }
-
-/* .autocompleInput {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 20rem;
-} */
 
 ::ng-deep .p-autocomplete .p-inputtext {
   border-radius: 4px 0 0 4px;
