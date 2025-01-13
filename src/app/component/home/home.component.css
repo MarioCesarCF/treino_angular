@@ -244,15 +244,6 @@ form:last-child {
   gap: 1rem;
 }
 
-.dropdownInput {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 20rem;
-  color: #4b5563;
-  font-size: 1rem;
-}
-
 ::ng-deep .p-autocomplete .p-inputtext {
   border-radius: 4px 0 0 4px;
   border: 1px solid #ccc;
@@ -267,6 +258,50 @@ form:last-child {
 
 ::ng-deep .p-autocomplete-item {
   padding: 10px;
+}
+
+::ng-deep .p-dropdown .dropdownInput {  
+  border-radius: 4px 0 0 4px;
+  border: 1px solid #ccc;
+}
+
+::ng-deep .p-dropdown-label {
+  width: 17rem;
+  padding: 8px;
+}
+
+::ng-deep .p-dropdown-panel {
+  border-radius: 4px 4px 0 0;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+::ng-deep .p-dropdown-item {
+  padding: 10px;
+}
+
+::ng-deep .p-paginator-rpp-options>::ng-deep .p-dropdown-label{
+  width: 3rem;
+}
+
+.input-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%; /* ou ajuste conforme necessário */
+}
+
+.input-wrapper i {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #999; /* Cor da lupa */
+}
+
+.input-wrapper input {
+  padding-left: 30px; /* Espaço para o ícone */
+  width: 100%; /* ou ajuste conforme necessário */
+  box-sizing: border-box;
 }
 
 @media (max-width: 1440px) {
@@ -286,13 +321,20 @@ form:last-child {
 
   .custom-grid input {
     width: 15rem;
-    height: 2rem;
   }
 
   .dialog-header>p {
     padding: 0 2rem;
     font-size: 14px;
     text-align: justify;
+  }
+
+  ::ng-deep .p-autocomplete, ::ng-deep .p-dropdown {
+    width: 15rem;
+  }
+
+  ::ng-deep .p-paginator-rpp-options>::ng-deep .p-dropdown-label{
+    width: 3rem;
   }
 }
 

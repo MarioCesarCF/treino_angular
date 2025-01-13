@@ -181,7 +181,9 @@ export class HomeComponent implements OnInit {
 
     this.empreendimentoService.getAll(nome, bairro, atividade, situacao).subscribe({
       next: (result) => {
-        this.empreendimentos = result.data;
+        this.empreendimentos = result.data.sort(function(a,b) {
+          return a.nome_fantasia < b.nome_fantasia ? -1 : a.nome_fantasia > b.nome_fantasia ? 1 : 0;
+        });
         this.cd.detectChanges();
       },
       error: (err) => {
@@ -361,6 +363,11 @@ export class HomeComponent implements OnInit {
   }
 
   async licencaPDF(): Promise<void> {
+    if(!this.licencaForm.valid) {
+      alert("Preencha todos os dados do formulário!");
+      return;
+    }
+
     let num = this.getNumberCnpj(this.licencaForm.value.empreendimento.documento);
 
     await this.getCNPJ(num);
@@ -401,18 +408,18 @@ export class HomeComponent implements OnInit {
     let xPosition = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
     doc.text(title, xPosition, 45);
 
-    doc.setFontSize(16);
-    const numeroLicenca = `Número: ${numero}`;
+    const numeroLicenca = `Nº: ${numero}`;
     titleWidth = doc.getTextWidth(numeroLicenca);
     xPosition = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
     doc.text(numeroLicenca, xPosition, 55);
 
+    doc.setFontSize(16);
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(10);
     doc.text(`Número do Processo: ${processo}`, 20, 65);
     doc.text(`Data do Processo: ${data}`, 120, 65);
     doc.text(`Vigência da Licença: ${vigencia}`, 20, 70);
-    doc.text(`Tipo: ${tipo}`, 120, 70);
+    doc.text(`Tipo: ${tipo.label}`, 120, 70);
 
     const formData = this.licencaForm.value.empreendimento;
     const atividadesEmpresa = this.dadosEmpresa;
@@ -429,18 +436,23 @@ export class HomeComponent implements OnInit {
     doc.text(`UF: Espírito Santo`, 20, 105);
     doc.text(`CEP: 29.850-000`, 120, 105);
 
-    doc.text(`Responsável Técnico: ${formData.responsavel_tecnico}`, 20, 115, { maxWidth: 100 });
+    doc.text(`Proprietário / Responsável Técnico: `, 20, 115);
     doc.text(`CPF: Não informado`, 120, 115);
+    doc.text(`${formData.responsavel_tecnico ? formData.responsavel_tecnico : formData.nome_proprietario}`, 20, 120);
 
     doc.setFont('helvetica', 'bold');
     doc.text(`Atividade Econômica Principal`, 20, 130);
     doc.setFont('helvetica', 'normal');
     doc.text(`CNAE: `, 20, 135);
-    doc.text(`${atividadesEmpresa.atividade_principal?.cnae}`, 20, 140);
+    if(atividadesEmpresa.atividade_principal?.cnae && atividadesEmpresa.atividade_principal?.descricao) {
+      doc.text(`${atividadesEmpresa.atividade_principal?.cnae}`, 20, 140);
+      doc.text(`${atividadesEmpresa.atividade_principal?.descricao}`, 40, 140, { maxWidth: 150 });
+    }
+    //doc.text(`${atividadesEmpresa.atividade_principal?.cnae}`, 20, 140);
     doc.text(`Descrição: `, 40, 135);
-    doc.text(`${atividadesEmpresa.atividade_principal?.descricao}`, 40, 140, { maxWidth: 150 });
+    //doc.text(`${atividadesEmpresa.atividade_principal?.descricao}`, 40, 140, { maxWidth: 150 });
     doc.setFont('helvetica', 'bold');
-    doc.text(`Atividades Econômicas Secundárias (máximo de 5)`, 20, 150);
+    doc.text(`Atividades Econômicas Secundárias (máximo de 10)`, 20, 150);
     doc.setFont('helvetica', 'normal');
     doc.text(`CNAE: `, 20, 155);
     doc.text(`Descrição:`, 40, 155);
@@ -477,7 +489,13 @@ export class HomeComponent implements OnInit {
     const xFooterPosition = (doc.internal.pageSize.getWidth() - footerWidth) / 2;
     doc.text(footerText, xFooterPosition, doc.internal.pageSize.getHeight() - 5);
 
-    doc.save(`licenca_sanitaria_${formData.nome_fantasia}.pdf`);
+    //Faz o download direto com o nome
+    //doc.save(`licenca_sanitaria_${numero}_${formData.ramo_atividade}_${formData.nome_fantasia}.pdf`);
+
+    //Abre o PDF em uma nova aba para ser feito o download
+    const pdfBlob = doc.output("blob");
+    const pdfURL = URL.createObjectURL(pdfBlob);
+    window.open(pdfURL, "_blank");
   }
 
   private applyMask(key: string, value: any): string {
@@ -595,8 +613,7 @@ export class HomeComponent implements OnInit {
       };
 
       return empresaBuscada;
-    } catch (e) {
-      console.log(e);
+    } catch (e) {      
     }
   }
 
@@ -609,7 +626,9 @@ export class HomeComponent implements OnInit {
     if (this.todosEmpreendimentos.length === 0) {
       this.empreendimentoService.getAll('', '', '', situacao).subscribe({
         next: (result) => {
-          this.todosEmpreendimentos = result.data;
+          this.todosEmpreendimentos = result.data.sort(function(a,b) {
+            return a.nome_fantasia < b.nome_fantasia ? -1 : a.nome_fantasia > b.nome_fantasia ? 1 : 0;
+          });
           this.filtrarLocalmente(query);
         }
       });

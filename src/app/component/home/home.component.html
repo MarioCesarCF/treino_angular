@@ -3,21 +3,24 @@
 <main>
   <section class="main-section">
     <div class="headline">
-      <h2>Empreendimentos Cadastrados</h2>
+      <h2>Cadastrado de Empreendimentos</h2>
       <div class="card">
         <form [formGroup]="filtroForm" (ngSubmit)="obterTodos()" class="formFilter">
           <div class="inputsFiltro">
-            <div class="form-group">
+            <div class="form-group input-wrapper">
+              <i class="pi pi-search"></i>
               <input pInputText id="nome_fantasia" formControlName="nome" class="flex-auto" autocomplete="off"
                 placeholder="Nome Fantasia" />
             </div>
 
-            <div class="form-group">
+            <div class="form-group input-wrapper">
+              <i class="pi pi-search"></i>
               <input pInputText id="bairro" formControlName="bairro" class="flex-auto" autocomplete="off"
                 placeholder="Bairro" />
             </div>
 
-            <div class="form-group">
+            <div class="form-group input-wrapper">
+              <i class="pi pi-search"></i>
               <input pInputText id="ramo_atividade" formControlName="atividade" class="flex-auto" autocomplete="off"
                 placeholder="Ramo Atividade" />
             </div>
@@ -171,7 +174,7 @@
       <div class="form-group">
         <div class="label-input">
           <label for="numero" class="font-semibold w-6rem">Número</label>
-          <input pInputText id="numero" formControlName="numero" class="flex-auto" />
+          <input pInputText type="number" id="numero" formControlName="numero" class="flex-auto" />
         </div>
       </div>
     </form>
@@ -191,7 +194,7 @@
 
 <p-dialog [(visible)]="dialogImprimirLicenca" [modal]="true" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
   [style]="{ width: '50vw', height: '70vh', padding: '1rem' }" [draggable]="false" [resizable]="false"
-  (onClose)="closeDialog()">
+  (onClose)="closeDialog()" (onHide)="closeDialog()">
 
   <div class="dialog-header">
     <h2 class="text-center">Imprimir Licença Sanitária</h2>
@@ -243,11 +246,8 @@
       <div class="form-group">
         <div class="label-input">
           <label for="tipoLicenca" class="font-semibold w-6rem">Tipo de Licença *</label>
-          <select class="dropdownInput" id="tiposLicenca" formControlName="tipoLicenca">
-            <option value="Inicial">Inicial</option>
-            <option value="Renovação">Renovação</option>
-            <option value="Provisória">Provisória</option>
-          </select>
+          <p-dropdown formControlName="tipoLicenca" [options]="tiposLicenca" 
+          class="dropdownInput" appendTo="body"></p-dropdown>
         </div>
       </div>
     </form>
