@@ -13,6 +13,7 @@ import { TableModule } from 'primeng/table';
 import { EmpreendimentoDto } from '../../dto/empreendimento.dto';
 import { DadosEmpresa } from '../../intefaces/dadosEmpresa.interface';
 import { Empreendimento } from '../../intefaces/empreendimento.interface';
+import { SearchDTO } from '../../intefaces/searchDTO';
 import { EmpreendimentoService } from '../../services/empreendimento.service';
 import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
@@ -179,7 +180,14 @@ export class HomeComponent implements OnInit {
       situacao = true;
     }
 
-    this.empreendimentoService.getAll(nome, bairro, atividade, situacao).subscribe({
+    const params: SearchDTO = {
+      nome_fantasia: nome,
+      bairro: bairro,
+      ramo_atividade: atividade,
+      situacao: situacao
+    }
+
+    this.empreendimentoService.getAll(params).subscribe({
       next: (result) => {
         this.empreendimentos = result.data.sort(function(a,b) {
           return a.nome_fantasia < b.nome_fantasia ? -1 : a.nome_fantasia > b.nome_fantasia ? 1 : 0;
@@ -325,6 +333,8 @@ export class HomeComponent implements OnInit {
 
     const formData = this.form.value;
     let yPosition = 90;
+    const listaPropriedades = ["Nome Fantasia", "Razão Social", "Documento", "Ramo de Atividade", "Nome Proprietário", "Responsável Técnico", "Telefone", "Logradouro", "Bairro", "Número", "Situação"];
+    let index = 0;
 
     for (const key in formData) {
       if (formData.hasOwnProperty(key)) {
@@ -332,7 +342,7 @@ export class HomeComponent implements OnInit {
         const value = formData[key];
 
         doc.setFont('helvetica', 'bold');
-        doc.text(`${formattedKey}:`, 20, yPosition);
+        doc.text(`${listaPropriedades[index]}:`, 20, yPosition);
 
         doc.setFont('helvetica', 'normal');
         let maskedValue = this.applyMask(key, value);
@@ -344,6 +354,7 @@ export class HomeComponent implements OnInit {
         doc.text(maskedValue, 80, yPosition);
 
         yPosition += 10;
+        index++;
       }
     }
 
@@ -425,6 +436,7 @@ export class HomeComponent implements OnInit {
     const atividadesEmpresa = this.dadosEmpresa;
     const atividades = atividadesEmpresa.atividades_secundarias;
 
+
     doc.text(`Razão Social: ${formData.razao_social}`, 20, 80);
     doc.text(`Nome Fantasia: ${formData.nome_fantasia}`, 20, 85);
     doc.text(`CNPJ / CPF: ${formData.documento}`, 20, 90);
@@ -436,21 +448,20 @@ export class HomeComponent implements OnInit {
     doc.text(`UF: Espírito Santo`, 20, 105);
     doc.text(`CEP: 29.850-000`, 120, 105);
 
-    doc.text(`Proprietário / Responsável Técnico: `, 20, 115);
-    doc.text(`CPF: Não informado`, 120, 115);
-    doc.text(`${formData.responsavel_tecnico ? formData.responsavel_tecnico : formData.nome_proprietario}`, 20, 120);
+    doc.text(`Proprietário: ${formData.nome_proprietario}`, 20, 115, { maxWidth: 160 });
+    doc.text(`Responsável Técnico: ${formData.responsavel_tecnico}`, 20, 120, { maxWidth: 160 });
 
     doc.setFont('helvetica', 'bold');
     doc.text(`Atividade Econômica Principal`, 20, 130);
     doc.setFont('helvetica', 'normal');
     doc.text(`CNAE: `, 20, 135);
+    doc.text(`Descrição: `, 40, 135);
     if(atividadesEmpresa.atividade_principal?.cnae && atividadesEmpresa.atividade_principal?.descricao) {
       doc.text(`${atividadesEmpresa.atividade_principal?.cnae}`, 20, 140);
       doc.text(`${atividadesEmpresa.atividade_principal?.descricao}`, 40, 140, { maxWidth: 150 });
+    } else {
+      doc.text(`${formData.ramo_atividade}`, 40, 140, { maxWidth: 150 });
     }
-    //doc.text(`${atividadesEmpresa.atividade_principal?.cnae}`, 20, 140);
-    doc.text(`Descrição: `, 40, 135);
-    //doc.text(`${atividadesEmpresa.atividade_principal?.descricao}`, 40, 140, { maxWidth: 150 });
     doc.setFont('helvetica', 'bold');
     doc.text(`Atividades Econômicas Secundárias (máximo de 10)`, 20, 150);
     doc.setFont('helvetica', 'normal');
@@ -613,7 +624,7 @@ export class HomeComponent implements OnInit {
       };
 
       return empresaBuscada;
-    } catch (e) {      
+    } catch (e) {
     }
   }
 
@@ -621,10 +632,14 @@ export class HomeComponent implements OnInit {
     const query = event.query.toLowerCase();
     const situacao = true;
 
+    const params: SearchDTO = {
+      situacao: situacao
+    }
+
 // TODO: ALTERAR FORMA DE PASSAR PARÂMETROS DE FILTRO, USAR OBJETO
 
     if (this.todosEmpreendimentos.length === 0) {
-      this.empreendimentoService.getAll('', '', '', situacao).subscribe({
+      this.empreendimentoService.getAll(params).subscribe({
         next: (result) => {
           this.todosEmpreendimentos = result.data.sort(function(a,b) {
             return a.nome_fantasia < b.nome_fantasia ? -1 : a.nome_fantasia > b.nome_fantasia ? 1 : 0;

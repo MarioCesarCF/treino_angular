@@ -1,9 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Empreendimento } from '../intefaces/empreendimento.interface';
-import { API_PATH } from '../environment/environment';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { EmpreendimentoDto } from '../dto/empreendimento.dto';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { API_PATH } from '../environment/environment';
+import { Empreendimento } from '../intefaces/empreendimento.interface';
+import { SearchDTO } from '../intefaces/searchDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -15,25 +16,20 @@ export class EmpreendimentoService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getAll(
-    nome_fantasia?: string,
-    bairro?: string,
-    ramo_atividade?: string,
-    situacao?: boolean
-  ): Observable<{ data: Empreendimento[] }> {
+  getAll(searchDTO: SearchDTO): Observable<{ data: Empreendimento[] }> {
     let params = new HttpParams();
-    
-    if (nome_fantasia) {
-      params = params.set('nome_fantasia', nome_fantasia);
+
+    if (searchDTO.nome_fantasia) {
+      params = params.set('nome_fantasia', searchDTO.nome_fantasia);
     }
-    if (bairro) {
-      params = params.set('bairro', bairro);
+    if (searchDTO.bairro) {
+      params = params.set('bairro', searchDTO.bairro);
     }
-    if (ramo_atividade) {
-      params = params.set('ramo_atividade', ramo_atividade);
+    if (searchDTO.ramo_atividade) {
+      params = params.set('ramo_atividade', searchDTO.ramo_atividade);
     }
-    if (situacao !== undefined) {
-      params = params.set('situacao', situacao.toString());
+    if (searchDTO.situacao !== undefined) {
+      params = params.set('situacao', searchDTO.situacao.toString());
     }
 
     return this.httpClient.get<{ data: Empreendimento[] }>(`${API_PATH}/empreendimento`, { params });
