@@ -24,13 +24,11 @@
               <input pInputText id="ramo_atividade" formControlName="atividade" class="flex-auto" autocomplete="off"
                 placeholder="Ramo Atividade" />
             </div>
+            <button pButton pRipple label="Filtrar" type="submit" class="p-button-primary w-5"></button>
+            <button pButton pRipple label="Limpar" class="p-button-primary w-5" (click)="limparFiltro()"></button>
           </div>
 
           <div class="form-group" id="btnsFiltro">
-            <div class="topBtn">
-              <button pButton pRipple label="Filtrar" type="submit" class="p-button-primary"></button>
-              <button pButton pRipple label="Limpar" class="p-button-primary" (click)="limparFiltro()"></button>
-            </div>
             <div class="bottomBtn">
               @if (situacao) {
               <button pButton pRipple label="Imprimir Licença Sanitária" class="p-button-secondary"
@@ -91,7 +89,6 @@
       </div>
     </div>
   </section>
-
 </main>
 
 <p-dialog [(visible)]="dialogAberto" [modal]="true" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
@@ -208,7 +205,8 @@
         <div class="label-input">
           <label for="empreendimento" class="font-semibold w-6rem">Estabelecimento *</label>
           <p-autoComplete formControlName="empreendimento" [suggestions]="empreendimentosFiltrados"
-            (completeMethod)="filtraEmpreendimento($event)" [field]="'nome_fantasia'" [dropdown]="true" class="autocompleInput">
+            (completeMethod)="filtraEmpreendimento($event)" [field]="'nome_fantasia'" [dropdown]="true"
+            class="autocompleInput">
           </p-autoComplete>
         </div>
       </div>
@@ -246,8 +244,8 @@
       <div class="form-group">
         <div class="label-input">
           <label for="tipoLicenca" class="font-semibold w-6rem">Tipo de Licença *</label>
-          <p-dropdown formControlName="tipoLicenca" [options]="tiposLicenca"
-          class="dropdownInput" appendTo="body"></p-dropdown>
+          <p-dropdown formControlName="tipoLicenca" [options]="tiposLicenca" class="dropdownInput"
+            appendTo="body"></p-dropdown>
         </div>
       </div>
     </form>
@@ -261,5 +259,4 @@
   </ng-template>
 </p-dialog>
 
-<br>
 <footer></footer>

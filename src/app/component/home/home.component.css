@@ -122,7 +122,7 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  margin: 1rem 0;
+  margin-bottom: 1rem;
   gap: 1rem;
 }
 
@@ -241,14 +241,19 @@ form:last-child {
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.w-5 {
+  width: 5rem;
 }
 
 ::ng-deep .p-autocomplete .p-inputtext {
   border-radius: 4px 0 0 4px;
   border: 1px solid #ccc;
   padding: 8px;
-  width: 17rem;
 }
 
 ::ng-deep .p-autocomplete-panel {
@@ -295,12 +300,12 @@ form:last-child {
   top: 50%;
   transform: translateY(-50%);
   font-size: 16px;
-  color: #999; /* Cor da lupa */
+  color: #999;
 }
 
 .input-wrapper input {
-  padding-left: 30px; /* Espaço para o ícone */
-  width: 100%; /* ou ajuste conforme necessário */
+  padding-left: 30px;
+  width: 100%;
   box-sizing: border-box;
 }
 
@@ -333,7 +338,7 @@ form:last-child {
     width: 15rem;
   }
 
-  ::ng-deep .p-paginator-rpp-options>::ng-deep .p-dropdown-label{
+  ::ng-deep .p-element>::ng-deep .p-dropdown-label{
     width: 3rem;
   }
 }
@@ -346,10 +351,8 @@ form:last-child {
   .tabela {
     overflow-x: visible;
   }
-}
-@media (max-width: 425px) {
-  .inputsFiltro {
-    flex-wrap: wrap;
-    justify-content: center;
+
+  ::ng-deep .p-autocomplete .p-inputtext {
+    width: 17rem;
   }
 }

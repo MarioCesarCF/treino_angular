@@ -160,9 +160,6 @@ export class HomeComponent implements OnInit {
       next: (result) => {
         this.empreendimento = result;
         this.form.patchValue(this.empreendimento);
-      },
-      error: (err) => {
-        alert('Erro ao obter dados do empreendimento: ' + err);
       }
     });
   }
@@ -193,9 +190,6 @@ export class HomeComponent implements OnInit {
           return a.nome_fantasia < b.nome_fantasia ? -1 : a.nome_fantasia > b.nome_fantasia ? 1 : 0;
         });
         this.cd.detectChanges();
-      },
-      error: (err) => {
-        alert('Erro ao obter empreendimentos: ' + err.error.message);
       }
     });
   }
@@ -266,12 +260,14 @@ export class HomeComponent implements OnInit {
 
         updateRequest.documento = this.maskDoc(updateRequest.documento);
         updateRequest.telefone = this.maskPhone(updateRequest.telefone);
+        updateRequest.ramo_atividade = this.maskNomes(updateRequest.ramo_atividade);
 
         this.empreendimentoService.updateAsync(updateRequest).subscribe({
           next: (result) => {
             alert(result.message);
             this.visibleUpdate = false;
             this.closeDialog();
+            window.location.reload();
           }
         });
       } else {
@@ -279,6 +275,7 @@ export class HomeComponent implements OnInit {
 
         createRequest.documento = this.maskDoc(createRequest.documento);
         createRequest.telefone = this.maskPhone(createRequest.telefone);
+        createRequest.ramo_atividade = this.maskNomes(createRequest.ramo_atividade);
 
         this.empreendimentoService.createAsync(createRequest).subscribe({
           next: (result) => {
@@ -286,6 +283,7 @@ export class HomeComponent implements OnInit {
             alert(result.message);
             this.visibleCreate = false;
             this.closeDialog();
+            window.location.reload();
           }
         });
       }
@@ -338,7 +336,6 @@ export class HomeComponent implements OnInit {
 
     for (const key in formData) {
       if (formData.hasOwnProperty(key)) {
-        const formattedKey = key.replace('_', ' ').replace(/^\w/, (c) => c.toUpperCase());
         const value = formData[key];
 
         doc.setFont('helvetica', 'bold');
@@ -436,7 +433,6 @@ export class HomeComponent implements OnInit {
     const atividadesEmpresa = this.dadosEmpresa;
     const atividades = atividadesEmpresa.atividades_secundarias;
 
-
     doc.text(`Razão Social: ${formData.razao_social}`, 20, 80);
     doc.text(`Nome Fantasia: ${formData.nome_fantasia}`, 20, 85);
     doc.text(`CNPJ / CPF: ${formData.documento}`, 20, 90);
@@ -460,7 +456,7 @@ export class HomeComponent implements OnInit {
       doc.text(`${atividadesEmpresa.atividade_principal?.cnae}`, 20, 140);
       doc.text(`${atividadesEmpresa.atividade_principal?.descricao}`, 40, 140, { maxWidth: 150 });
     } else {
-      doc.text(`${formData.ramo_atividade}`, 40, 140, { maxWidth: 150 });
+      doc.text(`Não informado`, 20, 140);
     }
     doc.setFont('helvetica', 'bold');
     doc.text(`Atividades Econômicas Secundárias (máximo de 10)`, 20, 150);
@@ -476,23 +472,23 @@ export class HomeComponent implements OnInit {
         doc.text(`${item.cnae}`, 20, (yPosition));
         doc.text(`${item.descricao}`, 40, (yPosition), { maxWidth: 150 });
 
-        yPosition += 6;
+        yPosition += 8;
       }
     });
 
     doc.setFontSize(8);
-    doc.text(`É de responsabilidade dos proprietários/responsáveis legais: conhecer a legislação sanitária vigente e cumpri-la integralmente, inclusive futuras atualizações; observar as boas práticas referentes às atividades/serviços prestados; garantir a veracidade das informações aqui apresentadas; e atender as obrigações e exigências legais para o exercício das atividades/serviços. Conforme Lei Municipal nº 1.459/2010.`, 20, 240, { maxWidth: 160, align: "justify" });
-    doc.text(`Ecoporanga-ES, ${this.dataHoje}`, 20, 255);
+    doc.text(`É de responsabilidade dos proprietários/responsáveis legais: conhecer a legislação sanitária vigente e cumpri-la integralmente, inclusive futuras atualizações; observar as boas práticas referentes às atividades/serviços prestados; garantir a veracidade das informações aqui apresentadas; e atender as obrigações e exigências legais para o exercício das atividades/serviços. Conforme Lei Municipal nº 1.459/2010.`, 20, 245, { maxWidth: 160, align: "justify" });
+    doc.text(`Ecoporanga-ES, ${this.dataHoje}`, 20, 260);
 
     doc.setFontSize(12);
     const autoridadeSanitaria = 'Autoridade Sanitária';
     titleWidth = doc.getTextWidth(autoridadeSanitaria);
     xPosition = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
-    doc.text(autoridadeSanitaria, xPosition, 275);
+    doc.text(autoridadeSanitaria, xPosition, 280);
     const vigilanciaSanitaria = 'VIGILÂNCIA SANITÁRIA DE ECOPORANGA';
     titleWidth = doc.getTextWidth(vigilanciaSanitaria);
     xPosition = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
-    doc.text(vigilanciaSanitaria, xPosition, 280);
+    doc.text(vigilanciaSanitaria, xPosition, 285);
 
     doc.setFontSize(8);
     const footerText = 'Av. Floriano Rubim, s/n, Centro, Ecoporanga/ES. Fone: (27) 99629-4357. E-mail: visaecoporanga@gmail.com';
@@ -501,12 +497,12 @@ export class HomeComponent implements OnInit {
     doc.text(footerText, xFooterPosition, doc.internal.pageSize.getHeight() - 5);
 
     //Faz o download direto com o nome
-    //doc.save(`licenca_sanitaria_${numero}_${formData.ramo_atividade}_${formData.nome_fantasia}.pdf`);
+    doc.save(`licenca_sanitaria_${numero}_${formData.ramo_atividade}_${formData.nome_fantasia}.pdf`);
 
     //Abre o PDF em uma nova aba para ser feito o download
-    const pdfBlob = doc.output("blob");
-    const pdfURL = URL.createObjectURL(pdfBlob);
-    window.open(pdfURL, "_blank");
+    // const pdfBlob = doc.output("blob");
+    // const pdfURL = URL.createObjectURL(pdfBlob);
+    // window.open(pdfURL, "_blank");
   }
 
   private applyMask(key: string, value: any): string {
@@ -538,6 +534,11 @@ export class HomeComponent implements OnInit {
     } else {
       return value;
     }
+  }
+
+  private maskNomes(value: string): string {
+    value = value.replace(/^\w/, (c) => c.toUpperCase());
+    return value;
   }
 
   formatDate(dateString: Date): string {
@@ -635,8 +636,6 @@ export class HomeComponent implements OnInit {
     const params: SearchDTO = {
       situacao: situacao
     }
-
-// TODO: ALTERAR FORMA DE PASSAR PARÂMETROS DE FILTRO, USAR OBJETO
 
     if (this.todosEmpreendimentos.length === 0) {
       this.empreendimentoService.getAll(params).subscribe({

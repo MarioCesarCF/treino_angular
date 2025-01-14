@@ -2,10 +2,12 @@ div {
     width: 100vw;
     display: flex;
     justify-content: center;
+    margin: 0;
 }
 
 p {
     padding: 10px;
+    text-align: center;
 }
 
 a {
