@@ -271,7 +271,7 @@ export class HomeComponent implements OnInit {
         this.empreendimentoService.updateAsync(updateRequest).subscribe({
           next: (result) => {
             this.messageService.add({ severity: 'success', summary: 'Success', detail: result.message });
-            this.visibleUpdate = false;
+            this.closeDialog();       
           }
         });
       } else {
@@ -285,7 +285,7 @@ export class HomeComponent implements OnInit {
           next: (result) => {
             this.form.reset();
             this.messageService.add({ severity: 'success', summary: 'Success', detail: result.message });
-            this.visibleCreate = false;
+            this.closeDialog();
           }
         });
       }
