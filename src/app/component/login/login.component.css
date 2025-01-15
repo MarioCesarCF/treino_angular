@@ -2,7 +2,7 @@
 .login-container {
     max-width: 400px;
     margin: auto;
-    padding: 20px;
+    padding: 1rem;
     border: 1px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -16,6 +16,10 @@
   
   .p-field {
     margin-bottom: 15px;
+  }
+
+  .p-field input, .p-field button {
+    padding: 0.5rem;
   }
   
   .caixa {

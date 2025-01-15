@@ -9,6 +9,14 @@
   width: 100%;
 }
 
+::ng-deep .p-toast {
+  padding: 2rem;
+}
+
+::ng-deep .p-toast-message {
+  padding: 2rem;
+}
+
 .card {
   width: 100%;
   max-width: 1200px;

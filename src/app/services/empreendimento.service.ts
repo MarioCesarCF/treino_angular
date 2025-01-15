@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { EmpreendimentoDto } from '../dto/empreendimento.dto';
 import { API_PATH } from '../environment/environment';
 import { Empreendimento } from '../intefaces/empreendimento.interface';
-import { SearchDTO } from '../intefaces/searchDTO';
+import { SearchDTO } from '../dto/searchDTO';
 
 @Injectable({
   providedIn: 'root'

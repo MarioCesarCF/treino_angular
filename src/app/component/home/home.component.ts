@@ -13,10 +13,12 @@ import { TableModule } from 'primeng/table';
 import { EmpreendimentoDto } from '../../dto/empreendimento.dto';
 import { DadosEmpresa } from '../../intefaces/dadosEmpresa.interface';
 import { Empreendimento } from '../../intefaces/empreendimento.interface';
-import { SearchDTO } from '../../intefaces/searchDTO';
+import { SearchDTO } from '../../dto/searchDTO';
 import { EmpreendimentoService } from '../../services/empreendimento.service';
 import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 interface Column {
   field: string;
@@ -40,7 +42,8 @@ interface TiposLicenca {
     provide: HttpBackend,
     useClass: FetchBackend
   },
-    EmpreendimentoService
+    EmpreendimentoService,
+    MessageService
   ],
   imports: [
     HeaderComponent,
@@ -54,7 +57,8 @@ interface TiposLicenca {
     AutoCompleteModule,
     FormsModule,
     DropdownModule,
-    CalendarModule
+    CalendarModule,
+    ToastModule
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
@@ -103,7 +107,8 @@ export class HomeComponent implements OnInit {
     private empreendimentoService: EmpreendimentoService,
     private fb: FormBuilder,
     private cd: ChangeDetectorRef,
-    private http: HttpClient
+    private http: HttpClient,
+    private messageService: MessageService
   ) {
     this.tiposLicenca = [
       {label: "Inicial"},
@@ -220,7 +225,7 @@ export class HomeComponent implements OnInit {
 
     this.empreendimentoService.updateAsync(empreendimento).subscribe({
       next: (result) => {
-        alert(`Empreendimento ${empreendimento.nome_fantasia} inativado com sucesso.`);
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: `Empreendimento ${empreendimento.nome_fantasia} inativado com sucesso.` });
         this.obterTodos();
       }
     });
@@ -251,6 +256,7 @@ export class HomeComponent implements OnInit {
     this.obterTodos();
     this.form.reset();
     this.licencaForm.reset();
+    window.location.reload();
   }
 
   save(): void {
@@ -264,10 +270,8 @@ export class HomeComponent implements OnInit {
 
         this.empreendimentoService.updateAsync(updateRequest).subscribe({
           next: (result) => {
-            alert(result.message);
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: result.message });
             this.visibleUpdate = false;
-            this.closeDialog();
-            window.location.reload();
           }
         });
       } else {
@@ -280,15 +284,13 @@ export class HomeComponent implements OnInit {
         this.empreendimentoService.createAsync(createRequest).subscribe({
           next: (result) => {
             this.form.reset();
-            alert(result.message);
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: result.message });
             this.visibleCreate = false;
-            this.closeDialog();
-            window.location.reload();
           }
         });
       }
     } else {
-      alert('Formulário inválido. Preencha todos os dados corretamente.');
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Formulário inválido. Preencha todos os dados corretamente.' });
     }
   }
 
@@ -372,7 +374,7 @@ export class HomeComponent implements OnInit {
 
   async licencaPDF(): Promise<void> {
     if(!this.licencaForm.valid) {
-      alert("Preencha todos os dados do formulário!");
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Preencha todos os dados do formulário!' });
       return;
     }
 
@@ -573,7 +575,7 @@ export class HomeComponent implements OnInit {
 
     this.empreendimentoService.updateAsync(updateRequest).subscribe({
       next: (result) => {
-        alert(`Situação do empreendimento ${empreendimento.nome_fantasia} atualizada para ativo.`);
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: `Situação do empreendimento ${empreendimento.nome_fantasia} atualizada para ativo.` });
         this.obterTodos();
       }
     });
@@ -582,7 +584,7 @@ export class HomeComponent implements OnInit {
   deletar(empreendimento: Empreendimento) {
     this.empreendimentoService.deleteAsync(empreendimento.id).subscribe({
       next: (result) => {
-        alert(`Empreendimento ${empreendimento.nome_fantasia} deletado com sucesso.`);
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: `Empreendimento ${empreendimento.nome_fantasia} deletado com sucesso.` });
         this.obterTodos();
       }
     });
