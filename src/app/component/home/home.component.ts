@@ -256,7 +256,6 @@ export class HomeComponent implements OnInit {
     this.obterTodos();
     this.form.reset();
     this.licencaForm.reset();
-    window.location.reload();
   }
 
   save(): void {
@@ -636,26 +635,17 @@ export class HomeComponent implements OnInit {
     const situacao = true;
 
     const params: SearchDTO = {
+      nome_fantasia: query,
       situacao: situacao
     }
 
-    if (this.todosEmpreendimentos.length === 0) {
-      this.empreendimentoService.getAll(params).subscribe({
-        next: (result) => {
-          this.todosEmpreendimentos = result.data.sort(function(a,b) {
-            return a.nome_fantasia < b.nome_fantasia ? -1 : a.nome_fantasia > b.nome_fantasia ? 1 : 0;
-          });
-          this.filtrarLocalmente(query);
-        }
-      });
-    } else {
-      this.filtrarLocalmente(query);
-    }
-  }
-
-  private filtrarLocalmente(query: string) {
-    this.empreendimentosFiltrados = this.todosEmpreendimentos.filter(empreendimento =>
-      empreendimento.nome_fantasia.toLowerCase().includes(query)
-    );
+    this.empreendimentoService.getAll(params).subscribe({
+      next: (result) => {
+        
+        this.empreendimentosFiltrados = result.data.sort(function(a,b) {
+          return a.nome_fantasia < b.nome_fantasia ? -1 : a.nome_fantasia > b.nome_fantasia ? 1 : 0;
+        });
+      }
+    });
   }
 }
