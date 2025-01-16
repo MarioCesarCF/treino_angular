@@ -225,7 +225,7 @@ export class HomeComponent implements OnInit {
 
     this.empreendimentoService.updateAsync(empreendimento).subscribe({
       next: (result) => {
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: `Empreendimento ${empreendimento.nome_fantasia} inativado com sucesso.` });
+        this.messageService.add({ severity: 'success', detail: `Empreendimento ${empreendimento.nome_fantasia} foi inativado.` });
         this.obterTodos();
       }
     });
@@ -269,7 +269,7 @@ export class HomeComponent implements OnInit {
 
         this.empreendimentoService.updateAsync(updateRequest).subscribe({
           next: (result) => {
-            this.messageService.add({ severity: 'success', summary: 'Success', detail: result.message });
+            this.messageService.add({ severity: 'success', detail: result.message });
             this.closeDialog();       
           }
         });
@@ -283,13 +283,13 @@ export class HomeComponent implements OnInit {
         this.empreendimentoService.createAsync(createRequest).subscribe({
           next: (result) => {
             this.form.reset();
-            this.messageService.add({ severity: 'success', summary: 'Success', detail: result.message });
+            this.messageService.add({ severity: 'success', detail: result.message });
             this.closeDialog();
           }
         });
       }
     } else {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Formulário inválido. Preencha todos os dados corretamente.' });
+      this.messageService.add({ severity: 'error', detail: 'Formulário inválido. Preencha todos os dados corretamente.' });
     }
   }
 
@@ -373,7 +373,7 @@ export class HomeComponent implements OnInit {
 
   async licencaPDF(): Promise<void> {
     if(!this.licencaForm.valid) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Preencha todos os dados do formulário!' });
+      this.messageService.add({ severity: 'error', detail: 'Preencha todos os dados do formulário!' });
       return;
     }
 
@@ -574,7 +574,7 @@ export class HomeComponent implements OnInit {
 
     this.empreendimentoService.updateAsync(updateRequest).subscribe({
       next: (result) => {
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: `Situação do empreendimento ${empreendimento.nome_fantasia} atualizada para ativo.` });
+        this.messageService.add({ severity: 'success', detail: `Situação do empreendimento ${empreendimento.nome_fantasia} atualizada para ativo.` });
         this.obterTodos();
       }
     });
@@ -583,7 +583,7 @@ export class HomeComponent implements OnInit {
   deletar(empreendimento: Empreendimento) {
     this.empreendimentoService.deleteAsync(empreendimento.id).subscribe({
       next: (result) => {
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: `Empreendimento ${empreendimento.nome_fantasia} deletado com sucesso.` });
+        this.messageService.add({ severity: 'success', detail: `Empreendimento ${empreendimento.nome_fantasia} deletado com sucesso.` });
         this.obterTodos();
       }
     });

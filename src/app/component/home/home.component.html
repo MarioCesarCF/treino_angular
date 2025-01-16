@@ -4,7 +4,7 @@
 <main>
   <section class="main-section">
     <div class="headline">
-      <h2>Cadastrado de Empreendimentos</h2>
+      <h2>Sistema de Cadastramento</h2>
       <div class="card">
         <form [formGroup]="filtroForm" (ngSubmit)="obterTodos()" class="formFilter">
           <div class="inputsFiltro">
@@ -49,9 +49,13 @@
         <p-table #dt [columns]="cols" [value]="empreendimentos" class="tabela" styleClass="p-datatable-gridlines"
           [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 30]">
           <ng-template pTemplate="caption">
-            <div style="text-align: left">
-              <button pButton pRipple icon="pi pi-external-link" (click)="dt.exportCSV()" id="btnExport">
-              </button>
+            <div class="tituloTabela">
+              @if (situacao) {
+                <h2>Empreendimentos - Ativos</h2>
+              } @else {
+                <h2>Empreendimentos - Inativos</h2>
+              }              
+              <button pButton pRipple icon="pi pi-external-link" (click)="dt.exportCSV()" id="btnExport"></button>
             </div>
           </ng-template>
           <ng-template pTemplate="header" let-columns>
