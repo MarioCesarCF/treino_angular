@@ -106,7 +106,6 @@ export class HomeComponent implements OnInit {
   constructor(
     private empreendimentoService: EmpreendimentoService,
     private fb: FormBuilder,
-    private cd: ChangeDetectorRef,
     private http: HttpClient,
     private messageService: MessageService
   ) {
@@ -193,8 +192,7 @@ export class HomeComponent implements OnInit {
       next: (result) => {
         this.empreendimentos = result.data.sort(function(a,b) {
           return a.nome_fantasia < b.nome_fantasia ? -1 : a.nome_fantasia > b.nome_fantasia ? 1 : 0;
-        });
-        this.cd.detectChanges();
+        });       
       }
     });
   }
