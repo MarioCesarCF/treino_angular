@@ -40,11 +40,6 @@
   font-size: 1rem;
 }
 
-.formFilter button {
-  padding: 0.5rem;
-  font-size: 1rem;
-}
-
 .tabela {
   width: 100%;
   margin-top: 1rem;
@@ -74,10 +69,10 @@
   margin: 0.5rem;
 }
 
-.tabela button {
+.tabela button, .formFilter button {
   margin-right: 0.5rem;
-  font-size: 0.9rem;
-  padding: 0.3rem;
+  font-size: 1rem;
+  padding: 0.4rem;
 }
 
 #btnExport {
@@ -123,17 +118,8 @@
   align-items: center;
 }
 
-.topBtn>button {
-  width: 5rem;
-}
-
 .bottomBtn>button {
   width: 16rem;
-}
-
-.topBtn {
-  display: flex;
-  gap: 1rem;
 }
 
 .bottomBtn {
@@ -200,13 +186,9 @@ form>label {
   color: white;
 }
 
-.dialog-header {
-  margin-bottom: 2rem;
-}
-
 .dialog-header h2 {
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   color: rgb(20, 19, 19);
 }
 
