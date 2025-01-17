@@ -47,14 +47,14 @@
         </form>
 
         <p-table #dt [columns]="cols" [value]="empreendimentos" class="tabela" styleClass="p-datatable-gridlines"
-          [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 30]">
+          [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 30]" *ngIf="!loading || empreendimentos.length > 0">
           <ng-template pTemplate="caption">
             <div class="tituloTabela">
               @if (situacao) {
                 <h2>Empreendimentos - Ativos</h2>
               } @else {
                 <h2>Empreendimentos - Inativos</h2>
-              }              
+              }
               <button pButton pRipple icon="pi pi-external-link" (click)="dt.exportCSV()" id="btnExport"></button>
             </div>
           </ng-template>
@@ -195,7 +195,7 @@
 </p-dialog>
 
 <p-dialog [(visible)]="dialogImprimirLicenca" [modal]="true" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
-  [style]="{ width: '50vw', height: '70vh', padding: '1rem' }" [draggable]="false" [resizable]="false"
+  [style]="{ width: '50vw', height: '60vh', padding: '1rem' }" [draggable]="false" [resizable]="false"
   (onClose)="closeDialog()" (onHide)="closeDialog()">
 
   <div class="dialog-header">

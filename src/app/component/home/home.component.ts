@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { FetchBackend, HttpBackend, HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { jsPDF } from 'jspdf';
+import { MessageService } from 'primeng/api';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
@@ -10,15 +11,14 @@ import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
 import { EmpreendimentoDto } from '../../dto/empreendimento.dto';
+import { SearchDTO } from '../../dto/searchDTO';
 import { DadosEmpresa } from '../../intefaces/dadosEmpresa.interface';
 import { Empreendimento } from '../../intefaces/empreendimento.interface';
-import { SearchDTO } from '../../dto/searchDTO';
 import { EmpreendimentoService } from '../../services/empreendimento.service';
 import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
-import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
 
 interface Column {
   field: string;
@@ -79,8 +79,9 @@ export class HomeComponent implements OnInit {
   ramo_atividade?: string;
   situacao: boolean = true;
 
-  empreendimentos!: Empreendimento[];
+  empreendimentos: Empreendimento[] = [];
   empreendimento!: Empreendimento;
+  loading = true;
 
   cols!: Column[];
   exportColumns!: ExportColumn[];
@@ -188,11 +189,14 @@ export class HomeComponent implements OnInit {
       situacao: situacao
     }
 
+    this.loading = true;
+
     this.empreendimentoService.getAll(params).subscribe({
       next: (result) => {
         this.empreendimentos = result.data.sort(function(a,b) {
           return a.nome_fantasia < b.nome_fantasia ? -1 : a.nome_fantasia > b.nome_fantasia ? 1 : 0;
-        });       
+        });
+        this.loading = false;
       }
     });
   }
@@ -268,7 +272,7 @@ export class HomeComponent implements OnInit {
         this.empreendimentoService.updateAsync(updateRequest).subscribe({
           next: (result) => {
             this.messageService.add({ severity: 'success', detail: result.message });
-            this.closeDialog();       
+            this.closeDialog();
           }
         });
       } else {
@@ -639,7 +643,7 @@ export class HomeComponent implements OnInit {
 
     this.empreendimentoService.getAll(params).subscribe({
       next: (result) => {
-        
+
         this.empreendimentosFiltrados = result.data.sort(function(a,b) {
           return a.nome_fantasia < b.nome_fantasia ? -1 : a.nome_fantasia > b.nome_fantasia ? 1 : 0;
         });
