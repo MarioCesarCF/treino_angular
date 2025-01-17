@@ -36,7 +36,7 @@ export class EmpreendimentoService {
       params = params.set('situacao', searchDTO.situacao.toString());
     }
 
-    //params = params.set('_', new Date().getTime().toString());
+    params = params.set('_', new Date().getTime().toString());
 
     return this.httpClient.get<{ data: Empreendimento[] }>(`${API_PATH}/empreendimento`, { headers, params });
   }
