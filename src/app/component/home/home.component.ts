@@ -148,6 +148,8 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.empreendimentos = [];
+    this.loading = true;
     this.obterTodos();
 
     this.cols = [
