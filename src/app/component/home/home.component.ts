@@ -202,14 +202,6 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  onLazyLoad(event: any) {
-    this.loading = true; // Define o estado de carregamento
-    this.empreendimentos = []; // Limpa os dados antigos para evitar exibição desatualizada
-
-    // Configurar o DTO de busca ou parâmetros da API conforme a tabela
-    this.obterTodos();
-}
-
   limparFiltro() {
     this.filtroForm = this.fb.group({
       nome: [''],

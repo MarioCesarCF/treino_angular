@@ -47,7 +47,7 @@
         </form>
 
         <p-table *ngIf="!loading || empreendimentos.length > 0" #dt [columns]="cols" [value]="empreendimentos" class="tabela" styleClass="p-datatable-gridlines"
-          [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 30]" (onLazyLoad)="onLazyLoad($event)" [loading]="loading" lazy="true">
+          [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 30]" [loading]="loading" lazy="true">
           <ng-template pTemplate="caption">
             <div class="tituloTabela">
               @if (situacao) {
