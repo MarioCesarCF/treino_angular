@@ -175,6 +175,7 @@ export class HomeComponent implements OnInit {
     this.visibleUpdate = false;
     this.selectedEmpreendimentoId = "";
     this.visibleCreate = false;
+    this.loading = true;
 
     let { nome, bairro, atividade, situacao } = this.filtroForm.value;
 
@@ -191,8 +192,6 @@ export class HomeComponent implements OnInit {
       situacao: situacao
     }
 
-    this.loading = true;
-
     this.empreendimentoService.getAll(params).subscribe({
       next: (result) => {
         this.empreendimentos = result.data.sort(function(a,b) {
@@ -202,6 +201,14 @@ export class HomeComponent implements OnInit {
       }
     });
   }
+
+  onLazyLoad(event: any) {
+    this.loading = true; // Define o estado de carregamento
+    this.empreendimentos = []; // Limpa os dados antigos para evitar exibição desatualizada
+
+    // Configurar o DTO de busca ou parâmetros da API conforme a tabela
+    this.obterTodos();
+}
 
   limparFiltro() {
     this.filtroForm = this.fb.group({
