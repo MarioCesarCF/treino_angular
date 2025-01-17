@@ -21,7 +21,7 @@ export class EmpreendimentoService {
     const headers = new HttpHeaders({
       'Cache-Control': 'no-cache',
       'Pragma': 'no-cache'
-  });
+    });
 
     if (searchDTO.nome_fantasia) {
       params = params.set('nome_fantasia', searchDTO.nome_fantasia);
@@ -35,6 +35,8 @@ export class EmpreendimentoService {
     if (searchDTO.situacao !== undefined) {
       params = params.set('situacao', searchDTO.situacao.toString());
     }
+
+    params = params.set('_', new Date().getTime().toString());
 
     return this.httpClient.get<{ data: Empreendimento[] }>(`${API_PATH}/empreendimento`, { headers, params });
   }
