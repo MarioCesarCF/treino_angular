@@ -20,11 +20,11 @@ export class LoginComponent {
   constructor(private router: Router,
     private httpClient: HttpClient
   ) {}
-  login(): void {
+  async login(): Promise<void> {
     const email = this.email;
     const password = this.password;
 
-    this.httpClient.post(`${API_PATH}/auth`, { email, password }).subscribe((response: any) => {
+    await this.httpClient.post(`${API_PATH}/auth`, { email, password }).subscribe((response: any) => {
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('userName', response.data.userName);
       localStorage.setItem('userId', response.data.userId);

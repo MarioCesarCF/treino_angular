@@ -171,7 +171,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  obterTodos() {
+  async obterTodos() {
     this.visibleUpdate = false;
     this.selectedEmpreendimentoId = "";
     this.visibleCreate = false;
@@ -192,7 +192,7 @@ export class HomeComponent implements OnInit {
       situacao: situacao
     }
 
-    this.empreendimentoService.getAll(params).subscribe({
+    await this.empreendimentoService.getAll(params).subscribe({
       next: (result) => {
         this.empreendimentos = result.data.sort(function(a,b) {
           return a.nome_fantasia < b.nome_fantasia ? -1 : a.nome_fantasia > b.nome_fantasia ? 1 : 0;
