@@ -1,10 +1,10 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { API_PATH, environment } from '../../environment/environment';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { HttpClient } from '@angular/common/http';
+import { API_PATH } from '../../environment/environment';
 
 @Component({
   selector: 'app-login',
@@ -28,7 +28,7 @@ export class LoginComponent {
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('userName', response.data.userName);
       localStorage.setItem('userId', response.data.userId);
-      
+
       this.router.navigate(['/home']);
     });
   }

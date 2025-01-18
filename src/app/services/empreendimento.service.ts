@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { EmpreendimentoDto } from '../dto/empreendimento.dto';
@@ -18,10 +18,6 @@ export class EmpreendimentoService {
 
   getAll(searchDTO: SearchDTO): Observable<{ data: Empreendimento[] }> {
     let params = new HttpParams();
-    const headers = new HttpHeaders({
-      'Cache-Control': 'no-cache',
-      'Pragma': 'no-cache'
-    });
 
     if (searchDTO.nome_fantasia) {
       params = params.set('nome_fantasia', searchDTO.nome_fantasia);
@@ -38,7 +34,7 @@ export class EmpreendimentoService {
 
     params = params.set('_', new Date().getTime().toString());
 
-    return this.httpClient.get<{ data: Empreendimento[] }>(`${API_PATH}/empreendimento`, { headers, params });
+    return this.httpClient.get<{ data: Empreendimento[] }>(`${API_PATH}/empreendimento`, { params });
   }
 
   getById(id: string) {
