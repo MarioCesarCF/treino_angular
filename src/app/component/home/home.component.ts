@@ -19,6 +19,7 @@ import { Empreendimento } from '../../intefaces/empreendimento.interface';
 import { EmpreendimentoService } from '../../services/empreendimento.service';
 import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
+import { EmpreendimentosTableComponent } from '../empreendimentos-table/empreendimentos-table.component';
 
 interface Column {
   field: string;
@@ -58,7 +59,8 @@ interface TiposLicenca {
     FormsModule,
     DropdownModule,
     CalendarModule,
-    ToastModule
+    ToastModule,
+    EmpreendimentosTableComponent
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
@@ -81,7 +83,7 @@ export class HomeComponent implements OnInit {
 
   empreendimentos: Empreendimento[] = [];
   empreendimento!: Empreendimento;
-  loading = true;
+  loading: boolean = true;
 
   cols!: Column[];
   exportColumns!: ExportColumn[];

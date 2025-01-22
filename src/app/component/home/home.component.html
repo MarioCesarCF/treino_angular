@@ -46,14 +46,15 @@
           </div>
         </form>
 
-        <p-table #dt [columns]="cols" [value]="empreendimentos" class="tabela" styleClass="p-datatable-gridlines"
-          [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 30]" *ngIf="!loading || empreendimentos.length > 0" [loading]="loading">
+        <!-- <p-table #dt [columns]="cols" [value]="empreendimentos" class="tabela" styleClass="p-datatable-gridlines"
+          [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 30]"
+          *ngIf="!loading || empreendimentos.length > 0" [loading]="loading">
           <ng-template pTemplate="caption">
             <div class="tituloTabela">
               @if (situacao) {
-                <h2>Empreendimentos - Ativos</h2>
+              <h2>Empreendimentos - Ativos</h2>
               } @else {
-                <h2>Empreendimentos - Inativos</h2>
+              <h2>Empreendimentos - Inativos</h2>
               }
               <button pButton pRipple icon="pi pi-external-link" (click)="dt.exportCSV()" id="btnExport"></button>
             </div>
@@ -90,7 +91,11 @@
               </td>
             </tr>
           </ng-template>
-        </p-table>
+        </p-table> -->
+        <app-empreendimentos-table [data]="empreendimentos" [columns]="cols" [loading]="loading" [situacao]="situacao"
+          (view)="showDialogUpdate($event)" (markInactive)="tornarInativo($event)" (markActive)="tornarAtivo($event)"
+          (delete)="deletar($event)">
+        </app-empreendimentos-table>
       </div>
     </div>
   </section>
@@ -185,10 +190,10 @@
   <ng-template pTemplate="footer">
     <div class="text-right">
       @if (visibleUpdate) {
-      <button pButton pRipple label="Gerar PDF" (click)="generatePDF()" class="p-button-secondary" id="btnPdf"></button>
+      <button pButton pRipple label="Gerar PDF" (click)="generatePDF()" class="p-button-secondary btnSpaces" id="btnPdf"></button>
       }
-      <button pButton pRipple label="Fechar" (click)="closeDialog()" class="p-button-danger" id="btnClose"></button>
-      <button pButton pRipple label="Salvar" type="submit" (click)="save()" class="p-button-success"
+      <button pButton pRipple label="Fechar" (click)="closeDialog()" class="p-button-danger btnSpaces" id="btnClose"></button>
+      <button pButton pRipple label="Salvar" type="submit" (click)="save()" class="p-button-success btnSpaces"
         id="btnSave"></button>
     </div>
   </ng-template>
@@ -234,7 +239,6 @@
         <div class="label-input">
           <label for="dataProcesso" class="font-semibold w-6rem">Data do Processo *</label>
           <input pInputText id="dataProcesso" formControlName="dataProcesso" class="flex-auto" />
-          <!-- <p-calendar appendTo="body" formControlName="dataProcesso" dateFormat="dd/mm/yy" class="dataProcessoInput" /> -->
         </div>
       </div>
 
@@ -242,7 +246,6 @@
         <div class="label-input">
           <label for="vigenciaLicenca" class="font-semibold w-6rem">Vigência da Licença *</label>
           <input pInputText id="vigenciaLicenca" formControlName="vigenciaLicenca" class="flex-auto" />
-          <!-- <p-calendar appendTo="body" formControlName="vigenciaLicenca" dateFormat="dd/mm/yy" class="vigenciaInput" /> -->
         </div>
       </div>
 
@@ -258,10 +261,63 @@
 
   <ng-template pTemplate="footer">
     <div class="text-right">
-      <button pButton pRipple label="Imprimir Licença Sanitária" class="p-button-success" (click)="licencaPDF()"
+      <button pButton pRipple label="Imprimir Licença Sanitária" class="p-button-success btnSpaces" (click)="licencaPDF()"
         id="btnImprimirLicenca"></button>
     </div>
   </ng-template>
 </p-dialog>
 
 <footer></footer>
+
+<!-- 
+<app-header></app-header>
+
+<p-toast [breakpoints]="{ '1440px': { width: '100%', right: '0', left: '0' } }"></p-toast>
+
+<main>
+  <section class="main-section">
+    <h2>Sistema de Cadastramento</h2>
+
+    <app-filter 
+      [form]="filtroForm"
+      [situacao]="situacao"
+      (filtrar)="obterTodos()"
+      (limpar)="limparFiltro()"
+      (mostrarAtivos)="obterAtivos()"
+      (mostrarInativos)="obterInativos()"
+      (cadastrar)="showDialogCadastro()"
+      (imprimirLicenca)="showDialogImprimirLicenca()">
+    </app-filter>
+
+    <app-empreendimentos-table 
+      [cols]="cols"
+      [empreendimentos]="empreendimentos"
+      [loading]="loading"
+      [situacao]="situacao"
+      (editar)="showDialogUpdate($event)"
+      (inativar)="tornarInativo($event)"
+      (ativar)="tornarAtivo($event)"
+      (deletar)="deletar($event)">
+    </app-empreendimentos-table>
+  </section>
+</main>
+
+<app-cadastro-modal 
+  [visible]="dialogAberto"
+  [isUpdate]="visibleUpdate"
+  [form]="form"
+  (fechar)="closeDialog()"
+  (salvar)="save()"
+  (gerarPDF)="generatePDF()">
+</app-cadastro-modal>
+
+<app-impressao-licenca-modal 
+  [visible]="dialogImprimirLicenca"
+  [form]="licencaForm"
+  [empreendimentosFiltrados]="empreendimentosFiltrados"
+  [tiposLicenca]="tiposLicenca"
+  (fechar)="closeDialog()"
+  (imprimir)="licencaPDF()">
+</app-impressao-licenca-modal>
+
+<footer></footer> -->

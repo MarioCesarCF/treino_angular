@@ -1,0 +1,21 @@
+.tituloTabela {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .tabela th,
+  .tabela td {
+    padding: 0.3rem;
+    text-align: center;
+  }
+
+.tituloTabela>h2 {
+    margin-bottom: 0;
+}
+
+.btnSpaces {
+    margin: 2px;
+    padding: 0.3rem;
+}

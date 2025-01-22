@@ -75,7 +75,11 @@
   padding: 0.4rem;
 }
 
-#btnExport {
+.btnSpaces {
+  margin: 5px;
+  padding: 0.5rem;
+}
+/* #btnExport {
   margin: 0.5rem;
   padding: 0.5rem;
 }
@@ -89,7 +93,7 @@
 #btnImprimirLicenca {
   margin: 5px;
   padding: 0.5rem;
-}
+} */
 
 .formCadastro {
   display: flex;
