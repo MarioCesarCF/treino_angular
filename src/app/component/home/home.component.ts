@@ -173,7 +173,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  async obterTodos() {
+  obterTodos() {
     this.visibleUpdate = false;
     this.selectedEmpreendimentoId = "";
     this.visibleCreate = false;
@@ -194,9 +194,9 @@ export class HomeComponent implements OnInit {
       situacao: situacao
     }
 
-    await this.empreendimentoService.getAll(params).subscribe({
+    this.empreendimentoService.getAll(params).subscribe({
       next: (result) => {
-        this.empreendimentos = result.data.sort(function(a,b) {
+        this.empreendimentos = result.data.sort(function(a, b) {
           return a.nome_fantasia < b.nome_fantasia ? -1 : a.nome_fantasia > b.nome_fantasia ? 1 : 0;
         });
         this.loading = false;
@@ -427,7 +427,6 @@ export class HomeComponent implements OnInit {
     xPosition = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
     doc.text(numeroLicenca, xPosition, 55);
 
-    doc.setFontSize(16);
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(10);
     doc.text(`Número do Processo: ${processo}`, 20, 65);
@@ -451,7 +450,7 @@ export class HomeComponent implements OnInit {
     doc.text(`CEP: 29.850-000`, 120, 105);
 
     doc.text(`Proprietário: ${formData.nome_proprietario}`, 20, 115, { maxWidth: 160 });
-    doc.text(`Responsável Técnico: ${formData.responsavel_tecnico}`, 20, 120, { maxWidth: 160 });
+    doc.text(`Responsável Técnico: ${formData.responsavel_tecnico ? formData.responsavel_tecnico : ''}`, 20, 120, { maxWidth: 160 });
 
     doc.setFont('helvetica', 'bold');
     doc.text(`Atividade Econômica Principal`, 20, 130);
@@ -464,6 +463,8 @@ export class HomeComponent implements OnInit {
     } else {
       doc.text(`Não informado`, 20, 140);
     }
+    
+    doc.setFontSize(8);
     doc.setFont('helvetica', 'bold');
     doc.text(`Atividades Econômicas Secundárias (máximo de 10)`, 20, 150);
     doc.setFont('helvetica', 'normal');
@@ -478,32 +479,32 @@ export class HomeComponent implements OnInit {
         doc.text(`${item.cnae}`, 20, (yPosition));
         doc.text(`${item.descricao}`, 40, (yPosition), { maxWidth: 150 });
 
-        yPosition += 8;
+        yPosition += 5;
       }
     });
 
-    doc.setFontSize(8);
-    doc.text(`É de responsabilidade dos proprietários/responsáveis legais: conhecer a legislação sanitária vigente e cumpri-la integralmente, inclusive futuras atualizações; observar as boas práticas referentes às atividades/serviços prestados; garantir a veracidade das informações aqui apresentadas; e atender as obrigações e exigências legais para o exercício das atividades/serviços. Conforme Lei Municipal nº 1.459/2010.`, 20, 245, { maxWidth: 160, align: "justify" });
-    doc.text(`Ecoporanga-ES, ${this.dataHoje}`, 20, 260);
+    doc.setFontSize(10);
+    doc.text(`É de responsabilidade dos proprietários/responsáveis legais: conhecer a legislação sanitária vigente e cumpri-la integralmente, inclusive futuras atualizações; observar as boas práticas referentes às atividades/serviços prestados; garantir a veracidade das informações aqui apresentadas; e atender as obrigações e exigências legais para o exercício das atividades/serviços. Conforme Lei Municipal nº 1.459/2010.`, 20, 225, { maxWidth: 160, align: "justify" });
+    doc.text(`Ecoporanga-ES, ${this.dataHoje}`, 20, 250);
 
     doc.setFontSize(12);
     const autoridadeSanitaria = 'Autoridade Sanitária';
     titleWidth = doc.getTextWidth(autoridadeSanitaria);
     xPosition = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
-    doc.text(autoridadeSanitaria, xPosition, 280);
+    doc.text(autoridadeSanitaria, xPosition, 270);
     const vigilanciaSanitaria = 'VIGILÂNCIA SANITÁRIA DE ECOPORANGA';
     titleWidth = doc.getTextWidth(vigilanciaSanitaria);
     xPosition = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
-    doc.text(vigilanciaSanitaria, xPosition, 285);
+    doc.text(vigilanciaSanitaria, xPosition, 275);
 
     doc.setFontSize(8);
     const footerText = 'Av. Floriano Rubim, s/n, Centro, Ecoporanga/ES. Fone: (27) 99629-4357. E-mail: visaecoporanga@gmail.com';
     const footerWidth = doc.getTextWidth(footerText);
     const xFooterPosition = (doc.internal.pageSize.getWidth() - footerWidth) / 2;
-    doc.text(footerText, xFooterPosition, doc.internal.pageSize.getHeight() - 5);
+    doc.text(footerText, xFooterPosition, doc.internal.pageSize.getHeight() - 8);
 
     //Faz o download direto com o nome
-    doc.save(`licenca_sanitaria_${numero}_${formData.ramo_atividade}_${formData.nome_fantasia}.pdf`);
+    doc.save(`licenca_sanitaria_n_${numero}_${formData.nome_fantasia}.pdf`);
 
     //Abre o PDF em uma nova aba para ser feito o download
     // const pdfBlob = doc.output("blob");

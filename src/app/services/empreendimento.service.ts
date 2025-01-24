@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { EmpreendimentoDto } from '../dto/empreendimento.dto';
 import { SearchDTO } from '../dto/searchDTO';
@@ -14,7 +14,7 @@ export class EmpreendimentoService {
   private empreendimentosSubject = new BehaviorSubject<Empreendimento[]>([]);
   public empreendimentos$ = this.empreendimentosSubject.asObservable();
 
-  constructor(private httpClient: HttpClient) { }
+  private httpClient = inject(HttpClient);
 
   getAll(searchDTO: SearchDTO): Observable<{ data: Empreendimento[] }> {
     let params = new HttpParams();

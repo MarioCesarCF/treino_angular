@@ -45,53 +45,7 @@
             </div>
           </div>
         </form>
-
-        <!-- <p-table #dt [columns]="cols" [value]="empreendimentos" class="tabela" styleClass="p-datatable-gridlines"
-          [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 30]"
-          *ngIf="!loading || empreendimentos.length > 0" [loading]="loading">
-          <ng-template pTemplate="caption">
-            <div class="tituloTabela">
-              @if (situacao) {
-              <h2>Empreendimentos - Ativos</h2>
-              } @else {
-              <h2>Empreendimentos - Inativos</h2>
-              }
-              <button pButton pRipple icon="pi pi-external-link" (click)="dt.exportCSV()" id="btnExport"></button>
-            </div>
-          </ng-template>
-          <ng-template pTemplate="header" let-columns>
-            <tr>
-              <th style="width:11%">Ações</th>
-              <th *ngFor="let col of columns">
-                {{ col.header }}
-              </th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-rowData let-columns="columns">
-            <tr>
-              <td>
-                @if (situacao) {
-                <button type="button" pButton pRipple icon="pi pi-eye" (click)="showDialogUpdate(rowData.id)"
-                  title="Ver"></button>
-                <button type="button" pButton pRipple icon="pi pi-times-circle" class="p-button-danger"
-                  (click)="tornarInativo(rowData)" title="Inativar"></button>
-                } @else {
-                <button type="button" pButton pRipple icon="pi pi-undo" (click)="tornarAtivo(rowData)"
-                  title="Voltar para ativo"></button>
-                <button type="button" pButton pRipple icon="pi pi-trash" class="p-button-danger"
-                  (click)="deletar(rowData)" title="Deletar"></button>
-                }
-              </td>
-              <td *ngFor="let col of columns">
-                <ng-container *ngIf="col.field === 'documento'">{{ formatarDocumento(rowData[col.field])
-                  }}</ng-container>
-                <ng-container *ngIf="col.field === 'telefone'">{{ formatarTelefone(rowData[col.field]) }}</ng-container>
-                <ng-container *ngIf="col.field !== 'documento' && col.field !== 'telefone'">{{ rowData[col.field]
-                  }}</ng-container>
-              </td>
-            </tr>
-          </ng-template>
-        </p-table> -->
+        
         <app-empreendimentos-table [data]="empreendimentos" [columns]="cols" [loading]="loading" [situacao]="situacao"
           (view)="showDialogUpdate($event)" (markInactive)="tornarInativo($event)" (markActive)="tornarAtivo($event)"
           (delete)="deletar($event)">
