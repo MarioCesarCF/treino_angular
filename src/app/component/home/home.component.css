@@ -79,21 +79,6 @@
   margin: 5px;
   padding: 0.5rem;
 }
-/* #btnExport {
-  margin: 0.5rem;
-  padding: 0.5rem;
-}
-
-#btnSave,
-#btnPdf,
-#btnClose,
-#btnCadastrar,
-#btnLimpar,
-#btnMostrarInativos,
-#btnImprimirLicenca {
-  margin: 5px;
-  padding: 0.5rem;
-} */
 
 .formCadastro {
   display: flex;
@@ -240,6 +225,13 @@ form:last-child {
   justify-content: center;
   width: 100%;
   flex-wrap: wrap;
+}
+
+.formImprimirRequerimentoDam {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
 .inputsFiltro {

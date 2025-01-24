@@ -69,11 +69,13 @@ export class HomeComponent implements OnInit {
   form: FormGroup;
   filtroForm: FormGroup;
   licencaForm: FormGroup;
+  requerimentoDamForm: FormGroup;
 
   visibleUpdate: boolean = false;
   visibleCreate: boolean = false;
   dialogAberto: boolean = false;
   dialogImprimirLicenca: boolean = false;
+  dialogImprimirRequerimentoDam: boolean = false;
   selectedEmpreendimentoId: string = "";
 
   nome_fantasia?: string;
@@ -146,7 +148,14 @@ export class HomeComponent implements OnInit {
       dataProcesso: ['', Validators.required],
       vigenciaLicenca: ['', Validators.required],
       tipoLicenca: [this.tiposLicenca, Validators.required]
-    })
+    });
+
+    this.requerimentoDamForm = this.fb.group({
+      empreendimento: ['', Validators.required],
+      grupo: ['', Validators.required],
+      metragem: ['', Validators.required],
+      numeroProcesso: ['', Validators.required]
+    });
   }
 
   ngOnInit() {
@@ -252,12 +261,17 @@ export class HomeComponent implements OnInit {
     this.dialogImprimirLicenca = true;
   }
 
+  showDialogImprimirRequerimentoDam() {
+    this.dialogImprimirRequerimentoDam = true;
+  }
+
   closeDialog() {
     this.visibleUpdate = false;
     this.selectedEmpreendimentoId = "";
     this.visibleCreate = false;
     this.dialogAberto = false;
     this.dialogImprimirLicenca = false;
+    this.dialogImprimirRequerimentoDam = false;
     this.obterTodos();
     this.form.reset();
     this.licencaForm.reset();
@@ -488,11 +502,11 @@ export class HomeComponent implements OnInit {
     doc.text(`Ecoporanga-ES, ${this.dataHoje}`, 20, 250);
 
     doc.setFontSize(12);
-    const autoridadeSanitaria = 'Autoridade Sanitária';
+    const autoridadeSanitaria = 'Ana Sofya Cavalcante Alves Foca Moreira';
     titleWidth = doc.getTextWidth(autoridadeSanitaria);
     xPosition = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
     doc.text(autoridadeSanitaria, xPosition, 270);
-    const vigilanciaSanitaria = 'VIGILÂNCIA SANITÁRIA DE ECOPORANGA';
+    const vigilanciaSanitaria = 'Coordenadora da Vigilância Sanitária';
     titleWidth = doc.getTextWidth(vigilanciaSanitaria);
     xPosition = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
     doc.text(vigilanciaSanitaria, xPosition, 275);
@@ -510,6 +524,104 @@ export class HomeComponent implements OnInit {
     // const pdfBlob = doc.output("blob");
     // const pdfURL = URL.createObjectURL(pdfBlob);
     // window.open(pdfURL, "_blank");
+  }
+
+  requerimentoDamPDF(): void {
+    if(!this.requerimentoDamForm.valid) {
+      this.messageService.add({ severity: 'error', detail: 'Preencha todos os dados do formulário!' });
+      return;
+    }
+
+    const doc = new jsPDF();
+
+    const grupo = this.requerimentoDamForm.value.grupo;
+    const metragem = this.requerimentoDamForm.value.metragem;
+    const numeroProcesso = this.requerimentoDamForm.value.numeroProcesso;
+    const formData = this.requerimentoDamForm.value.empreendimento;
+
+    const img = new Image();
+    img.src = './assets/brasao-eco.png';
+    doc.addImage(img, 'PNG', 25, 10, 25, 25);
+
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'bold');
+    const headerText = 'PREFEITURA MUNICIPAL DE ECOPORANGA';
+    const headerText2 = 'ESTADO DO ESPÍRITO SANTO';
+    const headerText3 = 'SECRETARIA MUNICIPAL DE SAÚDE';
+
+    const headerWidth = doc.getTextWidth(headerText);
+    const xHeaderPosition = (doc.internal.pageSize.getWidth() - headerWidth) / 2;
+    doc.text(headerText, xHeaderPosition, 20);
+
+    const headerWidth2 = doc.getTextWidth(headerText2);
+    const xHeaderPosition2 = (doc.internal.pageSize.getWidth() - headerWidth2) / 2;
+    doc.text(headerText2, xHeaderPosition2, 25);
+
+    const headerWidth3 = doc.getTextWidth(headerText3);
+    const xHeaderPosition3 = (doc.internal.pageSize.getWidth() - headerWidth3) / 2;
+    doc.text(headerText3, xHeaderPosition3, 30);
+
+    doc.setFontSize(18);
+    doc.setFont('helvetica', 'bold');
+    const title = 'REQUERIMENTO - DAM';
+    const titleWidth = doc.getTextWidth(title);
+    const xPosition = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
+    doc.text(title, xPosition, 60);    
+    
+    doc.setFontSize(14);
+    doc.text(`EMPRESA:`, 20, 90);
+
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.text(`Razão Social: `, 20, 110);
+    doc.text(`Nome Fantasia: `, 20, 120);
+    doc.text(`CNPJ/CPF: `, 20, 130);
+    doc.text(`Ramo de Atividade: `, 120, 130);
+    doc.text(`Logradouro: `, 20, 140);
+    doc.text(`Número: `, 120, 140);
+    doc.text(`Bairro: `, 20, 150);
+    doc.text(`Cidade: `, 120, 150);
+    doc.text(`Grupo Atividade: `, 20, 160);
+    doc.text(`Metragem: `, 120,160);
+    doc.text(`Número do Processo: `, 20, 170);
+    doc.text(`Proprietário: `, 20, 180);
+    doc.text(`Responsável Técnico: `, 20, 190);
+
+    doc.setFont('helvetica', 'normal');
+    doc.text(`${formData.razao_social}`, 49, 110);
+    doc.text(`${formData.nome_fantasia}`, 53, 120);
+    doc.text(`${formData.documento}`, 45, 130);
+    doc.text(`${formData.ramo_atividade}`, 161, 130);
+    doc.text(`${formData.logradouro}`, 47, 140);
+    doc.text(`${formData.numero ? formData.numero : ''}`, 139, 140);
+    doc.text(`${formData.bairro}`, 36, 150);
+    doc.text('Ecoporanga', 138, 150);
+    doc.text(`${grupo}`, 55, 160);
+    doc.text(`${metragem}`, 142,160);
+    doc.text(`${numeroProcesso}`, 64, 170);
+    doc.text(`${formData.nome_proprietario}`, 48, 180, { maxWidth: 160 });
+    doc.text(`${formData.responsavel_tecnico ? formData.responsavel_tecnico : ''}`, 66, 190, { maxWidth: 160 });
+
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    const nomeCoordenadora = 'Ana Sofya Cavalcante Alves Foca Moreira';
+    const tituloCoordenadora = 'Coordenadora da Vigilância Sanitária';
+
+    const nomeWidth = doc.getTextWidth(nomeCoordenadora);
+    const xNomePosition = (doc.internal.pageSize.getWidth() - nomeWidth) / 2;
+    doc.text(nomeCoordenadora, xNomePosition, 240);
+
+    const coordenadoraWidth = doc.getTextWidth(tituloCoordenadora);
+    const xCoordenadoraPosition = (doc.internal.pageSize.getWidth() - coordenadoraWidth) / 2;
+    doc.text(tituloCoordenadora, xCoordenadoraPosition, 250);
+
+    doc.setFontSize(8);
+    const footerText = 'Av. Floriano Rubim, s/n, Centro, Ecoporanga/ES. Fone: (27) 99629-4357. E-mail: visaecoporanga@gmail.com';
+    const footerWidth = doc.getTextWidth(footerText);
+    const xFooterPosition = (doc.internal.pageSize.getWidth() - footerWidth) / 2;
+    doc.text(footerText, xFooterPosition, doc.internal.pageSize.getHeight() - 10);
+
+    doc.save(`requerimento_dam_${formData.nome_fantasia}.pdf`);
   }
 
   private applyMask(key: string, value: any): string {
