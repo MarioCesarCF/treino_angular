@@ -154,7 +154,8 @@ export class HomeComponent implements OnInit {
       empreendimento: ['', Validators.required],
       grupo: ['', Validators.required],
       metragem: ['', Validators.required],
-      numeroProcesso: ['', Validators.required]
+      numeroProcesso: ['', Validators.required],
+      tipoDam: ['', Validators.required]
     });
   }
 
@@ -537,6 +538,7 @@ export class HomeComponent implements OnInit {
     const grupo = this.requerimentoDamForm.value.grupo;
     const metragem = this.requerimentoDamForm.value.metragem;
     const numeroProcesso = this.requerimentoDamForm.value.numeroProcesso;
+    const tipoDam = this.requerimentoDamForm.value.tipoDam;
     const formData = this.requerimentoDamForm.value.empreendimento;
 
     const img = new Image();
@@ -586,6 +588,7 @@ export class HomeComponent implements OnInit {
     doc.text(`Número do Processo: `, 20, 170);
     doc.text(`Proprietário: `, 20, 180);
     doc.text(`Responsável Técnico: `, 20, 190);
+    doc.text('Tipo de tributo: ', 20, 200);
 
     doc.setFont('helvetica', 'normal');
     doc.text(`${formData.razao_social}`, 49, 110);
@@ -597,23 +600,30 @@ export class HomeComponent implements OnInit {
     doc.text(`${formData.bairro}`, 36, 150);
     doc.text('Ecoporanga', 138, 150);
     doc.text(`${grupo}`, 55, 160);
-    doc.text(`${metragem}`, 142,160);
-    doc.text(`${numeroProcesso}`, 64, 170);
+    doc.text(`${metragem} m²`, 142,160);
+    doc.text(`${numeroProcesso}`, 65, 170);
     doc.text(`${formData.nome_proprietario}`, 48, 180, { maxWidth: 160 });
     doc.text(`${formData.responsavel_tecnico ? formData.responsavel_tecnico : ''}`, 66, 190, { maxWidth: 160 });
+    doc.text(`${tipoDam}`, 53, 200);
 
     doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
     const nomeCoordenadora = 'Ana Sofya Cavalcante Alves Foca Moreira';
     const tituloCoordenadora = 'Coordenadora da Vigilância Sanitária';
+    const decreto = 'Decreto nº 9.983 de 13 de janeiro de 2025';
 
     const nomeWidth = doc.getTextWidth(nomeCoordenadora);
     const xNomePosition = (doc.internal.pageSize.getWidth() - nomeWidth) / 2;
-    doc.text(nomeCoordenadora, xNomePosition, 240);
+    doc.text(nomeCoordenadora, xNomePosition, 250);
 
+    doc.setFont('helvetica', 'normal');
     const coordenadoraWidth = doc.getTextWidth(tituloCoordenadora);
     const xCoordenadoraPosition = (doc.internal.pageSize.getWidth() - coordenadoraWidth) / 2;
-    doc.text(tituloCoordenadora, xCoordenadoraPosition, 250);
+    doc.text(tituloCoordenadora, xCoordenadoraPosition, 255);
+
+    const decretoWidth = doc.getTextWidth(decreto);
+    const xDecretoPosition = (doc.internal.pageSize.getWidth() - decretoWidth) / 2;
+    doc.text(decreto, xDecretoPosition, 260);
 
     doc.setFontSize(8);
     const footerText = 'Av. Floriano Rubim, s/n, Centro, Ecoporanga/ES. Fone: (27) 99629-4357. E-mail: visaecoporanga@gmail.com';

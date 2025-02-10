@@ -218,20 +218,13 @@ form:last-child {
   margin-bottom: 2rem;
 }
 
-.formImprimirLicenca {
+.formImprimirLicenca, .formImprimirRequerimentoDam {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   width: 100%;
   flex-wrap: wrap;
-}
-
-.formImprimirRequerimentoDam {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
 }
 
 .inputsFiltro {
