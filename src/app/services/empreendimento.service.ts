@@ -42,14 +42,14 @@ export class EmpreendimentoService {
   }
 
   createAsync(createRequest: EmpreendimentoDto) {
-    return this.httpClient.post<{status: number, message: string}>(`${API_PATH}/empreendimento`, createRequest);
+    return this.httpClient.post<{ status: number, message: string }>(`${API_PATH}/empreendimento`, createRequest);
   }
 
   deleteAsync(id: string) {
-    return this.httpClient.delete<{status: number, message: string}>(`${API_PATH}/empreendimento/${id}`);
+    return this.httpClient.delete<{ status: number, message: string }>(`${API_PATH}/empreendimento/${id}`);
   }
 
   updateAsync(empreendimento: EmpreendimentoDto) {
-    return this.httpClient.patch<{status: number, message: string}>(`${API_PATH}/empreendimento/${empreendimento.id}`, empreendimento);
+    return this.httpClient.patch<{ status: number, message: string }>(`${API_PATH}/empreendimento/${empreendimento.id}`, empreendimento);
   }
 }
