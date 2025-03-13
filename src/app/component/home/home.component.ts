@@ -411,7 +411,7 @@ export class HomeComponent implements OnInit {
 
     const img = new Image();
     img.src = './assets/brasao-eco.png';
-    doc.addImage(img, 'PNG', 25, 10, 25, 25);
+    doc.addImage(img, 'PNG', 25, 10, 20, 20);
 
     doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
@@ -421,15 +421,15 @@ export class HomeComponent implements OnInit {
 
     const headerWidth = doc.getTextWidth(headerText);
     const xHeaderPosition = (doc.internal.pageSize.getWidth() - headerWidth) / 2;
-    doc.text(headerText, xHeaderPosition, 20);
+    doc.text(headerText, xHeaderPosition, 15);
 
     const headerWidth2 = doc.getTextWidth(headerText2);
     const xHeaderPosition2 = (doc.internal.pageSize.getWidth() - headerWidth2) / 2;
-    doc.text(headerText2, xHeaderPosition2, 25);
+    doc.text(headerText2, xHeaderPosition2, 20);
 
     const headerWidth3 = doc.getTextWidth(headerText3);
     const xHeaderPosition3 = (doc.internal.pageSize.getWidth() - headerWidth3) / 2;
-    doc.text(headerText3, xHeaderPosition3, 30);
+    doc.text(headerText3, xHeaderPosition3, 25);
 
     doc.setFontSize(20);
     const title = 'LICENÇA SANITÁRIA';
@@ -442,12 +442,16 @@ export class HomeComponent implements OnInit {
     xPosition = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
     doc.text(numeroLicenca, xPosition, 55);
 
+    doc.rect(15, 36, 180, 39);
+
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(10);
     doc.text(`Número do Processo: ${processo}`, 20, 65);
     doc.text(`Data do Processo: ${data}`, 120, 65);
     doc.text(`Vigência da Licença: ${vigencia}`, 20, 70);
     doc.text(`Tipo: ${tipo.label}`, 120, 70);
+
+    doc.rect(15, 75, 180, 50);
 
     const formData = this.licencaForm.value.empreendimento;
     const atividadesEmpresa = this.dadosEmpresa;
@@ -466,6 +470,8 @@ export class HomeComponent implements OnInit {
 
     doc.text(`Proprietário: ${formData.nome_proprietario}`, 20, 115, { maxWidth: 160 });
     doc.text(`Responsável Técnico: ${formData.responsavel_tecnico ? formData.responsavel_tecnico : ''}`, 20, 120, { maxWidth: 160 });
+
+    doc.rect(15, 125, 180, 95);
 
     doc.setFont('helvetica', 'bold');
     doc.text(`Atividade Econômica Principal`, 20, 130);
@@ -497,6 +503,8 @@ export class HomeComponent implements OnInit {
         yPosition += 5;
       }
     });
+
+    doc.rect(15, 220, 180, 60);
 
     doc.setFontSize(10);
     doc.text(`É de responsabilidade dos proprietários/responsáveis legais: conhecer a legislação sanitária vigente e cumpri-la integralmente, inclusive futuras atualizações; observar as boas práticas referentes às atividades/serviços prestados; garantir a veracidade das informações aqui apresentadas; e atender as obrigações e exigências legais para o exercício das atividades/serviços. Conforme Lei Municipal nº 1.459/2010.`, 20, 225, { maxWidth: 160, align: "justify" });
